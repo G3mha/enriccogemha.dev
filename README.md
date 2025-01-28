@@ -1,4 +1,4 @@
-# Enricco Gemha | Portfolio
+# Tron Legacy (Flynn vs. CLU) Portfolio Website
 
 **Developed by Enricco Gemha 🇧🇷**
 
@@ -12,7 +12,7 @@ Welcome to my current portfolio website, built with [Astro.js](https://astro.bui
 
 ## ⚡ Features
 
-- Responsive layout with theme toggle support
+- Responsive layout with theme toggle support (*Flynn vs. CLU, or blue vs. orange*)
 - Project portfolio showcase
 - Skills and achievements section
 - Component-based architecture

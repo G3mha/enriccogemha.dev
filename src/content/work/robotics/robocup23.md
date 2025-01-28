@@ -23,6 +23,8 @@ Complete redesign of our search and rescue robot for RoboCup 2023's RMRC categor
 - Enhanced sensor array for hazard detection
 - Improved mobility in debris-filled areas, including stair climbing
 
+Project Post: [RoboCup 2023 - Search and Rescue Robot](https://www.instagram.com/p/CufJNSAOEGV)
+
 #### Technical Implementation
 
 Advanced features also include:

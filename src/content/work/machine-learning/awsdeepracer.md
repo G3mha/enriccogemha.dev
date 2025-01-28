@@ -15,7 +15,7 @@ tags:
 
 ## Project Overview
 
-AWS DeepRacer is a 1/18th scale autonomous racing car platform that provides a practical way to learn reinforcement learning. The challenge was to develop a model that could navigate complex racing tracks at relatively high speeds, achieving competitive lap times.
+[AWS DeepRacer](https://aws.amazon.com/deepracer/) is a 1/18th scale autonomous racing car platform that provides a practical way to learn reinforcement learning. The challenge was to develop a model that could navigate complex racing tracks at relatively high speeds, achieving competitive lap times.
 
 #### Technical Implementation
 

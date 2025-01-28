@@ -25,6 +25,8 @@ Our team developed an autonomous robot for the Rescue Rapidly Manufactured Robot
 
 The robot was designed and manufactured entirely from scratch by our four-person team, focusing on durability and sensor reliability in extreme conditions.
 
+Project Video: [RoboCup 2022 - Search and Rescue Robot](https://youtu.be/-9vIBCoBaBM)
+
 #### Technical Implementation
 
 The robot was developed using:

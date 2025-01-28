@@ -15,7 +15,7 @@ tags:
 
 ## Project Overview
 
-Phase 2 of PinPag's infrastructure project delivered critical improvements to their payment processing platform:
+Phase 2 of [PinPag](https://pinpag.com.br/)'s infrastructure project delivered critical improvements to their payment processing platform:
 
 #### Infrastructure Restoration & Enhancement
 

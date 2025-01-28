@@ -15,7 +15,7 @@ tags:
 
 ## Project Overview
 
-Conducted a blackbox security assessment for NerdStickers' e-commerce platform, focusing on identifying and ranking critical vulnerabilities found during the pentest. Delivered a report with remediation plans and security improvement recommendations.
+Conducted a blackbox security assessment for [NerdStickers](https://nerdstickers.com.br)' e-commerce platform, focusing on identifying and ranking critical vulnerabilities found during the pentest. Delivered a report with remediation plans and security improvement recommendations.
 
 #### Technical Implementation
 

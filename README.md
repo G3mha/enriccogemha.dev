@@ -1,4 +1,4 @@
-# Tron Legacy (Flynn vs. CLU) Portfolio Website
+# Flynn vs. CLU (Tron Legacy) Portfolio Website
 
 **Developed by Enricco Gemha 🇧🇷**
 

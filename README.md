@@ -1,8 +1,14 @@
 # Enricco Gemha | Portfolio
 
+**Developed by Enricco Gemha 🇧🇷**
+
+Hosted @ [enriccogemha.dev](https://enriccogemha.dev)
+
 *Published at: [enriccogemha.dev](https://enriccogemha.dev)*
 
 Welcome to my current portfolio website, built with [Astro.js](https://astro.build/). This project reimagines the iconic Tron Legacy aesthetic with a state-of-art web development technology.
+
+[![My Skills](https://skillicons.dev/icons?i=astro,js)](https://skillicons.dev)
 
 ## ⚡ Features
 

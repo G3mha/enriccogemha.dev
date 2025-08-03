@@ -1,0 +1,141 @@
+---
+// International Experience Component
+---
+
+<section class="section with-background">
+	<header class="section-header stack gap-2 lg:gap-4">
+		<h3>International Experience</h3>
+		<p>Global academic and competition experiences through college.</p>
+	</header>
+
+	<div class="experience-grid">
+		<div class="experience-card">
+			<img src="/assets/robocup-2023.jpg" alt="RoboCup 2023 Bordeaux" />
+			<div class="card-content">
+				<h4>RoboCup 2023</h4>
+				<p class="location">Bordeaux, France 🇫🇷</p>
+				<p class="description">Rapidly Manufactured Robot Challenge - Best in Class: Mapping</p>
+			</div>
+		</div>
+
+		<div class="experience-card">
+			<img src="/assets/robocup-2022.jpg" alt="RoboCup 2022 Bangkok" />
+			<div class="card-content">
+				<h4>RoboCup 2022</h4>
+				<p class="location">Bangkok, Thailand 🇹🇭</p>
+				<p class="description">Rapidly Manufactured Robot Challenge - Best in Class: Sensing</p>
+			</div>
+		</div>
+
+		<div class="experience-card">
+			<img src="/assets/stanford.jpg" alt="Stanford Summer Session" />
+			<div class="card-content">
+				<h4>Stanford Summer Session</h4>
+				<p class="location">Stanford, California 🇺🇸</p>
+				<p class="description">Summer session in computer science and entrepreneurship at Stanford University</p>
+			</div>
+		</div>
+
+		<div class="experience-card">
+			<img src="/assets/olin.png" alt="Olin and Babson Exchange Program" />
+			<div class="card-content">
+				<h4>Olin and Babson Exchange Program</h4>
+				<p class="location">Needham, Massachusetts 🇺🇸</p>
+				<p class="description">Full-semester engineering exchange at Olin College of Engineering and Babson College</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.section {
+		display: grid;
+		gap: 2rem;
+	}
+
+	.section-header {
+		justify-self: center;
+		text-align: center;
+		max-width: 50ch;
+		font-size: var(--text-md);
+		color: var(--gray-300);
+	}
+
+	.section-header h3 {
+		font-size: var(--text-2xl);
+	}
+
+	.experience-grid {
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	}
+
+	.experience-card {
+		background: var(--gray-999);
+		border-radius: 1.5rem;
+		overflow: hidden;
+		border: 1px solid var(--gray-800);
+		box-shadow: var(--shadow-md);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.experience-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.experience-card img {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.card-content {
+		padding: 1.5rem;
+	}
+
+	.card-content h4 {
+		font-size: var(--text-lg);
+		font-weight: 600;
+		color: var(--gray-0);
+		margin-bottom: 0.5rem;
+	}
+
+	.location {
+		font-size: var(--text-sm);
+		color: var(--accent-regular);
+		font-weight: 500;
+		margin-bottom: 0.75rem;
+	}
+
+	.description {
+		font-size: var(--text-sm);
+		color: var(--gray-300);
+		line-height: 1.5;
+	}
+
+	@media (min-width: 50em) {
+		.section {
+			grid-template-columns: repeat(4, 1fr);
+			grid-template-areas: 'header header header header' 'gallery gallery gallery gallery';
+			gap: 5rem;
+		}
+
+		.section-header {
+			grid-area: header;
+			font-size: var(--text-lg);
+		}
+
+		.section-header h3 {
+			font-size: var(--text-4xl);
+		}
+
+		.experience-grid {
+			grid-area: gallery;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 2rem;
+		}
+	}
+</style>

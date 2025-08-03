@@ -1,16 +1,22 @@
 ---
-title: PinPag - Multicloud Infrastructure Monitoring
-publishDate: 2024-01-26
+title: PinPag - Capstone Project
+publishDate: 2024-12-10
 img: /assets/pinpag.jpg
 img_alt: Interactive dashboard showing real-time monitoring of cloud infrastructure and security metrics
 description: |
   Developed and improved monitoring, security, and cost optimization solutions for PinPag's payment processing infrastructure across AWS and Azure clouds.
 tags:
-  - Cloud Infrastructure
-  - Cybersecurity
-  - FinOps
-  - Monitoring
-  - DevSecOps
+  - AWS
+  - Azure
+  - Terraform
+  - Grafana
+  - Python
+  - Semgrep
+  - Wazuh
+  - ModSecurity
+  - Twilio
+  - Telegram
+  - SMTP
 ---
 
 ## Project Overview

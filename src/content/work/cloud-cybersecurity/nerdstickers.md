@@ -1,5 +1,5 @@
 ---
-title: NerdStickers - Security Audit (Pentesting)
+title: NerdStickers - Pentesting
 publishDate: 2024-06-01
 img: /assets/nerdstickers.jpg
 img_alt: Security assessment dashboard showing vulnerability scan results

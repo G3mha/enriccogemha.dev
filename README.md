@@ -1,73 +1,30 @@
-# Flynn vs. CLU (Tron Legacy) Portfolio Website
+# enriccogemha.dev
 
-**Developed by Enricco Gemha 🇧🇷**
+My personal site. Astro, no framework islands, no client JavaScript beyond a
+theme toggle.
 
-Hosted @ [enriccogemha.dev](https://enriccogemha.dev)
+Live at [enriccogemha.dev](https://enriccogemha.dev).
 
-Welcome to my current portfolio website, built with [Astro.js](https://astro.build/). This project reimagines the iconic Tron Legacy aesthetic with a state-of-art web development technology.
-
-[![My Skills](https://skillicons.dev/icons?i=astro,js)](https://skillicons.dev)
-
-## ⚡ Features
-
-- Responsive layout with theme toggle support (*Flynn vs. CLU, or blue vs. orange*)
-- Project portfolio showcase
-- Skills and achievements section
-- Component-based architecture
-- SVG icon system
-
-## 🚀 Tech Stack
-
-- Astro.js
-- JavaScript (and TypeScript, for some configurations)
-- CSS with custom variables for theming
-
-## 💻 Development
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/enriccogemha/enriccogemha-astro.git
-```
-
-2. Install dependencies
+## Running it
 
 ```bash
 npm install
+npm run dev      # http://localhost:4321
+npm run build    # must pass before committing
 ```
 
-3. Start the development server
+## Layout
 
-```bash
-npm run dev
-```
+- `src/content/work/` — one Markdown file per project. Frontmatter is validated
+  by a zod schema in `src/content.config.ts`, so a missing field fails the build
+  rather than rendering blank.
+- `src/components/` — small and unexported anywhere else.
+- `src/styles/global.css` — the whole design system. Colour, type and spacing
+  tokens live at the top; every text and background pair is checked against
+  WCAG AA and the measured ratio is written next to the value.
 
-4. Build for production
+## Rules I hold this to
 
-```bash
-npm run build
-```
-
-## 🔧 Configuration
-
-Create a `.env` file in the root directory with your configuration:
-
-```env
-PUBLIC_SITE_URL=https://enriccogemha.dev
-```
-
-## 📦 Project Structure
-
-```sh
-├── src/
-│   ├── components/
-│   ├── layouts/
-│   ├── pages/
-│   └── styles/
-├── public/
-└── astro.config.mjs
-```
-
-## 📜 License
-
-AGPL License - Keep it free and open source.
+Every number on this site is one I counted, from a repository or a public page,
+and the page says where. If a figure cannot be checked by a reader, it does not
+go up. Projects carry a status, and `live` means a stranger can use it today.

@@ -1,8 +1,4 @@
 ---
-// Learn about using Astro layouts:
-// https://docs.astro.build/en/core-concepts/layouts/
-
-// Component Imports
 import MainHead from '../components/MainHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -20,15 +16,27 @@ const { title, description } = Astro.props;
 		<MainHead title={title} description={description} />
 	</head>
 	<body>
-		<div class="stack backgrounds">
-			<Nav />
+		<a class="skip-link" href="#main">Skip to content</a>
+		<Nav />
+		<main id="main" tabindex="-1">
 			<slot />
-			<Footer />
-		</div>
-
-		<script>
-			// Add “loaded” class once the document has completely loaded.
-			addEventListener('load', () => document.documentElement.classList.add('loaded'));
-		</script>
+		</main>
+		<Footer />
 	</body>
 </html>
+
+<style>
+	main {
+		padding-block: 3rem 5rem;
+	}
+
+	main:focus {
+		outline: none;
+	}
+
+	@media (min-width: 50em) {
+		main {
+			padding-block: 4.5rem 7rem;
+		}
+	}
+</style>

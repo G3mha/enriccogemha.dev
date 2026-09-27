@@ -1,75 +1,51 @@
 ---
-import Icon from './Icon.astro';
-const currentYear = new Date().getFullYear();
+const year = new Date().getFullYear();
 ---
 
 <footer>
-   <div class="group">
-   	<p>
-   		Developed in São Paulo with <a href="https://astro.build/">Astro</a>
-   		<Icon icon="rocket-launch" size="1.2em" />
-   	</p>
-   	<p>&copy; {currentYear} Enricco Gemha</p>
-   </div>
-   <p class="socials">
-   	<a href="https://github.com/G3mha"> GitHub</a>
-   	<a href="https://linkedin.com/in/enriccogemha"> LinkedIn</a>
-   	<a href="https://www.youtube.com/@enriccogemha"> YouTube</a>
-   </p>
+	<div class="wrapper">
+		<p>&copy; {year} Enricco Gemha</p>
+		<ul>
+			<li><a href="https://github.com/G3mha" rel="me noopener">GitHub</a></li>
+			<li><a href="https://www.linkedin.com/in/enriccogemha" rel="me noopener">LinkedIn</a></li>
+			<li><a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a></li>
+			<li><a href="/privacy/">Privacy</a></li>
+		</ul>
+	</div>
 </footer>
 
 <style>
-   footer {
-   	display: flex;
-   	flex-direction: column;
-   	gap: 3rem;
-   	margin-top: auto;
-   	padding: 3rem 2rem 3rem;
-   	text-align: center;
-   	color: var(--gray-400);
-   	font-size: var(--text-sm);
-   }
+	footer {
+		border-top: 1px solid var(--rule);
+		padding-block: 2rem;
+		font-size: var(--text-base);
+		color: var(--ink-tertiary);
+	}
 
-   footer a {
-   	color: var(--gray-400);
-   	text-decoration: 1px solid underline transparent;
-   	text-underline-offset: 0.25em;
-   	transition: text-decoration-color var(--theme-transition);
-   }
+	.wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.5rem;
+	}
 
-   footer a:hover,
-   footer a:focus {
-   	text-decoration-color: currentColor;
-   }
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
 
-   .group {
-   	display: flex;
-   	flex-direction: column;
-   	gap: 0.5rem;
-   }
+	a {
+		color: var(--ink-tertiary);
+		text-decoration: none;
+	}
 
-   .socials {
-   	display: flex;
-   	justify-content: center;
-   	gap: 1rem;
-   	flex-wrap: wrap;
-   }
-
-   @media (min-width: 50em) {
-   	footer {
-   		flex-direction: row;
-   		justify-content: space-between;
-   		padding: 2.5rem 5rem;
-   	}
-
-   	.group {
-   		flex-direction: row;
-   		gap: 1rem;
-   		flex-wrap: wrap;
-   	}
-
-   	.socials {
-   		justify-content: flex-end;
-   	}
-   }
+	a:hover {
+		color: var(--accent);
+		text-decoration: underline;
+	}
 </style>

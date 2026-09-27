@@ -3,14 +3,26 @@ import { defineCollection, z } from 'astro:content';
 
 export const collections = {
 	work: defineCollection({
-		// Load Markdown files in the src/content/work directory.
-		loader: glob({ base: './src/content/work', pattern: '**/*.md', }),
+		loader: glob({ base: './src/content/work', pattern: '**/*.md' }),
 		schema: z.object({
 			title: z.string(),
-			description: z.string(),
-			publishDate: z.coerce.date(),
-			tags: z.array(z.string()),
-			img: z.string(),
+			/** One plain sentence. No adjectives that a reader cannot check. */
+			summary: z.string(),
+			/** Drives the status dot. `unreleased` means built but not published anywhere. */
+			status: z.enum(['live', 'paused', 'unreleased', 'archived']),
+			/** Human-readable, e.g. "2025 – present" or "2024". */
+			period: z.string(),
+			/** What he personally did, in plain words. */
+			role: z.string(),
+			stack: z.array(z.string()),
+			links: z
+				.array(z.object({ label: z.string(), href: z.string().url() }))
+				.default([]),
+			/** Featured entries get a full block on the homepage; the rest are listed. */
+			featured: z.boolean().default(false),
+			/** Lower sorts first. */
+			order: z.number().default(50),
+			img: z.string().optional(),
 			img_alt: z.string().optional(),
 		}),
 	}),

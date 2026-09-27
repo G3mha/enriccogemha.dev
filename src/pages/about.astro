@@ -1,130 +1,146 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-import ContactCTA from '../components/ContactCTA.astro';
-import Hero from '../components/Hero.astro';
 ---
 
-<BaseLayout title="About | Enricco Gemha" description="About Enricco Gemha - Computer Engineer focused on Cloud & Cybersecurity">
-	<div class="stack gap-20">
-		<main class="wrapper about">
-			<Hero
-				title="About"
-				tagline='"All programmers are optimists." - Fred Brooks'
-			>
-				<img
-					width="1553"
-					height="873"
-					src="/assets/at-work.jpg"
-					alt="Enricco Gemha at RoboCup Competition"
-				/>
-			</Hero>
+<BaseLayout
+	title="About | Enricco Gemha"
+	description="Software engineer from São Paulo, now at Brown. iOS, backends, and the money paths between them."
+>
+	<div class="wrapper wrapper-narrow stack gap-12">
+		<header class="intro">
+			<div class="stack gap-4">
+				<h1>About</h1>
+				<p class="lede">
+					I am a software engineer from São Paulo. I write iOS apps and the backends
+					behind them, and most of what I have built ends up handling money, which is
+					where the interesting problems tend to be.
+				</p>
+			</div>
+			<img
+				src="/assets/portrait.jpg"
+				alt="Enricco Gemha, in a navy suit, photographed outdoors in front of evergreen trees."
+				width="867"
+				height="1200"
+				decoding="async"
+			/>
+		</header>
 
-			<section>
-				<h2 class="section-title">Background</h2>
-				<div class="content">
-					<p>
-						Growing up in <strong>São Paulo, Brazil</strong>, my journey into technology began while working at my family's medical accounting office. The piles of documents and burden of manual paperwork showed me how technology could transform work into a more efficient and enjoyable experience.
-					</p>
-					<br />
-					<p>
-						While still in high school, I <strong>taught myself Python</strong>, discovering programming's incredible potential to automate workloads. This passion led me to pursue <strong>Computer Engineering at <a href="https://www.insper.edu.br/en/home">Insper</a></strong>, with a course emphasis on Software and Entrepreneurship.
-					</p>
-					<br />
-					<p>
-						Beyond the classroom, I <strong>led the development of award-winning search and rescue robots at <a href="https://www.robocup.org/">RoboCup</a></strong>, the <strong>world's largest robotics competition</strong>, and later became the <strong>President of Insper's Robotics Club</strong> (<strong><a href="https://www.instagram.com/insper_dynamics/">Insper Dynamics</a></strong>).
-					</p>
-					<br />
-					<p>
-						Having focused on <strong>Cloud and Cybersecurity</strong> for the past year and a half, I recently completed my Capstone project with <strong><a href="https://pinpag.com.br/">PinPag</a></strong>, deploying it in a production environment that supports <strong>10k daily monetary transactions</strong>.
-					</p>
-				</div>
-			</section>
-			<section>
-				<h2 class="section-title">Education</h2>
-				<div class="content">
-					<p>B.S. Computer Engineering at <strong><a href="https://www.insper.edu.br/en/home">Insper Learning Institution</a></strong> (2021-2025)</p>
-					<br />
-					<p>Visiting Student at <strong><a href="https://www.stanford.edu/">Stanford University</a></strong> (Summer 2024)</p>
-					<br />
-					<p>Study Abroad at <strong><a href="https://www.olin.edu/">Olin College of Engineering</a></strong> and <strong><a href="https://www.babson.edu/">Babson College</a></strong> (Spring 2025)</p>
-				</div>
-			</section>
-			<section>
-				<h2 class="section-title">Experience</h2>
-				<div class="content">
-					<p>Software Engineering Intern at QI Tech (Jul 2024 - Nov 2024) • <em>Terraform, SQLAlchemy, FalconAPI</em></p>
-				</div>
-			</section>
-			<section>
-				<h2 class="section-title">Skills</h2>
-				<div class="content">
-					<p><strong>Programming</strong>: Python, Swift, C/C++, Django/React/Node.js, HTML/CSS/JavaScript, Java</p>
-					<p><strong>Cloud & DevOps</strong>: AWS, Terraform, CI/CD</p>
-					<p><strong>Security</strong>: Pentesting, Network Security, Security Compliance</p>
-					<p><strong>Data</strong>: SQL, OpenCV, NumPy, Pandas</p>
-				</div>
-			</section>
-		</main>
+		<section class="stack gap-3" aria-labelledby="how">
+			<h2 class="section-label" id="how">How I got here</h2>
+			<div class="prose">
+				<p>
+					I started writing software in my family's medical accounting office, where
+					the job was moving paper from one pile to another and the obvious fix was to
+					stop doing that by hand. I taught myself Python for it, then went to Insper
+					in São Paulo for computer engineering.
+				</p>
+				<p>
+					Most of what I learned there came from things that were not coursework: two
+					generations of a search-and-rescue robot that placed first in class at the
+					RoboCup world championship, then running the robotics and AI club, then a
+					capstone doing cloud security inside a payments company that was operating
+					under PCI-DSS. I spent a summer at Stanford and a semester at Olin and
+					Babson, which is how I ended up back in the United States.
+				</p>
+				<p>
+					In 2025 I joined DAERO Group in Boston as its first engineer and built the
+					iOS side of ZeroPunch, an app for construction crews. I left in July 2026 to
+					start a masters at Brown, and I have been building OpenGiving since.
+				</p>
+			</div>
+		</section>
 
-		<ContactCTA />
+		<section class="stack gap-3" aria-labelledby="now">
+			<h2 class="section-label" id="now">What I am doing now</h2>
+			<div class="prose">
+				<p>
+					M.S. in Innovation Management and Entrepreneurship at Brown, finishing May
+					2027, and taking systems security at Harvard this term. Day to day I am
+					writing OpenGiving: a web app, an iOS app, an Android app and the API they
+					all talk to.
+				</p>
+				<p>
+					I am also reading my way properly into security rather than around it. My
+					capstone was cloud security and my electives were cybersecurity and offensive
+					tooling, but that is coursework, and coursework is not the same as having
+					found something in a system nobody handed you. Closing that gap is the
+					current project.
+				</p>
+			</div>
+		</section>
+
+		<section class="stack gap-3" aria-labelledby="tools">
+			<h2 class="section-label" id="tools">Tools I reach for</h2>
+			<div class="prose">
+				<p>
+					<strong>Languages.</strong> Swift, Python, TypeScript, Go, Kotlin, C.
+				</p>
+				<p>
+					<strong>Building.</strong> SwiftUI and WidgetKit, FastAPI, Next.js and Astro,
+					Jetpack Compose, PostgreSQL with Prisma, GraphQL.
+				</p>
+				<p>
+					<strong>Running it.</strong> AWS, Terraform, Railway, Vercel, GitHub Actions,
+					OpenTelemetry and Grafana, Stripe Connect and PayPal.
+				</p>
+				<p>
+					<strong>Security.</strong> Semgrep in CI, Wazuh, ModSecurity, secret scanning
+					as a required check. AWS Certified Cloud Practitioner. Working through
+					CompTIA Security+.
+				</p>
+			</div>
+		</section>
+
+		<section class="stack gap-3" aria-labelledby="languages">
+			<h2 class="section-label" id="languages">Elsewhere</h2>
+			<div class="prose">
+				<p>
+					Portuguese and English natively, Spanish well enough to work in, Swedish
+					badly and improving. I have lived or studied in Brazil, the United States and
+					Sweden, and you can usually find me playing pickup football somewhere.
+				</p>
+				<p>
+					Write to me at <a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>,
+					or find me on <a href="https://github.com/G3mha" rel="me noopener">GitHub</a>
+					and <a href="https://www.linkedin.com/in/enriccogemha" rel="me noopener">LinkedIn</a>.
+				</p>
+			</div>
+		</section>
 	</div>
 </BaseLayout>
 
 <style>
-	.about {
+	.intro {
 		display: flex;
 		flex-direction: column;
-		gap: 3.5rem;
+		gap: 2rem;
 	}
 
-	img {
-		margin-top: 1.5rem;
-		border-radius: 1.5rem;
-		box-shadow: var(--shadow-md);
+	.lede {
+		font-size: var(--text-lg);
+		color: var(--ink);
+		max-width: var(--measure);
 	}
 
-	section {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		color: var(--gray-200);
+	.intro img {
+		width: 100%;
+		max-width: 15rem;
+		border: 1px solid var(--rule);
 	}
 
-	.section-title {
-		grid-column-start: 1;
-		font-size: var(--text-xl);
-		color: var(--gray-0);
-	}
-
-	.content {
-		grid-column: 2 / 4;
-	}
-
-	.content :global(a) {
-		text-decoration: 1px solid underline transparent;
-		text-underline-offset: 0.25em;
-		transition: text-decoration-color var(--theme-transition);
-	}
-
-	.content :global(a:hover),
-	.content :global(a:focus) {
-		text-decoration-color: currentColor;
-	}
-
-	@media (min-width: 50em) {
-		.about {
-			display: grid;
-			grid-template-columns: 1fr 60% 1fr;
+	@media (min-width: 42em) {
+		.intro {
+			flex-direction: row;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 3rem;
 		}
 
-		.about > :global(:first-child) {
-			grid-column-start: 2;
-		}
-
-		section {
-			display: contents;
-			font-size: var(--text-lg);
+		/* The portrait stays deliberately small. It is here so a recruiter can put a
+		   face to the name, not so it competes with the first paragraph. */
+		.intro img {
+			flex: none;
+			width: 13rem;
 		}
 	}
 </style>

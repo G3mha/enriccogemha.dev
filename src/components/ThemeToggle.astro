@@ -1,137 +1,88 @@
----
-import Icon from './Icon.astro';
----
-
-<theme-toggle>
-	<button>
-		<span class="sr-only">Flynn theme</span>
-		<span class="icon clu">
-			<svg viewBox="0 0 48 48" class="identity-disk">
-				<circle class="disk-ring" cx="23.986" cy="23.955" r="18.5"/>
-				<path class="disk-inner" d="M27.375,12.969 c4.701,1.445,8.118,5.825,8.118,11.003c0,6.356-5.149,11.509-11.5,11.509s-11.5-5.153-11.5-11.509c0-5.154,3.385-9.517,8.052-10.983"/>
-				<line class="disk-notch" x1="18.513" y1="41.657" x2="18.491" y2="38.522"/>
-				<line class="disk-notch" x1="29.538" y1="41.627" x2="29.515" y2="38.492"/>
-				<line class="disk-notch" x1="18.513" y1="9.451" x2="18.491" y2="6.316"/>
-				<line class="disk-notch" x1="29.538" y1="9.421" x2="29.515" y2="6.286"/>
-			</svg>
-		</span>
-		<span class="icon flynn">
-			<svg viewBox="0 0 48 48" class="identity-disk">
-				<circle class="disk-ring" cx="23.986" cy="23.955" r="18.5"/>
-				<path class="disk-inner" d="M27.375,12.969 c4.701,1.445,8.118,5.825,8.118,11.003c0,6.356-5.149,11.509-11.5,11.509s-11.5-5.153-11.5-11.509c0-5.154,3.385-9.517,8.052-10.983"/>
-				<line class="disk-notch" x1="18.513" y1="41.657" x2="18.491" y2="38.522"/>
-				<line class="disk-notch" x1="29.538" y1="41.627" x2="29.515" y2="38.492"/>
-				<line class="disk-notch" x1="18.513" y1="9.451" x2="18.491" y2="6.316"/>
-				<line class="disk-notch" x1="29.538" y1="9.421" x2="29.515" y2="6.286"/>
-			</svg>
-		</span>
-	</button>
-</theme-toggle>
+<button id="theme-toggle" type="button" aria-live="polite">
+	<span class="sr-only" data-label>Switch to dark theme</span>
+	<svg class="sun" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+		<circle cx="12" cy="12" r="4.5"></circle>
+		<path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" stroke-linecap="round"></path>
+	</svg>
+	<svg class="moon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+		<path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z" stroke-linejoin="round"></path>
+	</svg>
+</button>
 
 <style>
 	button {
-		display: flex;
-		border: 0;
-		border-radius: 999rem;
+		display: grid;
+		place-items: center;
+		width: 2.25rem;
+		height: 2.25rem;
 		padding: 0;
-		background-color: var(--gray-999);
-		box-shadow: inset 0 0 0 1px var(--accent-overlay);
+		border: 1px solid var(--rule-strong);
+		background: var(--surface);
+		color: var(--ink-secondary);
 		cursor: pointer;
 	}
 
-	.icon {
-		z-index: 1;
-		position: relative;
-		display: flex;
-		padding: 0.5rem;
-		width: 2rem;
-		height: 2rem;
-		font-size: 1rem;
+	button:hover {
+		color: var(--accent);
+		border-color: var(--accent);
 	}
 
-	.identity-disk {
-		width: 100%;
-		height: 100%;
+	svg {
+		grid-area: 1 / 1;
 	}
 
-	/* CLU disk styles */
-	.clu .disk-ring,
-	.clu .disk-inner,
-	.clu .disk-notch {
-		stroke: #FF9B3C;
-		stroke-width: 3;
-		fill: none;
+	/* Show the icon for the theme the button switches TO. */
+	.moon {
+		display: block;
+	}
+	.sun {
+		display: none;
 	}
 
-	.clu .identity-disk {
-		filter: drop-shadow(0 0 5px #FF9B3C);
+	:global(:root[data-theme='dark']) .moon {
+		display: none;
+	}
+	:global(:root[data-theme='dark']) .sun {
+		display: block;
 	}
 
-	/* Flynn disk styles */
-	.flynn .disk-ring,
-	.flynn .disk-inner,
-	.flynn .disk-notch {
-		stroke: #0CE2FF;
-		stroke-width: 3;
-		fill: none;
-	}
-
-	.flynn .identity-disk {
-		filter: drop-shadow(0 0 5px #0CE2FF);
-	}
-
-	/* Theme switching behavior */
-	.icon.clu::before {
-		content: '';
-		z-index: -1;
-		position: absolute;
-		inset: 0;
-		background-color: var(--accent-regular);
-		border-radius: 999rem;
-	}
-
-	:global(.theme-flynn) .icon.clu::before {
-		transform: translateX(100%);
-	}
-
-	/* Set active disk color */
-	button[aria-pressed='false'] .icon.clu {
-		color: var(--accent-text-over);
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.icon,
-		.icon.clu::before {
-			transition:
-				transform var(--theme-transition),
-				color var(--theme-transition);
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme='light'])) .moon {
+			display: none;
+		}
+		:global(:root:not([data-theme='light'])) .sun {
+			display: block;
 		}
 	}
 </style>
 
-<script>
-	class ThemeToggle extends HTMLElement {
-		constructor() {
-			super();
+<script is:inline>
+	(() => {
+		const button = document.getElementById('theme-toggle');
+		if (!button) return;
+		const label = button.querySelector('[data-label]');
 
-			const button = this.querySelector('button')!;
+		const current = () => {
+			const set = document.documentElement.dataset.theme;
+			if (set === 'light' || set === 'dark') return set;
+			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+		};
 
-			/** Set the theme to flynn/clu mode. */
-			const setTheme = (flynn: boolean) => {
-				document.documentElement.classList[flynn ? 'add' : 'remove']('theme-flynn');
-				button.setAttribute('aria-pressed', String(flynn));
-			};
+		const describe = () => {
+			if (label) label.textContent = current() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+		};
 
-			// Toggle the theme when a user clicks the button.
-			button.addEventListener('click', () => setTheme(!this.isFlynn()));
+		describe();
 
-			// Initialize button state to reflect current theme.
-			setTheme(this.isFlynn());
-		}
-
-		isFlynn() {
-			return document.documentElement.classList.contains('theme-flynn');
-		}
-	}
-	customElements.define('theme-toggle', ThemeToggle);
+		button.addEventListener('click', () => {
+			const next = current() === 'dark' ? 'light' : 'dark';
+			document.documentElement.dataset.theme = next;
+			try {
+				localStorage.setItem('theme', next);
+			} catch {
+				/* Storage can be unavailable; the theme still applies for this page view. */
+			}
+			describe();
+		});
+	})();
 </script>

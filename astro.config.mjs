@@ -1,5 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+	site: 'https://enriccogemha.dev',
+	// /work/ used to be the project index; the front page is that now.
+	redirects: {
+		'/work': '/',
+	},
+});

@@ -1,0 +1,45 @@
+---
+interface Props {
+	status: 'live' | 'paused' | 'unreleased' | 'archived';
+}
+
+const { status } = Astro.props;
+
+const wording: Record<Props['status'], string> = {
+	live: 'Live',
+	paused: 'Paused',
+	unreleased: 'Built, not released',
+	archived: 'Archived',
+};
+---
+
+<span class:list={['status', status]}>
+	<span class="dot" aria-hidden="true"></span>
+	{wording[status]}
+</span>
+
+<style>
+	.status {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: var(--text-sm);
+		color: var(--ink-tertiary);
+		white-space: nowrap;
+	}
+
+	.dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: var(--status-archived);
+	}
+
+	.live .dot {
+		background: var(--status-live);
+	}
+	.paused .dot,
+	.unreleased .dot {
+		background: var(--status-paused);
+	}
+</style>

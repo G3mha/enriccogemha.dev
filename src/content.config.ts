@@ -3,7 +3,7 @@ import { defineCollection, z } from 'astro:content';
 
 export const collections = {
 	work: defineCollection({
-		loader: glob({ base: './src/content/work', pattern: '**/*.md' }),
+		loader: glob({ base: './src/content/work', pattern: '**/*.{md,mdx}' }),
 		schema: z.object({
 			title: z.string(),
 			/** One plain sentence. No adjectives that a reader cannot check. */

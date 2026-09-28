@@ -2,7 +2,7 @@
 title: OpenGiving
 summary: A marketplace where sellers route part of each sale to a fundraising campaign, running as a web app, an iOS app and an Android app on one API.
 status: live
-period: 2025 – 2026
+period: May 2025 – Jun 2026
 role: I wrote all four codebases, the web, iOS and Android apps and the API they share. On leave since June 2026.
 featured: true
 order: 1

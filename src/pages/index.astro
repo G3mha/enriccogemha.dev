@@ -17,27 +17,33 @@ const projects = (await getCollection('work')).sort(
 const featured = projects.filter((p) => p.data.featured);
 const rest = projects.filter((p) => !p.data.featured);
 
-const shipped = [
+// Each app once, with every store it's on. The name opens the project page;
+// the store links open the listings.
+const apps = [
 	{
-		label: 'OpenGiving',
-		note: 'iOS',
-		href: 'https://apps.apple.com/us/app/opengiving-donate-shop/id6756851957',
+		name: 'OpenGiving',
+		page: '/work/opengiving/',
+		icon: '/assets/app-icon-opengiving.jpg',
+		about: 'Sellers route part of each sale to a fundraising campaign.',
+		stores: [
+			{ label: 'App Store', href: 'https://apps.apple.com/us/app/opengiving-donate-shop/id6756851957' },
+			{ label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=me.opengiving.android' },
+		],
 	},
 	{
-		label: 'OpenGiving',
-		note: 'Android',
-		href: 'https://play.google.com/store/apps/details?id=me.opengiving.android',
+		name: 'PacBag',
+		page: '/work/pacbag/',
+		icon: '/assets/app-icon-pacbag.jpg',
+		about: 'Tracks what’s in each bag and weighs it against the airline limit.',
+		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/pacbag-digital-luggage/id6749021887' }],
 	},
 	{
-		label: 'PacBag',
-		note: 'iOS',
-		href: 'https://apps.apple.com/us/app/pacbag-digital-luggage/id6749021887',
-	},
-	{
-		label: 'ZeroPunch',
-		note: 'iOS, at',
+		name: 'ZeroPunch',
+		page: '/work/zeropunch/',
+		icon: '/assets/app-icon-zeropunch.jpg',
+		about: 'A field app for construction crews, built at',
 		mark: 'daero',
-		href: 'https://apps.apple.com/us/app/id6753096907',
+		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/id6753096907' }],
 	},
 ];
 ---
@@ -89,14 +95,22 @@ const shipped = [
 
 		<section class="stack gap-4" aria-labelledby="shipped-heading">
 			<h2 class="section-label" id="shipped-heading">Things you can install</h2>
-			<ul class="shipped">
+			<ul class="apps">
 				{
-					shipped.map((item) => (
+					apps.map((app) => (
 						<li>
-							<a href={item.href} rel="noopener">
-								{item.label}
-							</a>
-							<span>{item.note}{item.mark === 'daero' && <> <DaeroLogo /></>}</span>
+							<img class="app-icon" src={app.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />
+							<div class="app-text">
+								<a class="app-name" href={app.page}>{app.name}</a>
+								<span class="app-about">{app.about}{app.mark === 'daero' && <> <DaeroLogo />.</>}</span>
+							</div>
+							<ul class="stores">
+								{app.stores.map((store) => (
+									<li>
+										<a href={store.href} rel="noopener">{store.label}<span class="sr-only">: {app.name}</span></a>
+									</li>
+								))}
+							</ul>
 						</li>
 					))
 				}
@@ -172,24 +186,78 @@ const shipped = [
 		}
 	}
 
-	.shipped {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem 2rem;
+	/* One row per app, divided like the Earlier list below it. On wide screens
+	   the store links sit at the end of the row; on narrow ones they drop under
+	   the description. */
+	.apps {
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	.shipped li {
-		display: flex;
-		align-items: baseline;
-		gap: 0.4rem;
+	.apps > li {
+		display: grid;
+		grid-template-columns: 2.75rem minmax(0, 1fr);
+		align-items: start;
+		gap: 0.35rem 1rem;
+		padding-block: 0.9rem;
+		border-top: 1px solid var(--rule);
 	}
 
-	.shipped span {
-		font-size: var(--text-sm);
+	/* OpenGiving's artwork has its own rounded corners with white outside
+	   them, starting 31% in from each corner. Masking every icon at 31%
+	   hides that white and gives the three the same shape. */
+	.app-icon {
+		grid-row: span 2;
+		width: 2.75rem;
+		height: 2.75rem;
+		border: 1px solid var(--rule);
+		border-radius: 31%;
+	}
+
+	.app-text {
+		display: grid;
+		gap: 0.1rem;
+	}
+
+	.app-name {
+		font-weight: 600;
+		color: var(--ink);
+		text-decoration: none;
+	}
+
+	.app-name:hover {
+		color: var(--accent);
+	}
+
+	.app-about {
+		font-size: var(--text-base);
 		color: var(--ink-tertiary);
+	}
+
+	.stores {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: var(--text-base);
+	}
+
+	@media (min-width: 42em) {
+		.apps > li {
+			grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+			align-items: center;
+		}
+
+		.app-icon {
+			grid-row: auto;
+		}
+
+		.stores {
+			justify-content: flex-end;
+		}
 	}
 
 	.compact {

@@ -164,8 +164,10 @@ const phrases = [
 	}
 
 	/* On phones the long phrases wrap anyway, so the phrase gets its own
-	   line. That keeps "I build" still and saves a line of empty space. */
-	@media (width < 48em) {
+	   line. That keeps "I build" still and saves a line of empty space. The
+	   query is the exact opposite of the page's min-width: 48em breakpoint,
+	   written so Safari before 16.4 can parse it. */
+	@media not all and (min-width: 48em) {
 		.animates .slot {
 			display: block;
 		}

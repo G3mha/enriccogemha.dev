@@ -145,10 +145,32 @@ const isCurrent = (href: string) =>
 		border-bottom-color: var(--accent);
 	}
 
-	/* On narrow screens GitHub and LinkedIn show only their marks, so the nav
-	   stays on two rows. The link keeps its name through aria-label, and the
-	   padding keeps each tap target at least 24px square. */
-	@media (max-width: 30em) {
+	/* Below 36em the name, four links and the toggle no longer fit on one
+	   line, and letting the links wrap split them unevenly (3 + 1 on a 402px
+	   iPhone). So the nav becomes two rows on purpose: the name and the toggle
+	   on top, and the links on a full-width row under them. */
+	@media (max-width: 36em) {
+		nav {
+			flex-wrap: wrap;
+			row-gap: 0.5rem;
+		}
+
+		nav > :global(#theme-toggle) {
+			margin-left: auto;
+		}
+
+		.links {
+			order: 1;
+			flex-basis: 100%;
+			margin-left: 0;
+		}
+	}
+
+	/* On the narrowest phones even that row is too long with labels, so
+	   GitHub and LinkedIn show only their marks. The link keeps its name
+	   through aria-label, and the padding keeps each tap target at least
+	   24px square. */
+	@media (max-width: 23em) {
 		.external .label {
 			position: absolute;
 			width: 1px;

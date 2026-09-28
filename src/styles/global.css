@@ -1,4 +1,37 @@
 /* ===========================================================
+   Fallback font for headings
+   Until Fraunces arrives, headings are set in Georgia. Unscaled,
+   Georgia Bold runs about 9% wider than Fraunces 600, so headings
+   wrap differently and the page jumps when Fraunces swaps in.
+   This face scales Georgia Bold to take up the same space.
+
+   size-adjust started as the ratio of total widths of the site's
+   own headings in both fonts (91.2%) and was tuned in Chrome to
+   91.1%: at that value every heading on every page wraps the same
+   in both fonts at common device widths, and the homepage headline
+   does at every width from 320 to 1440px. The ascent and descent
+   overrides come from Fraunces's own metrics. Safari applies
+   size-adjust but ignores the overrides, which is harmless because
+   headings set their own line-height. Where Georgia is missing, as
+   on Android, the face is skipped and the next font is used.
+
+   Body text keeps the system font as its fallback. A size-matched
+   Arial made phones steadier but made the homepage and About page
+   shift more on desktop, because which paragraph sits right at a
+   line break depends on the exact wording.
+   =========================================================== */
+
+@font-face {
+	font-family: 'Fraunces Fallback';
+	src: local('Georgia Bold'), local('Georgia-Bold');
+	font-weight: 500 700;
+	size-adjust: 91.10%;
+	ascent-override: 107.35%;
+	descent-override: 27.99%;
+	line-gap-override: 0%;
+}
+
+/* ===========================================================
    Design tokens
    Light is the default. Dark follows the system unless the
    reader has chosen a theme, in which case data-theme wins.
@@ -47,7 +80,7 @@
 	/* Fonts */
 	--font-system: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	--font-body: 'Public Sans', var(--font-system);
-	--font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+	--font-display: 'Fraunces', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
 	--font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
 	--theme-transition: 0.15s ease-in-out;

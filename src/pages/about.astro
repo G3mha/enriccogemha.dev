@@ -4,16 +4,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
 	title="About | Enricco Gemha"
-	description="Software engineer from São Paulo, now at Brown. iOS, backends, and the money paths between them."
+	description="Software engineer from São Paulo, now at Brown. How I got here, and what I’m working on."
 >
 	<div class="wrapper wrapper-narrow stack gap-12">
 		<header class="intro">
 			<div class="stack gap-4">
 				<h1>About</h1>
 				<p class="lede">
-					I am a software engineer from São Paulo. I write iOS apps and the backends
-					behind them, and most of what I have built ends up handling money, which is
-					where the interesting problems tend to be.
+					I’m a software engineer from São Paulo. This is how I got here, and what I’m
+					working on now.
 				</p>
 			</div>
 			<img
@@ -29,42 +28,50 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			<h2 class="section-label" id="how">How I got here</h2>
 			<div class="prose">
 				<p>
-					I started writing software in my family's medical accounting office, where
-					the job was moving paper from one pile to another and the obvious fix was to
-					stop doing that by hand. I taught myself Python for it, then went to Insper
-					in São Paulo for computer engineering.
+					My first code was for my family’s medical accounting office, where I worked in
+					high school. Most of the job was paperwork done by hand, so I taught myself
+					Python to automate some of it. Then I went to Insper in São Paulo for computer
+					engineering.
 				</p>
 				<p>
-					Most of what I learned there came from things that were not coursework: two
-					generations of a search-and-rescue robot that placed first in class at the
-					RoboCup world championship, then running the robotics and AI club, then a
-					capstone doing cloud security inside a payments company that was operating
-					under PCI-DSS. I spent a summer at Stanford and a semester at Olin and
-					Babson, which is how I ended up back in the United States.
+					Outside class, I was on a small team that built two generations of a
+					search-and-rescue robot. Our robots won Best in Class for Sensing at RoboCup
+					2022 in Bangkok and Best in Class for Mapping at RoboCup 2023 in Bordeaux. In
+					2023 I also ran the university’s robotics and AI club. For my capstone I did
+					cloud security for <a href="/work/pinpag-capstone/">PinPag</a>, a Brazilian
+					payments company, on their live platform.
 				</p>
 				<p>
-					In 2025 I joined DAERO Group in Boston as its first engineer and built the
-					iOS side of ZeroPunch, an app for construction crews. I left in July 2026 to
-					start a masters at Brown, and I have been building OpenGiving since.
+					I also took classes for a summer at Stanford and for a semester at Olin and
+					Babson, outside Boston.
+				</p>
+				<p>
+					In September 2025 I joined <a href="/work/zeropunch/">DAERO</a>, a Boston
+					startup that makes software for construction crews, as its first hire. The
+					first version of their iOS app already existed. I worked on it for ten months,
+					and in February 2026 I started rewriting it from scratch. I left in July 2026 to
+					start my master’s at Brown.
 				</p>
 			</div>
 		</section>
 
 		<section class="stack gap-3" aria-labelledby="now">
-			<h2 class="section-label" id="now">What I am doing now</h2>
+			<h2 class="section-label" id="now">What I’m doing now</h2>
 			<div class="prose">
 				<p>
-					M.S. in Innovation Management and Entrepreneurship at Brown, finishing May
-					2027, and taking systems security at Harvard this term. Day to day I am
-					writing OpenGiving: a web app, an iOS app, an Android app and the API they
-					all talk to.
+					I’m doing a master’s in Innovation Management and Entrepreneurship at Brown,
+					and I finish in May 2027.
 				</p>
 				<p>
-					I am also reading my way properly into security rather than around it. My
-					capstone was cloud security and my electives were cybersecurity and offensive
-					tooling, but that is coursework, and coursework is not the same as having
-					found something in a system nobody handed you. Closing that gap is the
-					current project.
+					Most days I’m working on <a href="/work/opengiving/">OpenGiving</a>, a
+					marketplace where part of every sale goes to a fundraising campaign. I write
+					all of its code, and its work page covers how it’s built.
+				</p>
+				<p>
+					I want to get good at security. So far I’ve only done it in school: my capstone,
+					and electives on cloud security and offensive tooling. I haven’t found a bug in
+					someone else’s system yet. This term I’m taking Systems Security at Harvard,
+					and I’m studying for CompTIA Security+.
 				</p>
 			</div>
 		</section>
@@ -77,28 +84,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				</p>
 				<p>
 					<strong>Building.</strong> SwiftUI and WidgetKit, FastAPI, Next.js and Astro,
-					Jetpack Compose, PostgreSQL with Prisma, GraphQL.
+					Jetpack Compose, PostgreSQL with Prisma, GraphQL, Stripe Connect and PayPal.
 				</p>
 				<p>
-					<strong>Running it.</strong> AWS, Terraform, Railway, Vercel, GitHub Actions,
-					OpenTelemetry and Grafana, Stripe Connect and PayPal.
+					<strong>Running it.</strong> AWS, Railway, Vercel, GitHub Actions,
+					OpenTelemetry and Grafana.
 				</p>
 				<p>
-					<strong>Security.</strong> Semgrep in CI, Wazuh, ModSecurity, secret scanning
-					as a required check. AWS Certified Cloud Practitioner. Working through
-					CompTIA Security+.
+					<strong>Security.</strong> Semgrep in CI, Wazuh, ModSecurity, and secret
+					scanning as a required check.
+					<a href="https://www.credly.com/badges/93f53b4d-ed60-47e9-abdd-bc266ec1bf42/public_url" rel="noopener">AWS Certified Cloud Practitioner</a>.
 				</p>
 			</div>
 		</section>
 
-		<section class="stack gap-3" aria-labelledby="languages">
-			<h2 class="section-label" id="languages">Elsewhere</h2>
+		<section class="stack gap-3" aria-labelledby="elsewhere">
+			<h2 class="section-label" id="elsewhere">Elsewhere</h2>
 			<div class="prose">
 				<p>
-					Portuguese and English natively, Spanish well enough to work in, Swedish
-					badly and improving. I have lived or studied in Brazil, the United States and
-					Sweden, and you can usually find me playing pickup football somewhere.
+					I speak Portuguese and English natively, Spanish well enough to work in, and a
+					little Swedish. Outside Brazil and the US, the country I’ve spent the most time
+					in is Sweden. I’ve been six times.
 				</p>
+				<p>I play pickup soccer whenever I can find a game.</p>
 				<p>
 					Write to me at <a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>,
 					or find me on <a href="https://github.com/G3mha" rel="me noopener">GitHub</a>

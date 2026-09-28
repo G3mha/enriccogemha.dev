@@ -17,7 +17,7 @@ interface Props {
 const { text, logo } = Astro.props;
 
 const inlineMarks = {
-	daero: { name: 'DAERO Group', Mark: DaeroLogo },
+	daero: { name: 'DAERO', Mark: DaeroLogo },
 } as const;
 
 const swap = logo && logo in inlineMarks ? inlineMarks[logo as keyof typeof inlineMarks] : undefined;

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectEntry from '../components/ProjectEntry.astro';
 import Status from '../components/Status.astro';
+import NfxLogo from '../components/NfxLogo.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -47,9 +48,8 @@ const shipped = [
 				<p>
 					I’m from São Paulo. I’m at Brown until May 2027, doing a master’s in
 					entrepreneurship, and I’m on leave from OpenGiving while I’m here. Before Brown
-					I was the first hire at
-					<a href="/work/zeropunch/">DAERO</a>, a Boston startup that makes software for
-					construction crews. I spent ten months on their iOS app, and in February 2026
+					I was the first hire at <a href="/work/zeropunch/">DAERO</a>, a construction
+					software startup in Boston backed by <NfxLogo />. I spent ten months on their iOS app, and in February 2026
 					I started rewriting it from scratch.
 				</p>
 				<p>

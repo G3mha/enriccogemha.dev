@@ -321,6 +321,24 @@ pre {
 	}
 }
 
+/* Company marks set inline in running text (NFX, DAERO). They take the ink
+   colour, turn accent on hover like any other link, and carry no underline,
+   since an underline under a logo looks like a rendering bug. Each mark sets
+   its own height and baseline offset, because every logo's geometry differs. */
+.inline-mark {
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.inline-mark:hover {
+	color: var(--accent);
+}
+
+.inline-mark svg {
+	display: inline-block;
+	width: auto;
+}
+
 /* Section heading with a rule running off to the right. */
 .section-label {
 	display: flex;

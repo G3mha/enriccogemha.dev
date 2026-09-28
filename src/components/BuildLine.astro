@@ -12,9 +12,11 @@
  * - Screen readers get the whole list once, as a sentence, and the typing is
  *   hidden from them.
  * - A Pause button appears under the heading. Anything that moves on its own
- *   for more than five seconds needs a way to stop it (WCAG 2.2.2).
+ *   for more than five seconds needs a way to stop it (WCAG 2.2.2). Pausing
+ *   shows the whole current phrase, never a half-typed one.
  *
- * The loop also waits while the tab is hidden or the heading is off screen.
+ * The loop also waits while the tab is hidden, the heading is off screen, or
+ * reduced motion is switched on after the page has loaded.
  *
  * Nothing that moves is its own layout box, so none of it counts as a layout
  * shift: the period is typed with each phrase, the text node is replaced on
@@ -49,7 +51,8 @@ const phrases = [
 <script is:inline>
 	(() => {
 		const line = document.querySelector('.build-line');
-		if (!line || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const calm = matchMedia('(prefers-reduced-motion: reduce)');
+		if (!line || calm.matches) return;
 
 		const phrases = JSON.parse(line.dataset.phrases);
 		const h1 = line.querySelector('h1');
@@ -77,7 +80,9 @@ const phrases = [
 		let paused = false;
 		let onscreen = true;
 		let wake = null;
-		const free = () => !paused && onscreen && !document.hidden;
+		// The phrase on screen: the one being deleted, then the one being typed.
+		let current = phrases[0];
+		const free = () => !paused && onscreen && !document.hidden && !calm.matches;
 		const nudge = () => {
 			if (wake && free()) {
 				wake();
@@ -89,14 +94,29 @@ const phrases = [
 			while (!free()) await new Promise((resolve) => (wake = resolve));
 		};
 
+		// Whenever the loop is told to stop, show a whole phrase rather than
+		// leaving "I build web" on screen. The typing loop types by prefix, so
+		// it sees the phrase is already complete and moves on to the hold.
+		const settle = () => {
+			typed.textContent = `${current}.`;
+		};
+
 		toggle.addEventListener('click', () => {
 			paused = !paused;
+			if (paused) settle();
 			line.classList.toggle('paused', paused);
 			nudge();
 		});
+		calm.addEventListener('change', () => {
+			if (calm.matches) settle();
+			nudge();
+		});
 		document.addEventListener('visibilitychange', nudge);
-		new IntersectionObserver(([entry]) => {
-			onscreen = entry.isIntersecting;
+		// One callback can carry several entries for the heading, oldest first,
+		// so only the last one says where it is now.
+		new IntersectionObserver((entries) => {
+			onscreen = entries[entries.length - 1].isIntersecting;
+			line.classList.toggle('offscreen', !onscreen);
 			nudge();
 		}).observe(h1);
 
@@ -104,19 +124,20 @@ const phrases = [
 		(async () => {
 			await sleep(2200);
 			for (let i = 1; ; i = (i + 1) % phrases.length) {
-				const next = phrases[i];
 				line.classList.add('typing');
 				while (typed.textContent) {
 					typed.textContent = typed.textContent.slice(0, -1);
 					await sleep(32);
 				}
+				current = phrases[i];
 				await sleep(220);
-				for (const character of `${next}.`) {
-					typed.textContent += character;
+				const full = `${current}.`;
+				while (typed.textContent !== full) {
+					typed.textContent = full.slice(0, typed.textContent.length + 1);
 					await sleep(55 + Math.random() * 45);
 				}
 				line.classList.remove('typing');
-				await sleep(holds[next] ?? 1500);
+				await sleep(holds[current] ?? 1500);
 			}
 		})();
 	})();
@@ -144,8 +165,10 @@ const phrases = [
 	}
 
 	/* On phones the long phrases wrap anyway, so the phrase gets its own
-	   line. That keeps "I build" still and saves a line of empty space. */
-	@media (width < 48em) {
+	   line. That keeps "I build" still and saves a line of empty space. The
+	   query is the exact opposite of the page's min-width: 48em breakpoint,
+	   written so Safari before 16.4 can parse it. */
+	@media not all and (min-width: 48em) {
 		.animates .slot {
 			display: block;
 		}
@@ -155,16 +178,17 @@ const phrases = [
 	   element after it. With the default box-decoration-break: slice, "right"
 	   is the end of the last line, so it follows the text across wraps. It
 	   holds steady while characters change or while paused, and blinks while
-	   a phrase is being shown. */
+	   a phrase is being shown. The ghosts get the same padding so they wrap
+	   exactly like the live text. */
 	.animates .typed {
 		padding-right: 0.11em;
 		background: linear-gradient(var(--accent), var(--accent)) no-repeat right 0 top 0.22em / 0.06em 0.8em;
-		animation: blink 1.05s steps(1) infinite;
 	}
 
-	.typing .typed,
-	.paused .typed {
-		animation: none;
+	/* Only the live copy blinks, and not while it's off screen, so the page
+	   can go idle once the reader has scrolled past. */
+	.animates:not(.typing, .paused, .offscreen) .words .typed {
+		animation: blink 1.05s steps(1) infinite;
 	}
 
 	@keyframes blink {

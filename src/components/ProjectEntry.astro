@@ -2,27 +2,13 @@
 import type { CollectionEntry } from 'astro:content';
 import Status from './Status.astro';
 import Tags from './Tags.astro';
-import DaeroLogo from './DaeroLogo.astro';
+import MarkedText from './MarkedText.astro';
 
 interface Props {
 	project: CollectionEntry<'work'>;
 }
 
 const { data, id } = Astro.props.project;
-
-// Flat company marks that can stand in for the company's name in a summary,
-// the way they do in the homepage intro. RoboCup's logo isn't here: it's a
-// full-colour image that only works where it has room.
-const inlineMarks = {
-	daero: { name: 'DAERO Group', Mark: DaeroLogo },
-} as const;
-
-const mark = data.logo && data.logo in inlineMarks ? inlineMarks[data.logo as keyof typeof inlineMarks] : undefined;
-const at = mark ? data.summary.indexOf(mark.name) : -1;
-const summary =
-	mark && at >= 0
-		? { before: data.summary.slice(0, at), after: data.summary.slice(at + mark.name.length), Mark: mark.Mark }
-		: undefined;
 ---
 
 <article class="entry">
@@ -32,7 +18,7 @@ const summary =
 	</div>
 
 	<p class="period">{data.period}</p>
-	<p class="summary">{summary ? <>{summary.before}<summary.Mark />{summary.after}</> : data.summary}</p>
+	<p class="summary"><MarkedText text={data.summary} logo={data.logo} /></p>
 	<p class="role">{data.role}</p>
 
 	<Tags items={data.stack} />

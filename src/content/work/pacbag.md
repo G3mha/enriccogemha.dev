@@ -29,5 +29,3 @@ CloudKit refuses a model that doesn't meet its constraints, and it refuses at la
 ## What it doesn't have
 
 No tests. The two test targets are unmodified Xcode templates, which is the honest state of it.
-
-Version 1.0.1 is uploaded and waiting on Apple's expanded age-rating questionnaire, so the App Store still serves 1.0.

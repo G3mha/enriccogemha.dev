@@ -16,18 +16,18 @@ stack:
   - Grafana
 ---
 
-A 360-hour capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that could not be explained to an auditor.
+A 360-hour capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that couldn't be explained to an auditor.
 
 ## Mapping what could reach what
 
-The piece I would show first is a Python tool that walks a live AWS account through boto3, reads EC2 instances, security groups, subnets and RDS instances, and builds a graph of what can reach what.
+The piece I'd show first is a Python tool that walks a live AWS account through boto3, reads EC2 instances, security groups, subnets and RDS instances, and builds a graph of what can reach what.
 
-It draws each resource as a node and each permitted path as an edge, then marks the edges that should not exist. A security group admitting `0.0.0.0/0` on anything other than 80 or 443 comes back thick and red. The output lands in S3 as Parquet, gets crawled into a catalogue, and renders as a node graph.
+It draws each resource as a node and each permitted path as an edge, then marks the edges that shouldn't exist. A security group admitting `0.0.0.0/0` on anything other than 80 or 443 comes back thick and red. The output lands in S3 as Parquet, gets crawled into a catalogue, and renders as a node graph.
 
-The point was not the picture. It was that nobody could previously answer "what is open to the internet right now" without reading rules one at a time.
+The point wasn't the picture. It was that nobody could previously answer "what's open to the internet right now" without reading rules one at a time.
 
 ## The rest
 
 Semgrep wired into GitLab CI so every build is scanned, with findings catalogued by CWE and carried through to dashboards and alerts. A ModSecurity WAF on the OWASP rule set. A Wazuh SIEM repaired and put back into service. Alerting across several channels.
 
-The scale figures for PinPag's platform are theirs rather than mine, so they are not reproduced here.
+The scale figures for PinPag's platform are theirs rather than mine, so they aren't reproduced here.

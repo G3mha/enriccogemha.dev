@@ -36,24 +36,39 @@ const shipped = [
 
 <BaseLayout>
 	<div class="wrapper stack gap-16 lg:gap-24">
-		<header class="intro stack gap-6">
-			<h1>Enricco Gemha</h1>
-			<p class="lede">
-				I build iOS apps and the backends behind them. Right now that mostly means
-				OpenGiving, a marketplace running as a web app, an iOS app and an Android app
-				on one API that I write all of.
-			</p>
-			<p class="facts">
-				M.S. Innovation Management &amp; Entrepreneurship at Brown, May 2027. Before
-				that, first engineering hire at <a href="https://apps.apple.com/us/app/id6753096907" rel="noopener">DAERO Group</a>
-				in Boston, and a B.S. in Computer Engineering at Insper in São Paulo.
-				Providence, Rhode Island.
-			</p>
-			<p class="facts">
-				<a href="https://github.com/G3mha" rel="me noopener">GitHub</a> ·
-				<a href="https://www.linkedin.com/in/enriccogemha" rel="me noopener">LinkedIn</a> ·
-				<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>
-			</p>
+		<header class="intro">
+			<div class="intro-text">
+				<h1>I build iOS apps and the backends behind them.</h1>
+				<p class="lede">
+					These days that’s <a href="/work/opengiving/">OpenGiving</a>, a marketplace
+					where part of every sale goes to a fundraising campaign. I write all the code
+					for it: the web app, the iOS and Android apps, and the API they share.
+				</p>
+				<p>
+					I’m from São Paulo. I’m at Brown until May 2027, doing a master’s in
+					entrepreneurship. Before Brown I was the first hire at
+					<a href="/work/zeropunch/">DAERO</a>, a Boston startup that makes software for
+					construction crews. I spent ten months on their iOS app, and in February 2026
+					I started rewriting it from scratch.
+				</p>
+				<p>
+					I got my computer engineering degree at Insper, where I was on a small team
+					building rescue robots. Our robots won Best in Class awards at the
+					<a href="/work/robocup/">RoboCup</a> world championship in 2022 and 2023.
+				</p>
+				<p class="contact">
+					Email’s the easiest way to reach me:
+					<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>
+				</p>
+			</div>
+			<img
+				src="/assets/portrait.jpg"
+				alt="Enricco Gemha, in a navy suit, photographed outdoors in front of evergreen trees."
+				width="867"
+				height="1200"
+				decoding="async"
+				fetchpriority="high"
+			/>
 		</header>
 
 		<section class="stack gap-4" aria-labelledby="shipped-heading">
@@ -94,25 +109,24 @@ const shipped = [
 				}
 			</ul>
 		</section>
-
-		<section class="stack gap-4 closing" aria-labelledby="now-heading">
-			<h2 class="section-label" id="now-heading">Now</h2>
-			<p>
-				I am at Brown until May 2027, working on OpenGiving most days and reading my
-				way further into systems security, which is the elective I am taking at
-				Harvard this term. If you want to talk about any of the above, or about
-				something you are building, write to me.
-			</p>
-			<p>
-				<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>
-			</p>
-		</section>
 	</div>
 </BaseLayout>
 
 <style>
 	.intro {
+		display: grid;
+		gap: 2rem;
+	}
+
+	.intro-text {
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
 		max-width: var(--measure);
+	}
+
+	.intro-text h1 {
+		margin-bottom: 0.4rem;
 	}
 
 	.lede {
@@ -120,9 +134,31 @@ const shipped = [
 		color: var(--ink);
 	}
 
-	.facts {
+	.contact {
 		font-size: var(--text-base);
-		color: var(--ink-tertiary);
+		margin-top: 0.4rem;
+	}
+
+	/* On narrow screens the photo sits above the greeting at avatar size,
+	   so the first thing on the page is still a face and a name. */
+	.intro img {
+		order: -1;
+		width: 7.5rem;
+		border: 1px solid var(--rule);
+	}
+
+	@media (min-width: 48em) {
+		.intro {
+			grid-template-columns: minmax(0, 1fr) 13rem;
+			gap: 3.5rem;
+			align-items: start;
+		}
+
+		.intro img {
+			order: 0;
+			width: 100%;
+			margin-top: 0.75rem;
+		}
 	}
 
 	.shipped {
@@ -170,10 +206,6 @@ const shipped = [
 		gap: 0.5rem 1rem;
 		font-size: var(--text-sm);
 		color: var(--ink-tertiary);
-	}
-
-	.closing {
-		max-width: var(--measure);
 	}
 
 	@media (min-width: 42em) {

@@ -9,17 +9,25 @@
  * radius 3.5, and a white band between arcs of radius 8 and 8.5 centred two
  * units left of where the disc's vertical diameter meets the bottom edge. Its
  * 27 stars and motto are left out: at text size they'd be under a pixel.
+ * Sweden follows its flag law: a 16 x 10 field with a cross two units wide,
+ * the vertical bar five units from the hoist.
+ *
+ * Pass decorative when the country is already named in the text beside the
+ * flag, so screen readers don't read the name twice.
  *
  * Sized to the height of lining figures, so a flag sits level with the year
  * beside it. The hairline outline keeps white stripes visible on light paper.
  */
 interface Props {
-	country: 'th' | 'fr' | 'br';
+	country: 'th' | 'fr' | 'br' | 'se';
 	/** Place name, used as the accessible name and hover tooltip. */
-	label: string;
+	label?: string;
+	/** Hide from screen readers; use when the text already names the country. */
+	decorative?: boolean;
 }
 
-const { country, label } = Astro.props;
+const { country, label = '', decorative = false } = Astro.props;
+const a11y = decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label': label };
 ---
 
 <style>
@@ -34,10 +42,12 @@ const { country, label } = Astro.props;
 
 {
 	country === 'th' ? (
-		<svg class="flag" viewBox="0 0 9 6" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
+		<svg class="flag" viewBox="0 0 9 6" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
 	) : country === 'fr' ? (
-		<svg class="flag" viewBox="0 0 3 2" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+		<svg class="flag" viewBox="0 0 3 2" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+	) : country === 'se' ? (
+		<svg class="flag" viewBox="0 0 16 10" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="16" height="10" fill="#005293" /><rect x="5" width="2" height="10" fill="#fecb00" /><rect y="4" width="16" height="2" fill="#fecb00" /></svg>
 	) : (
-		<svg class="flag" viewBox="0 0 20 14" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="20" height="14" fill="#309e3a" /><path d="M10 1.7 18.3 7 10 12.3 1.7 7Z" fill="#f8e509" /><circle cx="10" cy="7" r="3.5" fill="#2b49a3" /><path d="M6.612 6.121A8 8 0 0 1 13.341 8.044A3.5 3.5 0 0 0 13.466 7.490A8.5 8.5 0 0 0 6.799 5.585A3.5 3.5 0 0 0 6.612 6.121Z" fill="#fff" /></svg>
+		<svg class="flag" viewBox="0 0 20 14" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="20" height="14" fill="#309e3a" /><path d="M10 1.7 18.3 7 10 12.3 1.7 7Z" fill="#f8e509" /><circle cx="10" cy="7" r="3.5" fill="#2b49a3" /><path d="M6.612 6.121A8 8 0 0 1 13.341 8.044A3.5 3.5 0 0 0 13.466 7.490A8.5 8.5 0 0 0 6.799 5.585A3.5 3.5 0 0 0 6.612 6.121Z" fill="#fff" /></svg>
 	)
 }

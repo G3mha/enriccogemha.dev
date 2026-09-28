@@ -1,0 +1,33 @@
+---
+/**
+ * RoboCup's official logo (ball and wordmark), full colour. Unlike the NFX and
+ * DAERO marks it can't be drawn in one colour, because it's a shaded ball with
+ * the name printed across it, so it stays a raster image in its own colours.
+ *
+ * It's taller than a line of text, so negative block margins keep it from
+ * pushing the lines above and below apart. In dark mode a thin light outline
+ * keeps the black "oboCup" readable against the dark background.
+ */
+---
+
+<style>
+	.robocup {
+		display: inline-block;
+		height: 1.8em;
+		width: auto;
+		vertical-align: middle;
+		margin-block: -0.35em;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme='light'])) .robocup {
+			filter: drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95)) drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95));
+		}
+	}
+
+	:global(:root[data-theme='dark']) .robocup {
+		filter: drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95)) drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95));
+	}
+</style>
+
+<a class="inline-mark" href="https://www.robocup.org/" rel="noopener"><img class="robocup" src="/assets/robocup-logo.png" alt="RoboCup" width="188" height="108" decoding="async" /></a>

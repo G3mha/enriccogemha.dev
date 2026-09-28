@@ -5,6 +5,7 @@ import ProjectEntry from '../components/ProjectEntry.astro';
 import Status from '../components/Status.astro';
 import NfxLogo from '../components/NfxLogo.astro';
 import DaeroLogo from '../components/DaeroLogo.astro';
+import RoboCupLogo from '../components/RoboCupLogo.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -56,7 +57,7 @@ const shipped = [
 				<p>
 					I got my computer engineering degree at Insper, where I was on a small team
 					building rescue robots. Our robots won Best in Class awards at the
-					<a href="/work/robocup/">RoboCup</a> world championship in 2022 and 2023.
+					<RoboCupLogo /> world championship in 2022 and 2023.
 				</p>
 				<p class="contact">
 					Email’s the easiest way to reach me:

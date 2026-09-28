@@ -15,7 +15,8 @@
  *   for more than five seconds needs a way to stop it (WCAG 2.2.2). Pausing
  *   shows the whole current phrase, never a half-typed one.
  *
- * The loop also waits while the tab is hidden or the heading is off screen.
+ * The loop also waits while the tab is hidden, the heading is off screen, or
+ * reduced motion is switched on after the page has loaded.
  *
  * Nothing that moves is its own layout box, so none of it counts as a layout
  * shift: the period is typed with each phrase, the text node is replaced on
@@ -50,7 +51,8 @@ const phrases = [
 <script is:inline>
 	(() => {
 		const line = document.querySelector('.build-line');
-		if (!line || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const calm = matchMedia('(prefers-reduced-motion: reduce)');
+		if (!line || calm.matches) return;
 
 		const phrases = JSON.parse(line.dataset.phrases);
 		const h1 = line.querySelector('h1');
@@ -80,7 +82,7 @@ const phrases = [
 		let wake = null;
 		// The phrase on screen: the one being deleted, then the one being typed.
 		let current = phrases[0];
-		const free = () => !paused && onscreen && !document.hidden;
+		const free = () => !paused && onscreen && !document.hidden && !calm.matches;
 		const nudge = () => {
 			if (wake && free()) {
 				wake();
@@ -103,6 +105,10 @@ const phrases = [
 			paused = !paused;
 			if (paused) settle();
 			line.classList.toggle('paused', paused);
+			nudge();
+		});
+		calm.addEventListener('change', () => {
+			if (calm.matches) settle();
 			nudge();
 		});
 		document.addEventListener('visibilitychange', nudge);

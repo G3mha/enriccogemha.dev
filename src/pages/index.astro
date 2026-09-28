@@ -8,6 +8,7 @@ import DaeroLogo from '../components/DaeroLogo.astro';
 import OpenGivingLogo from '../components/OpenGivingLogo.astro';
 import RoboCupLogo from '../components/RoboCupLogo.astro';
 import Flag from '../components/Flag.astro';
+import BuildLine from '../components/BuildLine.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -44,7 +45,7 @@ const shipped = [
 	<div class="wrapper stack gap-16 lg:gap-24">
 		<header class="intro">
 			<div class="intro-text">
-				<h1>I build iOS apps.</h1>
+				<BuildLine />
 				<p class="lede">
 					The biggest thing I’ve built is <OpenGivingLogo />, a
 					marketplace where part of every sale goes to a fundraising campaign. I wrote all
@@ -134,7 +135,7 @@ const shipped = [
 		max-width: var(--measure);
 	}
 
-	.intro-text h1 {
+	.intro-text :global(.build-line) {
 		margin-bottom: 0.4rem;
 	}
 

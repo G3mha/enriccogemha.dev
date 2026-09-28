@@ -6,6 +6,7 @@ period: Sep 2025 – Jul 2026
 role: First hire. Ten months on the iOS app, including a rewrite from scratch that I started in February 2026.
 featured: true
 order: 3
+logo: daero
 stack:
   - Swift
   - SwiftUI

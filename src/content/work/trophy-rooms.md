@@ -4,7 +4,7 @@ summary: A cross-platform game collection tracker over a reconciled catalogue of
 status: live
 period: 2025 – 2026
 role: Sole author of the API, the web app and the iOS app.
-featured: false
+featured: true
 order: 6
 stack:
   - TypeScript

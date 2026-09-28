@@ -5,6 +5,11 @@ import '@fontsource-variable/fraunces/opsz.css';
 import '@fontsource-variable/public-sans/wght.css';
 import '@fontsource-variable/public-sans/wght-italic.css';
 import '../styles/global.css';
+// The two files every page needs for its first screen. Preloading them starts
+// the downloads before the stylesheet is parsed, so on most connections the
+// text is set in its real fonts before the first paint and nothing swaps.
+import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
+import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
 
 interface Props {
 	title?: string | undefined;
@@ -26,6 +31,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemh
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+
+<link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={publicSansLatin} as="font" type="font/woff2" crossorigin />
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />

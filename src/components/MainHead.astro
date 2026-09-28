@@ -1,4 +1,9 @@
 ---
+// Fraunces (with its optical-size axis, for headings) and Public Sans, served
+// from this site. Imported before global.css so its tokens can name them.
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/public-sans/wght.css';
+import '@fontsource-variable/public-sans/wght-italic.css';
 import '../styles/global.css';
 
 interface Props {
@@ -32,13 +37,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemh
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={new URL(ogImage, canonical)} />
 <meta name="twitter:card" content="summary_large_image" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-	rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap"
-/>
 
 {/* Set the theme before first paint so the page never flashes the wrong one. */}
 <script is:inline>

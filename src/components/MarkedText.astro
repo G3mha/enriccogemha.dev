@@ -1,0 +1,28 @@
+---
+/**
+ * Renders text with a company's name replaced by its mark, the way the
+ * homepage intro does, for text that also has to exist as plain text
+ * elsewhere (a summary doubles as the page's meta description).
+ *
+ * Only flat marks belong here. RoboCup's logo isn't one: it's a full-colour
+ * image that only works where it has room, so its text passes through as is.
+ */
+import DaeroLogo from './DaeroLogo.astro';
+
+interface Props {
+	text: string;
+	logo?: 'robocup' | 'daero' | undefined;
+}
+
+const { text, logo } = Astro.props;
+
+const inlineMarks = {
+	daero: { name: 'DAERO Group', Mark: DaeroLogo },
+} as const;
+
+const swap = logo && logo in inlineMarks ? inlineMarks[logo as keyof typeof inlineMarks] : undefined;
+const at = swap ? text.indexOf(swap.name) : -1;
+const Mark = swap?.Mark;
+---
+
+{swap && Mark && at >= 0 ? <>{text.slice(0, at)}<Mark />{text.slice(at + swap.name.length)}</> : text}

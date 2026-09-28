@@ -33,7 +33,8 @@ const shipped = [
 	},
 	{
 		label: 'ZeroPunch',
-		note: 'iOS, at DAERO',
+		note: 'iOS, at',
+		mark: 'daero',
 		href: 'https://apps.apple.com/us/app/id6753096907',
 	},
 ];
@@ -88,7 +89,7 @@ const shipped = [
 							<a href={item.href} rel="noopener">
 								{item.label}
 							</a>
-							<span>{item.note}</span>
+							<span>{item.note}{item.mark === 'daero' && <> <DaeroLogo /></>}</span>
 						</li>
 					))
 				}

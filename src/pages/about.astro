@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Flag from '../components/Flag.astro';
 ---
 
 <BaseLayout
@@ -11,7 +12,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			<div class="stack gap-4">
 				<h1>About</h1>
 				<p class="lede">
-					I’m a software engineer from São Paulo. This is how I got here, and what I’m
+					I’m a software engineer from <span class="nowrap">São Paulo <Flag country="br" label="Brazil" /></span>. This is how I got here, and what I’m
 					working on now.
 				</p>
 			</div>
@@ -36,9 +37,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				<p>
 					Outside class, I was on a team of four that built two generations of a
 					search-and-rescue robot. Our robots won Best in Class for Sensing at RoboCup
-					2022 in Bangkok, and that’s how I became president of the university’s
+					2022 in <span class="nowrap">Bangkok <Flag country="th" label="Thailand" /></span>, and that’s how I became president of the university’s
 					robotics and AI club. The next year they won Best in Class for Mapping at
-					RoboCup 2023 in Bordeaux. For my capstone I did
+					RoboCup 2023 in <span class="nowrap">Bordeaux <Flag country="fr" label="France" /></span>. For my capstone I did
 					cloud security for <a href="/work/pinpag-capstone/">PinPag</a>, a Brazilian
 					payments company, on their live platform.
 				</p>

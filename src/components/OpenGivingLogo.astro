@@ -6,10 +6,10 @@
  * DAERO marks. Link styles come from .inline-mark in global.css.
  *
  * Measured from the artwork: the wordmark's cap height is 36.0% of the mark's
- * height and its baseline sits 38.4% up from the bottom. At 2.0em tall, the
- * letters match the surrounding text's cap height and sit on its baseline; the
- * icon runs above and below the line, and negative block margins stop it
- * pushing neighbouring lines apart.
+ * height and its baseline sits 38.4% up from the bottom. At 1.6em the icon is
+ * about the size of the RoboCup ball beside it in the intro, and the wordmark
+ * sits on the text's baseline at a little under its cap height. At 2.0em the
+ * letters matched cap height exactly, but the icon swamped the lede's line.
  *
  * The 19 clip paths are page bounds left over from a PDF import. They clip
  * nothing visible but are kept, with prefixed ids, rather than edit the artwork.
@@ -19,10 +19,10 @@
 <style>
 	.opengiving {
 		display: inline-block;
-		height: 2em;
+		height: 1.6em;
 		width: auto;
-		margin-block: -0.1em -0.35em;
-		vertical-align: -0.418em;
+		margin-block: 0 -0.2em;
+		vertical-align: -0.414em;
 	}
 </style>
 

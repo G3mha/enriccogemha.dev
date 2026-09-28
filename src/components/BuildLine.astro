@@ -1,0 +1,216 @@
+---
+/**
+ * The homepage headline, "I build ___.", typing through what I've built.
+ *
+ * The HTML is plain "I build iOS apps.", which is what search engines, reader
+ * modes, and visitors without JavaScript or with reduced motion get. The
+ * inline script upgrades it before the first paint:
+ *
+ * - An invisible copy of the line for every phrase goes in the same grid
+ *   cell, so the heading reserves the height of the longest one and nothing
+ *   below it moves while it types.
+ * - Screen readers get the whole list once, as a sentence, and the typing is
+ *   hidden from them.
+ * - A Pause button appears under the heading. Anything that moves on its own
+ *   for more than five seconds needs a way to stop it (WCAG 2.2.2).
+ *
+ * The loop also waits while the tab is hidden or the heading is off screen.
+ *
+ * Nothing that moves is its own layout box, so none of it counts as a layout
+ * shift: the period is typed with each phrase, the text node is replaced on
+ * every keystroke, and the caret is a background painted at the span's end.
+ */
+const phrases = [
+	'iOS apps',
+	'websites',
+	'cybersecurity systems',
+	'cloud infrastructure',
+	'observability dashboards',
+	'ML models',
+	'robots',
+	'whatever you have in mind',
+];
+---
+
+<div class="build-line" data-phrases={JSON.stringify(phrases)}>
+	<h1><span class="frame"><span class="words">I build <span class="slot"><span class="typed">{phrases[0]}.</span></span></span></span></h1>
+	<button type="button" class="toggle" hidden>
+		<span class="when-running">
+			<svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="0.5" width="2.8" height="9" /><rect x="6.2" y="0.5" width="2.8" height="9" /></svg>
+			<span>Pause<span class="sr-only"> the headline</span></span>
+		</span>
+		<span class="when-paused">
+			<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 0.5 9.5 5 1.5 9.5Z" /></svg>
+			<span>Play<span class="sr-only"> the headline</span></span>
+		</span>
+	</button>
+</div>
+
+<script is:inline>
+	(() => {
+		const line = document.querySelector('.build-line');
+		if (!line || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		const phrases = JSON.parse(line.dataset.phrases);
+		const h1 = line.querySelector('h1');
+		const frame = line.querySelector('.frame');
+		const words = line.querySelector('.words');
+		const typed = line.querySelector('.typed');
+		const toggle = line.querySelector('.toggle');
+
+		// Clones keep Astro's scope attribute, so the scoped styles still apply,
+		// and they break lines exactly like the live text, caret gap included.
+		for (const phrase of phrases) {
+			const ghost = words.cloneNode(true);
+			ghost.classList.replace('words', 'ghost');
+			ghost.querySelector('.typed').textContent = `${phrase}.`;
+			frame.prepend(ghost);
+		}
+		const spoken = document.createElement('span');
+		spoken.className = 'sr-only';
+		spoken.textContent = `I build ${phrases.slice(0, -1).join(', ')}, and ${phrases.at(-1)}.`;
+		h1.prepend(spoken);
+		frame.setAttribute('aria-hidden', 'true');
+		toggle.hidden = false;
+		line.classList.add('animates');
+
+		let paused = false;
+		let onscreen = true;
+		let wake = null;
+		const free = () => !paused && onscreen && !document.hidden;
+		const nudge = () => {
+			if (wake && free()) {
+				wake();
+				wake = null;
+			}
+		};
+		const sleep = async (ms) => {
+			await new Promise((resolve) => setTimeout(resolve, ms));
+			while (!free()) await new Promise((resolve) => (wake = resolve));
+		};
+
+		toggle.addEventListener('click', () => {
+			paused = !paused;
+			line.classList.toggle('paused', paused);
+			nudge();
+		});
+		document.addEventListener('visibilitychange', nudge);
+		new IntersectionObserver(([entry]) => {
+			onscreen = entry.isIntersecting;
+			nudge();
+		}).observe(h1);
+
+		const holds = { [phrases[0]]: 3000, [phrases.at(-1)]: 2400 };
+		(async () => {
+			await sleep(2200);
+			for (let i = 1; ; i = (i + 1) % phrases.length) {
+				const next = phrases[i];
+				line.classList.add('typing');
+				while (typed.textContent) {
+					typed.textContent = typed.textContent.slice(0, -1);
+					await sleep(32);
+				}
+				await sleep(220);
+				for (const character of `${next}.`) {
+					typed.textContent += character;
+					await sleep(55 + Math.random() * 45);
+				}
+				line.classList.remove('typing');
+				await sleep(holds[next] ?? 1500);
+			}
+		})();
+	})();
+</script>
+
+<style>
+	.frame {
+		display: grid;
+	}
+
+	.frame > * {
+		grid-area: 1 / 1;
+	}
+
+	/* Balanced wrapping re-balances on every keystroke, so half-typed words
+	   would hop between lines. Greedy wrapping fills left to right, like
+	   typing, and gives the same line count, so the reserved height holds. */
+	.animates .words,
+	.ghost {
+		text-wrap: wrap;
+	}
+
+	.ghost {
+		visibility: hidden;
+	}
+
+	/* On phones the long phrases wrap anyway, so the phrase gets its own
+	   line. That keeps "I build" still and saves a line of empty space. */
+	@media (width < 48em) {
+		.animates .slot {
+			display: block;
+		}
+	}
+
+	/* The caret is a background at the end of the typed text rather than an
+	   element after it. With the default box-decoration-break: slice, "right"
+	   is the end of the last line, so it follows the text across wraps. It
+	   holds steady while characters change or while paused, and blinks while
+	   a phrase is being shown. */
+	.animates .typed {
+		padding-right: 0.11em;
+		background: linear-gradient(var(--accent), var(--accent)) no-repeat right 0 top 0.22em / 0.06em 0.8em;
+		animation: blink 1.05s steps(1) infinite;
+	}
+
+	.typing .typed,
+	.paused .typed {
+		animation: none;
+	}
+
+	@keyframes blink {
+		50% {
+			background-size: 0 0;
+		}
+	}
+
+	.toggle {
+		display: inline-flex;
+		align-items: center;
+		min-height: 1.5rem;
+		margin-top: 0.35rem;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-size: var(--text-sm);
+		color: var(--ink-tertiary);
+		cursor: pointer;
+	}
+
+	.toggle[hidden] {
+		display: none;
+	}
+
+	.toggle:hover {
+		color: var(--ink);
+	}
+
+	.when-running,
+	.when-paused {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+	}
+
+	.paused .when-running,
+	.build-line:not(.paused) .when-paused {
+		display: none;
+	}
+
+	.toggle svg {
+		display: block;
+		width: 0.65em;
+		height: 0.65em;
+		fill: currentColor;
+	}
+</style>

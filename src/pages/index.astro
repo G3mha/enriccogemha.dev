@@ -6,6 +6,7 @@ import Status from '../components/Status.astro';
 import NfxLogo from '../components/NfxLogo.astro';
 import DaeroLogo from '../components/DaeroLogo.astro';
 import RoboCupLogo from '../components/RoboCupLogo.astro';
+import Flag from '../components/Flag.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -58,9 +59,9 @@ const shipped = [
 					I got my computer engineering degree at Insper, where I was on a team of four
 					building rescue robots. We won a Best in Class award at the <RoboCupLogo />
 					world championship in
-					2022,
+					<span class="nowrap">2022 <Flag country="th" label="Bangkok, Thailand" /></span>,
 					and that’s how I became president of the university’s robotics club. In
-					2023 we
+					<span class="nowrap">2023 <Flag country="fr" label="Bordeaux, France" /></span> we
 					won another.
 				</p>
 				<p class="contact">

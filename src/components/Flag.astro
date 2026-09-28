@@ -1,14 +1,20 @@
 ---
 /**
- * National flags for places named in running text. Drawn here at their
- * official 2:3 proportions, in the same colours as lipis/flag-icons (the set
- * the Flags app uses). Both are plain stripes, so there's nothing to copy.
+ * National flags for places named in running text, drawn here at their
+ * official proportions in the same colours as lipis/flag-icons (the set the
+ * Flags app uses).
+ *
+ * Thailand and France are plain stripes. Brazil follows the construction in
+ * Lei 5.700: a 20 x 14 field, the rhombus 1.7 units from the edges, a disc of
+ * radius 3.5, and a white band between arcs of radius 8 and 8.5 centred two
+ * units left of where the disc's vertical diameter meets the bottom edge. Its
+ * 27 stars and motto are left out: at text size they'd be under a pixel.
  *
  * Sized to the height of lining figures, so a flag sits level with the year
  * beside it. The hairline outline keeps white stripes visible on light paper.
  */
 interface Props {
-	country: 'th' | 'fr';
+	country: 'th' | 'fr' | 'br';
 	/** Place name, used as the accessible name and hover tooltip. */
 	label: string;
 }
@@ -29,7 +35,9 @@ const { country, label } = Astro.props;
 {
 	country === 'th' ? (
 		<svg class="flag" viewBox="0 0 9 6" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
-	) : (
+	) : country === 'fr' ? (
 		<svg class="flag" viewBox="0 0 3 2" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+	) : (
+		<svg class="flag" viewBox="0 0 20 14" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="20" height="14" fill="#309e3a" /><path d="M10 1.7 18.3 7 10 12.3 1.7 7Z" fill="#f8e509" /><circle cx="10" cy="7" r="3.5" fill="#2b49a3" /><path d="M6.612 6.121A8 8 0 0 1 13.341 8.044A3.5 3.5 0 0 0 13.466 7.490A8.5 8.5 0 0 0 6.799 5.585A3.5 3.5 0 0 0 6.612 6.121Z" fill="#fff" /></svg>
 	)
 }

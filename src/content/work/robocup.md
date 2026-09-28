@@ -6,6 +6,7 @@ period: 2022 – 2023
 role: On a small team both years, working on design, manufacture and software. I ran the robotics club in 2023.
 featured: false
 order: 9
+logo: robocup
 stack:
   - C++
   - ROS

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Status from '../../components/Status.astro';
 import Tags from '../../components/Tags.astro';
+import RoboCupLogo from '../../components/RoboCupLogo.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('work');
@@ -22,6 +23,7 @@ const { data } = project;
 		<p class="back"><a href="/">Back to work</a></p>
 
 		<header class="stack gap-4">
+			{data.logo === 'robocup' && <div class="project-logo"><RoboCupLogo size="large" /></div>}
 			<div class="head">
 				<h1>{data.title}</h1>
 				<Status status={data.status} />
@@ -73,6 +75,10 @@ const { data } = project;
 </BaseLayout>
 
 <style>
+	.project-logo {
+		margin-bottom: 0.5rem;
+	}
+
 	.back {
 		font-size: var(--text-base);
 	}

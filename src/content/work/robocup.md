@@ -1,11 +1,12 @@
 ---
 title: RoboCup search and rescue
-summary: Two generations of an autonomous search-and-rescue robot, placed first in class at the world championship twice.
+summary: Two generations of an autonomous search-and-rescue robot, which won Best in Class awards at the world championship in 2022 and 2023.
 status: archived
 period: 2022 – 2023
-role: Led the team. Design, manufacture and software.
+role: On a small team both years, working on design, manufacture and software. I ran the robotics club in 2023.
 featured: false
 order: 9
+logo: robocup
 stack:
   - C++
   - ROS

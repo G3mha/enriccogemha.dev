@@ -22,6 +22,8 @@ export const collections = {
 			featured: z.boolean().default(false),
 			/** Lower sorts first. */
 			order: z.number().default(50),
+			/** A company or event logo shown with the project. Only RoboCup has one so far. */
+			logo: z.enum(['robocup']).optional(),
 			img: z.string().optional(),
 			img_alt: z.string().optional(),
 		}),

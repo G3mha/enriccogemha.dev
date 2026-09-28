@@ -101,7 +101,7 @@ const shipped = [
 				{
 					rest.map((project) => (
 						<li>
-							<a href={`/work/${project.id}/`}>{project.data.title}</a>
+							<a href={`/work/${project.id}/`}>{project.data.logo === 'robocup' && <><RoboCupLogo linked={false} decorative />{' '}</>}{project.data.title}</a>
 							<span class="compact-summary">{project.data.summary}</span>
 							<span class="compact-meta">
 								<span>{project.data.period}</span>

@@ -1,0 +1,35 @@
+---
+/**
+ * National flags for places named in running text. Drawn here at their
+ * official 2:3 proportions, in the same colours as lipis/flag-icons (the set
+ * the Flags app uses). Both are plain stripes, so there's nothing to copy.
+ *
+ * Sized to the height of lining figures, so a flag sits level with the year
+ * beside it. The hairline outline keeps white stripes visible on light paper.
+ */
+interface Props {
+	country: 'th' | 'fr';
+	/** Place name, used as the accessible name and hover tooltip. */
+	label: string;
+}
+
+const { country, label } = Astro.props;
+---
+
+<style>
+	.flag {
+		display: inline-block;
+		height: 0.72em;
+		width: auto;
+		vertical-align: 0;
+		outline: 1px solid var(--rule-strong);
+	}
+</style>
+
+{
+	country === 'th' ? (
+		<svg class="flag" viewBox="0 0 9 6" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
+	) : (
+		<svg class="flag" viewBox="0 0 3 2" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg"><title>{label}</title><rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+	)
+}

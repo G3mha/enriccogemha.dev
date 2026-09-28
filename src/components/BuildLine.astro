@@ -12,7 +12,8 @@
  * - Screen readers get the whole list once, as a sentence, and the typing is
  *   hidden from them.
  * - A Pause button appears under the heading. Anything that moves on its own
- *   for more than five seconds needs a way to stop it (WCAG 2.2.2).
+ *   for more than five seconds needs a way to stop it (WCAG 2.2.2). Pausing
+ *   shows the whole current phrase, never a half-typed one.
  *
  * The loop also waits while the tab is hidden or the heading is off screen.
  *
@@ -77,6 +78,8 @@ const phrases = [
 		let paused = false;
 		let onscreen = true;
 		let wake = null;
+		// The phrase on screen: the one being deleted, then the one being typed.
+		let current = phrases[0];
 		const free = () => !paused && onscreen && !document.hidden;
 		const nudge = () => {
 			if (wake && free()) {
@@ -89,8 +92,16 @@ const phrases = [
 			while (!free()) await new Promise((resolve) => (wake = resolve));
 		};
 
+		// Whenever the loop is told to stop, show a whole phrase rather than
+		// leaving "I build web" on screen. The typing loop types by prefix, so
+		// it sees the phrase is already complete and moves on to the hold.
+		const settle = () => {
+			typed.textContent = `${current}.`;
+		};
+
 		toggle.addEventListener('click', () => {
 			paused = !paused;
+			if (paused) settle();
 			line.classList.toggle('paused', paused);
 			nudge();
 		});
@@ -104,19 +115,20 @@ const phrases = [
 		(async () => {
 			await sleep(2200);
 			for (let i = 1; ; i = (i + 1) % phrases.length) {
-				const next = phrases[i];
 				line.classList.add('typing');
 				while (typed.textContent) {
 					typed.textContent = typed.textContent.slice(0, -1);
 					await sleep(32);
 				}
+				current = phrases[i];
 				await sleep(220);
-				for (const character of `${next}.`) {
-					typed.textContent += character;
+				const full = `${current}.`;
+				while (typed.textContent !== full) {
+					typed.textContent = full.slice(0, typed.textContent.length + 1);
 					await sleep(55 + Math.random() * 45);
 				}
 				line.classList.remove('typing');
-				await sleep(holds[next] ?? 1500);
+				await sleep(holds[current] ?? 1500);
 			}
 		})();
 	})();

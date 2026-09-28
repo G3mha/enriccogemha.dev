@@ -4,30 +4,71 @@
  * DAERO marks it can't be drawn in one colour, because it's a shaded ball with
  * the name printed across it, so it stays a raster image in its own colours.
  *
- * It's taller than a line of text, so negative block margins keep it from
- * pushing the lines above and below apart. In dark mode a thin light outline
- * keeps the black "oboCup" readable against the dark background.
+ * inline: taller than a line of text, so negative block margins keep it from
+ *   pushing the lines above and below apart.
+ * large:  shown at a size where "RoboCup" can be read, on its project page.
+ *
+ * In dark mode a light outline keeps the black lettering visible.
+ *
+ * linked={false} drops the robocup.org link, for places where the logo already
+ * sits inside another link. decorative sets empty alt text, for places where
+ * the word "RoboCup" is already written next to it.
  */
+interface Props {
+	size?: 'inline' | 'large';
+	linked?: boolean;
+	decorative?: boolean;
+}
+
+const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const image =
+	size === 'large'
+		? { src: '/assets/robocup-logo-large.png', width: 600, height: 344 }
+		: { src: '/assets/robocup-logo.png', width: 188, height: 108 };
+const alt = decorative ? '' : 'RoboCup';
 ---
 
 <style>
 	.robocup {
 		display: inline-block;
-		height: 1.8em;
 		width: auto;
+	}
+
+	.robocup.inline {
+		height: 1.8em;
 		vertical-align: middle;
 		margin-block: -0.35em;
 	}
 
+	.robocup.large {
+		display: block;
+		width: 18rem;
+		max-width: 100%;
+		height: auto;
+	}
+
 	@media (prefers-color-scheme: dark) {
-		:global(:root:not([data-theme='light'])) .robocup {
+		:global(:root:not([data-theme='light'])) .robocup.inline {
 			filter: drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95)) drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95));
+		}
+		:global(:root:not([data-theme='light'])) .robocup.large {
+			filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.95)) drop-shadow(0 0 1px rgb(255 255 255 / 0.95)) drop-shadow(0 0 1px rgb(255 255 255 / 0.95));
 		}
 	}
 
-	:global(:root[data-theme='dark']) .robocup {
+	:global(:root[data-theme='dark']) .robocup.inline {
 		filter: drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95)) drop-shadow(0 0 0.6px rgb(255 255 255 / 0.95));
+	}
+
+	:global(:root[data-theme='dark']) .robocup.large {
+		filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.95)) drop-shadow(0 0 1px rgb(255 255 255 / 0.95)) drop-shadow(0 0 1px rgb(255 255 255 / 0.95));
 	}
 </style>
 
-<a class="inline-mark" href="https://www.robocup.org/" rel="noopener"><img class="robocup" src="/assets/robocup-logo.png" alt="RoboCup" width="188" height="108" decoding="async" /></a>
+{
+	linked ? (
+		<a class="inline-mark" href="https://www.robocup.org/" rel="noopener"><img class:list={['robocup', size]} src={image.src} alt={alt} width={image.width} height={image.height} decoding="async" /></a>
+	) : (
+		<img class:list={['robocup', size]} src={image.src} alt={alt} width={image.width} height={image.height} decoding="async" />
+	)
+}

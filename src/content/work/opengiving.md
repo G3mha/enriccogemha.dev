@@ -3,7 +3,7 @@ title: OpenGiving
 summary: A marketplace where sellers route part of each sale to a fundraising campaign, running as a web app, an iOS app and an Android app on one API.
 status: live
 period: 2025 – 2026
-role: I wrote the four codebases and the API behind them. On leave since June 2026.
+role: I wrote all four codebases, the web, iOS and Android apps and the API they share. On leave since June 2026.
 featured: true
 order: 1
 stack:
@@ -26,13 +26,13 @@ links:
     href: https://api.opengiving.us/openapi.json
 ---
 
-Four clients in four languages, sharing no runtime: a Next.js web app, a SwiftUI iOS app, a Kotlin Compose Android app, and a FastAPI backend. The public API is 327 endpoints, which you can count yourself from the OpenAPI document linked above.
+Four codebases in four languages, sharing no runtime: a Next.js web app, a SwiftUI iOS app, a Kotlin Compose Android app, and a FastAPI backend. The public API is 327 endpoints, which you can count yourself from the OpenAPI document linked above.
 
 ## The problem I spent longest on
 
-Every client had reimplemented the same business rules. When a campaign can accept money, what share a seller may route, when a donation counts as complete: four copies of the same logic, written four times, drifting apart quietly. A rule fixed in Swift stayed broken in Kotlin until someone noticed.
+Every codebase had reimplemented the same business rules. When a campaign can accept money, what share a seller may route, when a donation counts as complete: four copies of the same logic, written four times, drifting apart quietly. A rule fixed in Swift stayed broken in Kotlin until someone noticed.
 
-So the rules moved into one decision table, `client_rules.json`, with 32 rules and 251 cases. Each client vendors a copy and pins the SHA-256 of the version it vendored. Every client's test suite runs the shared cases against its own implementation, so a rule change that a client hasn't picked up fails that client's build rather than reaching a user.
+So the rules moved into one decision table, `client_rules.json`, with 32 rules and 251 cases. Each codebase vendors a copy and pins the SHA-256 of the version it vendored. Every codebase's test suite runs the shared cases against its own implementation, so a rule change that a codebase hasn't picked up fails that codebase's build rather than reaching a user.
 
 ## Money
 

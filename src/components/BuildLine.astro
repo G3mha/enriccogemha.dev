@@ -106,8 +106,10 @@ const phrases = [
 			nudge();
 		});
 		document.addEventListener('visibilitychange', nudge);
-		new IntersectionObserver(([entry]) => {
-			onscreen = entry.isIntersecting;
+		// One callback can carry several entries for the heading, oldest first,
+		// so only the last one says where it is now.
+		new IntersectionObserver((entries) => {
+			onscreen = entries[entries.length - 1].isIntersecting;
 			nudge();
 		}).observe(h1);
 

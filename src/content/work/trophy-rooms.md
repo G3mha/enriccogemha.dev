@@ -1,10 +1,10 @@
 ---
 title: Trophy Rooms
 summary: A cross-platform game collection tracker over a reconciled catalogue of 28,784 titles spanning 42 platforms.
-status: paused
+status: live
 period: 2025 – 2026
 role: Sole author of the API, the web app and the iOS app.
-featured: false
+featured: true
 order: 6
 stack:
   - TypeScript
@@ -13,7 +13,11 @@ stack:
   - PostgreSQL
   - Next.js
   - SwiftUI
-links: []
+links:
+  - label: Web app
+    href: https://trophyrooms.org
+  - label: App Store
+    href: https://apps.apple.com/us/app/trophy-rooms/id6799829599
 ---
 
 ## Giving a game a stable identity
@@ -26,6 +30,6 @@ That produces 28,784 distinct titles across 47,616 platform entries. Those two n
 
 ## Shape
 
-138 GraphQL root fields across 65 queries and 73 mutations, 19 Prisma models, 12 enums, 14 migrations. 1,282 commits over nine months.
+138 GraphQL root fields across 65 queries and 73 mutations, 19 Prisma models, 12 enums, 13 migrations. 1,284 commits over nine months.
 
 No automated tests, anywhere. CI was added late and runs lint and build only. For a schema this size that's the weakest thing about the project, and pretending otherwise would be silly.

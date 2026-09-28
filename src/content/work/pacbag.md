@@ -1,6 +1,6 @@
 ---
 title: PacBag
-summary: An iOS app that tracks what's in each bag and weighs it against the airline limit before you leave the house.
+summary: An iOS app that tracks what’s in each bag and weighs it against the airline limit before you leave the house.
 status: live
 period: "2025"
 role: Sole author.

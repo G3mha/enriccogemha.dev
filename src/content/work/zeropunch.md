@@ -19,7 +19,7 @@ links:
     href: https://apps.apple.com/us/app/id6753096907
 ---
 
-I joined DAERO in September 2025 as its first hire, shortly after the pre-seed. The first version of the iOS app already existed. In February 2026 I started rewriting it from scratch, and that's where most of my work went. I left in July 2026 to start my master's. The product still ships and the team carries on without me, so what follows is only the part I can account for.
+I joined DAERO in September 2025 as its first hire, shortly after the pre-seed. DAERO is backed by NFX and Threshold Ventures. The first version of the iOS app already existed. In February 2026 I started rewriting it from scratch, and that's where most of my work went. I left in July 2026 to start my master's. The product still ships and the team carries on without me, so what follows is only the part I can account for.
 
 ## What I owned
 

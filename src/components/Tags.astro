@@ -8,7 +8,17 @@ const { items, label = 'Built with' } = Astro.props;
 ---
 
 <ul class="tags" aria-label={label}>
-	{items.map((item) => <li>{item}</li>)}
+	{
+		items.map((item) =>
+			item === 'Stripe Connect' ? (
+				<li class="brand"><img class="stripe light-only" src="/assets/stripe-wordmark-blurple.svg" alt="Stripe" width="360" height="150" /><img class="stripe dark-only" src="/assets/stripe-wordmark-white.svg" alt="Stripe" width="360" height="151" /> Connect</li>
+			) : item === 'PayPal' ? (
+				<li class="brand"><img class="paypal" src="/assets/paypal-mark.svg" alt="" width="48" height="48" /> PayPal</li>
+			) : (
+				<li>{item}</li>
+			),
+		)
+	}
 </ul>
 
 <style>
@@ -29,5 +39,51 @@ const { items, label = 'Built with' } = Astro.props;
 		color: var(--ink-tertiary);
 		background: var(--surface-sunk);
 		border: 1px solid var(--rule);
+	}
+
+	/* Stripe and PayPal tags carry the brands' official artwork, unrecoloured.
+	   Stripe's wordmark stands in for the word "Stripe": its baseline is 120.8
+	   of 150 units down, so at 1em tall it sits 0.195em below the text's
+	   baseline, with its x-height close to the tag text's. Stripe allows
+	   blurple on light backgrounds and white on dark, so the files swap by
+	   theme. PayPal's mark sits beside its name, decorative, in its own colours;
+	   PayPal publishes no white version. */
+	.brand img {
+		display: inline-block;
+		width: auto;
+	}
+
+	.stripe {
+		height: 1em;
+		vertical-align: -0.195em;
+	}
+
+	.paypal {
+		height: 1.15em;
+		vertical-align: -0.25em;
+		margin-right: 0.1em;
+	}
+
+	/* .brand is repeated in these selectors so they outrank `.brand img`,
+	   which would otherwise keep both theme versions visible. */
+	.brand .dark-only {
+		display: none;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme='light'])) .brand .light-only {
+			display: none;
+		}
+		:global(:root:not([data-theme='light'])) .brand .dark-only {
+			display: inline-block;
+		}
+	}
+
+	:global(:root[data-theme='dark']) .brand .light-only {
+		display: none;
+	}
+
+	:global(:root[data-theme='dark']) .brand .dark-only {
+		display: inline-block;
 	}
 </style>

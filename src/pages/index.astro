@@ -9,6 +9,7 @@ import OpenGivingLogo from '../components/OpenGivingLogo.astro';
 import RoboCupLogo from '../components/RoboCupLogo.astro';
 import Flag from '../components/Flag.astro';
 import BuildLine from '../components/BuildLine.astro';
+import PinPagLogo from '../components/PinPagLogo.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -60,9 +61,9 @@ const shipped = [
 					eventually also supporting the web, infra and backend work.
 				</p>
 				<p>
-					I got my B.Sc. in Computer Engineering at Insper. For my capstone, I worked on
-					multi-cloud security monitoring for <a href="/work/pinpag-capstone/">PinPag</a>, a
-					Brazilian payments company. Part of it was a Python tool that mapped how their AWS
+					I got my B.Sc. in Computer Engineering at Insper. For my
+					<a href="/work/pinpag-capstone/">capstone</a>, I worked on multi-cloud security
+					monitoring for <PinPagLogo />, a Brazilian payments company. Part of it was a Python tool that mapped how their AWS
 					resources connected and flagged anything open to the internet that shouldn’t be.
 					I was also on a team of four building rescue robots, for 2 years. We won
 					a Best in Class award for sensing at <RoboCupLogo /> in

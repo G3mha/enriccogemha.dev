@@ -1,0 +1,49 @@
+---
+/**
+ * PinPag's logo in its own colours. PinPag's site serves two files, the
+ * colour logo in its header (pinpag.com.br/assets/images/logo.svg) and a white
+ * one in its footer (logo-white.svg); this swaps them by theme, with neither
+ * recoloured. The only change to either file is an added viewBox, which both
+ * lacked, so that they scale when sized in em.
+ *
+ * Measured from the artwork: the capital P is 57.1% of the logo's height and
+ * its baseline is 57.7% down from the top, with the row of icons below it. At
+ * 1.267em the P matches the body text's cap height (0.723em), and the wordmark
+ * sits on the text's baseline. The icons hang below it; the negative bottom
+ * margin keeps them from making the line taller.
+ */
+---
+
+<style>
+	.pinpag {
+		display: inline-block;
+		height: 1.267em;
+		width: auto;
+		margin-block: 0 -0.1em;
+		vertical-align: -0.436em;
+	}
+
+	.dark-only {
+		display: none;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme='light'])) .light-only {
+			display: none;
+		}
+
+		:global(:root:not([data-theme='light'])) .dark-only {
+			display: inline-block;
+		}
+	}
+
+	:global(:root[data-theme='dark']) .light-only {
+		display: none;
+	}
+
+	:global(:root[data-theme='dark']) .dark-only {
+		display: inline-block;
+	}
+</style>
+
+<a class="inline-mark" href="https://www.pinpag.com.br/" rel="noopener"><img class="pinpag light-only" src="/assets/pinpag-logo-light.svg" alt="PinPag" width="1191" height="517" decoding="async" /><img class="pinpag dark-only" src="/assets/pinpag-logo-dark.svg" alt="PinPag" width="1191" height="517" decoding="async" /></a>

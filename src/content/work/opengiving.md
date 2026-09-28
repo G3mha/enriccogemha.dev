@@ -2,8 +2,8 @@
 title: OpenGiving
 summary: A marketplace where sellers route part of each sale to a fundraising campaign, running as a web app, an iOS app and an Android app on one API.
 status: live
-period: 2025 – present
-role: I write the four codebases and the API behind them.
+period: 2025 – 2026
+role: I wrote the four codebases and the API behind them. On leave since June 2026.
 featured: true
 order: 1
 stack:
@@ -46,4 +46,4 @@ Refusals to release funds return stable machine codes rather than prose, so each
 
 5,665 backend tests across 539 files, 2,177 web cases, 1,561 iOS tests, 1,968 Android tests. CI runs gitleaks on every pull request and fails the build if a migration drifts from the schema.
 
-The honest limit: there's no public user or revenue figure, because there isn't one worth reporting yet. The apps are live on both stores and the work is ongoing.
+There's no user or revenue figure here, because there isn't one worth reporting. The apps are still live on both stores. I've been on leave from the project since I started at Brown in June 2026.

@@ -116,6 +116,7 @@ const phrases = [
 		// so only the last one says where it is now.
 		new IntersectionObserver((entries) => {
 			onscreen = entries[entries.length - 1].isIntersecting;
+			line.classList.toggle('offscreen', !onscreen);
 			nudge();
 		}).observe(h1);
 
@@ -177,16 +178,17 @@ const phrases = [
 	   element after it. With the default box-decoration-break: slice, "right"
 	   is the end of the last line, so it follows the text across wraps. It
 	   holds steady while characters change or while paused, and blinks while
-	   a phrase is being shown. */
+	   a phrase is being shown. The ghosts get the same padding so they wrap
+	   exactly like the live text. */
 	.animates .typed {
 		padding-right: 0.11em;
 		background: linear-gradient(var(--accent), var(--accent)) no-repeat right 0 top 0.22em / 0.06em 0.8em;
-		animation: blink 1.05s steps(1) infinite;
 	}
 
-	.typing .typed,
-	.paused .typed {
-		animation: none;
+	/* Only the live copy blinks, and not while it's off screen, so the page
+	   can go idle once the reader has scrolled past. */
+	.animates:not(.typing, .paused, .offscreen) .words .typed {
+		animation: blink 1.05s steps(1) infinite;
 	}
 
 	@keyframes blink {

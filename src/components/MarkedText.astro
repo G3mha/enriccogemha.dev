@@ -11,16 +11,17 @@ import DaeroLogo from './DaeroLogo.astro';
 
 interface Props {
 	text: string;
-	logo?: 'robocup' | 'daero' | 'pinpag' | 'lua' | undefined;
+	logos: string[];
 }
 
-const { text, logo } = Astro.props;
+const { text, logos } = Astro.props;
 
 const inlineMarks = {
 	daero: { name: 'DAERO', Mark: DaeroLogo },
 } as const;
 
-const swap = logo && logo in inlineMarks ? inlineMarks[logo as keyof typeof inlineMarks] : undefined;
+const logo = logos.find((l) => l in inlineMarks) as keyof typeof inlineMarks | undefined;
+const swap = logo ? inlineMarks[logo] : undefined;
 const at = swap ? text.indexOf(swap.name) : -1;
 const Mark = swap?.Mark;
 ---

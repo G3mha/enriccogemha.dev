@@ -1,11 +1,11 @@
 ---
-title: A Lua compiler that emits x86
-summary: Tokeniser, recursive-descent parser, symbol table and code generator, written in Swift, producing assembly that runs.
+title: Lua compiler, written in Swift
+summary: Tokeniser, recursive-descent parser, symbol table and code generator, producing x86 assembly that runs.
 status: archived
 period: "2024"
 role: Sole author.
 featured: false
-logo: lua
+logos: [lua, swift]
 order: 8
 stack:
   - Swift

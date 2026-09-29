@@ -1,0 +1,54 @@
+---
+/**
+ * The Swift logo in Apple's colour version: a white bird on an orange tile.
+ * swift-logo.svg is the file Apple serves on its Swift Resources page
+ * (developer.apple.com/swift/resources/images/swift_logo_color.svg), unchanged.
+ * It's the same artwork as the colour logo in Apple's logo guidelines download.
+ * The guidelines keep the bird white on any background, so there's no
+ * dark-mode version, and the title carries their credit line.
+ *
+ * inline: sized to sit beside the Lua logo in the Earlier list.
+ * large:  shown next to the Lua logo above the compiler's project page.
+ *
+ * linked={false} drops the swift.org link, for places where the logo already
+ * sits inside another link. decorative sets empty alt text and drops the
+ * credit title, which would otherwise still be read out, for places where the
+ * word "Swift" is already written next to it.
+ */
+interface Props {
+	size?: 'inline' | 'large';
+	linked?: boolean;
+	decorative?: boolean;
+}
+
+const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const alt = decorative ? '' : 'Swift';
+const credit = 'The Swift logo is a trademark of Apple Inc.';
+---
+
+<style>
+	.swift {
+		display: inline-block;
+		width: auto;
+	}
+
+	.swift.inline {
+		height: 1.35em;
+		vertical-align: middle;
+		margin-block: -0.2em;
+	}
+
+	.swift.large {
+		display: block;
+		width: 5.5rem;
+		height: auto;
+	}
+</style>
+
+{
+	linked ? (
+		<a class="inline-mark" href="https://www.swift.org/" rel="noopener"><img class:list={['swift', size]} src="/assets/swift-logo.svg" alt={alt} title={decorative ? undefined : credit} width="106" height="106" decoding="async" /></a>
+	) : (
+		<img class:list={['swift', size]} src="/assets/swift-logo.svg" alt={alt} title={decorative ? undefined : credit} width="106" height="106" decoding="async" />
+	)
+}

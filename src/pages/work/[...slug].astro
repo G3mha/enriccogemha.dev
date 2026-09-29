@@ -6,6 +6,8 @@ import Tags from '../../components/Tags.astro';
 import RoboCupLogo from '../../components/RoboCupLogo.astro';
 import PinPagLogo from '../../components/PinPagLogo.astro';
 import LuaLogo from '../../components/LuaLogo.astro';
+import SwiftLogo from '../../components/SwiftLogo.astro';
+import DeepRacerLogo from '../../components/DeepRacerLogo.astro';
 import MarkedText from '../../components/MarkedText.astro';
 
 export async function getStaticPaths() {
@@ -19,6 +21,11 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 const { data } = project;
+
+// Logos shown large above the title. DAERO's isn't, because ZeroPunch's page
+// names the company in its summary instead.
+const largeLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swift: SwiftLogo, deepracer: DeepRacerLogo } as const;
+const pageLogos = data.logos.flatMap((l) => (l in largeLogos ? [largeLogos[l as keyof typeof largeLogos]] : []));
 ---
 
 <BaseLayout title={`${data.title} | Enricco Gemha`} description={data.summary}>
@@ -26,15 +33,13 @@ const { data } = project;
 		<p class="back"><a href="/">Back to work</a></p>
 
 		<header class="stack gap-4">
-			{data.logo === 'robocup' && <div class="project-logo"><RoboCupLogo size="large" /></div>}
-			{data.logo === 'pinpag' && <div class="project-logo"><PinPagLogo size="large" /></div>}
-			{data.logo === 'lua' && <div class="project-logo"><LuaLogo size="large" /></div>}
+			{pageLogos.length > 0 && <div class="project-logos">{pageLogos.map((Logo) => <Logo size="large" />)}</div>}
 			<div class:list={['head', data.icon && 'has-icon']}>
 				{data.icon && <img class="page-icon" src={data.icon} alt="" width="48" height="48" decoding="async" />}
 				<h1>{data.title}</h1>
 				<Status status={data.status} />
 			</div>
-			<p class="summary"><MarkedText text={data.summary} logo={data.logo} /></p>
+			<p class="summary"><MarkedText text={data.summary} logos={data.logos} /></p>
 			<dl class="meta">
 				<div>
 					<dt>When</dt>
@@ -81,7 +86,11 @@ const { data } = project;
 </BaseLayout>
 
 <style>
-	.project-logo {
+	.project-logos {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1rem 1.5rem;
 		margin-bottom: 0.5rem;
 	}
 

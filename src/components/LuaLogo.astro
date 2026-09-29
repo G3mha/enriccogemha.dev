@@ -11,11 +11,12 @@
  *
  * inline: a little taller than a line of text, so negative block margins keep
  *   it from pushing the lines apart, like the RoboCup logo.
- * large:  shown on its own above the compiler's project page.
+ * large:  shown with the Swift logo above the compiler's project page.
  *
  * linked={false} drops the lua.org link, for places where the logo already
- * sits inside another link. decorative sets empty alt text, for places where
- * the word "Lua" is already written next to it.
+ * sits inside another link. decorative sets empty alt text and drops the
+ * credit title, which would otherwise still be read out, for places where the
+ * word "Lua" is already written next to it.
  */
 interface Props {
 	size?: 'inline' | 'large';
@@ -49,8 +50,8 @@ const credit = 'Lua logo by Alexandre Nakonechnyj';
 
 {
 	linked ? (
-		<a class="inline-mark" href="https://www.lua.org/" rel="noopener"><img class:list={['lua', size]} src="/assets/lua-logo.svg" alt={alt} title={credit} width="950" height="950" decoding="async" /></a>
+		<a class="inline-mark" href="https://www.lua.org/" rel="noopener"><img class:list={['lua', size]} src="/assets/lua-logo.svg" alt={alt} title={decorative ? undefined : credit} width="950" height="950" decoding="async" /></a>
 	) : (
-		<img class:list={['lua', size]} src="/assets/lua-logo.svg" alt={alt} title={credit} width="950" height="950" decoding="async" />
+		<img class:list={['lua', size]} src="/assets/lua-logo.svg" alt={alt} title={decorative ? undefined : credit} width="950" height="950" decoding="async" />
 	)
 }

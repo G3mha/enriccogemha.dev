@@ -5,13 +5,14 @@ status: archived
 period: "2022"
 role: Sole author.
 featured: false
+logos: [deepracer]
 order: 10
 stack:
   - Python
   - Reinforcement learning
   - AWS
 img: /assets/aws-deepracer.jpg
-img_alt: An AWS DeepRacer model car on a curved section of the competition track
+img_alt: A rendered AWS DeepRacer car on a purple background, next to the AWS DeepRacer League logo
 ---
 
 13th out of 5,200 models in the 2022 season, awarded by AWS for reward-function and hyperparameter work.

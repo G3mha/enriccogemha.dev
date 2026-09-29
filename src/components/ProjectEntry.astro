@@ -19,7 +19,7 @@ const { data, id } = Astro.props.project;
 	</div>
 
 	<p class="period">{data.period}</p>
-	<p class="summary"><MarkedText text={data.summary} logo={data.logo} /></p>
+	<p class="summary"><MarkedText text={data.summary} logos={data.logos} /></p>
 	<p class="role">{data.role}</p>
 
 	<Tags items={data.stack} />

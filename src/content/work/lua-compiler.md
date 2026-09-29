@@ -20,4 +20,4 @@ links:
 
 The generated assembly does real work rather than toy work. It allocates locals on the stack, resolves identifiers to offsets, and emits the control flow for conditionals and loops as labels and jumps.
 
-Swift is an unusual choice and wasn't the sensible one. I picked it because I wanted to know how the language behaved away from application code, and a compiler is a good way to find out: it's all value types, recursion and exhaustive switches over an enum, which is the part of Swift that either holds up or doesn't.
+Swift is an unusual choice and wasn't the sensible one. I picked it because I wanted to know how the language behaved away from application code. The tree is 14 node classes behind one `Node` protocol, each with its own `evaluate` method that the compiler calls recursively.

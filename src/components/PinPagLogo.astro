@@ -11,7 +11,20 @@
  * 1.267em the P matches the body text's cap height (0.723em), and the wordmark
  * sits on the text's baseline. The icons hang below it; the negative bottom
  * margin keeps them from making the line taller.
+ *
+ * large: shown on its own above the capstone's project page.
+ * linked={false} drops the pinpag.com.br link, for places where the logo already
+ * sits inside another link. decorative sets empty alt text, for places where
+ * the word "PinPag" is already written next to it.
  */
+interface Props {
+	size?: 'inline' | 'large';
+	linked?: boolean;
+	decorative?: boolean;
+}
+
+const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const alt = decorative ? '' : 'PinPag';
 ---
 
 <style>
@@ -21,6 +34,13 @@
 		width: auto;
 		margin-block: 0 -0.1em;
 		vertical-align: -0.436em;
+	}
+
+	.pinpag.large {
+		height: auto;
+		width: 11rem;
+		margin: 0;
+		vertical-align: baseline;
 	}
 
 	.dark-only {
@@ -46,4 +66,10 @@
 	}
 </style>
 
-<a class="inline-mark" href="https://www.pinpag.com.br/" rel="noopener"><img class="pinpag light-only" src="/assets/pinpag-logo-light.svg" alt="PinPag" width="1191" height="517" decoding="async" /><img class="pinpag dark-only" src="/assets/pinpag-logo-dark.svg" alt="PinPag" width="1191" height="517" decoding="async" /></a>
+{
+	linked ? (
+		<a class="inline-mark" href="https://www.pinpag.com.br/" rel="noopener"><img class:list={['pinpag', size, 'light-only']} src="/assets/pinpag-logo-light.svg" alt={alt} width="1191" height="517" decoding="async" /><img class:list={['pinpag', size, 'dark-only']} src="/assets/pinpag-logo-dark.svg" alt={alt} width="1191" height="517" decoding="async" /></a>
+	) : (
+		<><img class:list={['pinpag', size, 'light-only']} src="/assets/pinpag-logo-light.svg" alt={alt} width="1191" height="517" decoding="async" /><img class:list={['pinpag', size, 'dark-only']} src="/assets/pinpag-logo-dark.svg" alt={alt} width="1191" height="517" decoding="async" /></>
+	)
+}

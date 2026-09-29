@@ -55,8 +55,12 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 
 <style>
 	/* Popovers are centred in the viewport by default; the script places
-	   these under their link instead. */
+	   these under their link instead. Browsers hide a closed popover
+	   themselves, but one without the popover API would show every card in
+	   the page, so they're hidden here too. Those browsers don't know
+	   :popover-open and drop the second rule. */
 	.preview-card {
+		display: none;
 		inset: auto;
 		margin: 0;
 		width: min(20rem, calc(100vw - 1rem));
@@ -68,6 +72,10 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 		font-size: var(--text-base);
 		line-height: 1.5;
 		overflow: visible;
+	}
+
+	.preview-card:popover-open {
+		display: block;
 	}
 
 	.preview-head {

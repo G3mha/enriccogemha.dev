@@ -24,6 +24,9 @@ export const collections = {
 			order: z.number().default(50),
 			/** Company, event or language logos shown with the project, in order. */
 			logos: z.array(z.enum(['robocup', 'daero', 'pinpag', 'lua'])).default([]),
+			/** In the Earlier list, show the logos without the title, for a logo that
+			 *  already names the project. The title stays for screen readers. */
+			logoOnly: z.boolean().default(false),
 			/** The app's icon, shown before the title on its Work entry and project page. */
 			icon: z.string().optional(),
 			img: z.string().optional(),

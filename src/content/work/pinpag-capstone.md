@@ -6,6 +6,7 @@ period: Jul – Dec 2024
 role: One of four students. I worked on the security tooling and the AWS data path behind it.
 featured: false
 logos: [pinpag]
+logoOnly: true
 order: 7
 stack:
   - Python

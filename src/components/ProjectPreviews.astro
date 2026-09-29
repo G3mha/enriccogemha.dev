@@ -124,7 +124,13 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 	const triggers = document.querySelectorAll<HTMLElement>('[data-preview]');
 
 	if (triggers.length > 0 && 'showPopover' in HTMLElement.prototype) {
-		let current: { trigger: HTMLElement; card: HTMLElement } | null = null;
+		// The card on screen, and whether keyboard focus opened it. A card that
+		// focus opened ignores the pointer: only moving focus or Esc closes it.
+		let current: { trigger: HTMLElement; card: HTMLElement; byFocus: boolean } | null = null;
+		// The link with keyboard focus. When a hover elsewhere ends, its card
+		// comes back, unless Esc dismissed it.
+		let focused: HTMLElement | null = null;
+		let dismissed = false;
 		let openTimer = 0;
 		let closeTimer = 0;
 
@@ -164,19 +170,26 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 			current = null;
 		};
 
-		const show = (trigger: HTMLElement) => {
+		const show = (trigger: HTMLElement, byFocus = false) => {
 			const card = document.getElementById(`preview-${trigger.dataset.preview}`);
 			if (!card) return;
+			clearTimeout(openTimer);
 			clearTimeout(closeTimer);
 			if (current && current.card !== card) hide();
-			current = { trigger, card };
+			current = { trigger, card, byFocus };
 			if (!card.matches(':popover-open')) card.showPopover();
 			place();
 		};
 
+		// After a hover ends, fall back to the focused link's card, if any.
+		const settle = () => {
+			if (focused && !dismissed) show(focused, true);
+			else hide();
+		};
+
 		const closeSoon = () => {
 			clearTimeout(closeTimer);
-			closeTimer = window.setTimeout(hide, CLOSE_DELAY);
+			closeTimer = window.setTimeout(settle, CLOSE_DELAY);
 		};
 
 		for (const trigger of triggers) {
@@ -184,29 +197,39 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 				if (event.pointerType !== 'mouse') return;
 				clearTimeout(closeTimer);
 				clearTimeout(openTimer);
-				// With a card already open, moving to another link swaps at once.
-				openTimer = window.setTimeout(() => show(trigger), current ? 0 : OPEN_DELAY);
+				if (current?.trigger === trigger) return;
+				// With a hover card already open, moving to another link swaps at once.
+				const swap = current && !current.byFocus;
+				openTimer = window.setTimeout(() => show(trigger), swap ? 0 : OPEN_DELAY);
 			});
 			trigger.addEventListener('pointerleave', (event) => {
 				if (event.pointerType !== 'mouse') return;
 				clearTimeout(openTimer);
-				if (current) closeSoon();
+				if (current && !current.byFocus) closeSoon();
 			});
 			trigger.addEventListener('focus', () => {
-				if (trigger.matches(':focus-visible')) show(trigger);
+				if (!trigger.matches(':focus-visible')) return;
+				focused = trigger;
+				dismissed = false;
+				show(trigger, true);
 			});
 			trigger.addEventListener('blur', () => {
-				if (current?.trigger === trigger) hide();
+				if (focused === trigger) focused = null;
+				if (current?.trigger === trigger && current.byFocus) hide();
 			});
 		}
 
 		for (const card of document.querySelectorAll<HTMLElement>('.preview-card')) {
 			card.addEventListener('pointerenter', () => clearTimeout(closeTimer));
-			card.addEventListener('pointerleave', closeSoon);
+			card.addEventListener('pointerleave', () => {
+				if (current && !current.byFocus) closeSoon();
+			});
 		}
 
 		document.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') hide();
+			if (event.key !== 'Escape' || !current) return;
+			if (focused) dismissed = true;
+			hide();
 		});
 		addEventListener('scroll', place, { passive: true });
 		addEventListener('resize', place);

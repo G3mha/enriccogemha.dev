@@ -11,17 +11,12 @@
  *   Earlier rows, which already show everything a summary card would. Its name
  *   is the project id followed by "-opening".
  *
- * A card opens 300ms after a mouse moves onto its link, or at once when the
- * link gets keyboard focus. It stays open while the pointer is on the link or
- * the card, and closes when the pointer leaves both, when focus moves on, or
- * on Esc. Touch gets nothing extra: a tap follows the link. Without JavaScript,
- * or without the popover API, the links are plain links.
- *
- * The cards are aria-hidden. Everything on them is on the page the link opens,
- * and a summary card's content is also in the lists on the homepage, so
- * reading a card out on every focus would only repeat it.
+ * Everything on these cards is on the page the link opens, so they keep
+ * PreviewCard's default of being hidden from screen readers. PreviewCard also
+ * has the script that opens and places them.
  */
 import { getCollection } from 'astro:content';
+import PreviewCard from './PreviewCard.astro';
 import Status from './Status.astro';
 import PinPagLogo from './PinPagLogo.astro';
 import RoboCupLogo from './RoboCupLogo.astro';
@@ -89,7 +84,7 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 
 {
 	projects.map(({ id, data }) => (
-		<div class="preview-card" id={`preview-${id}`} popover="manual" aria-hidden="true">
+		<PreviewCard name={id}>
 			<div class="preview-head">
 				{data.icon && <img class="preview-icon" src={data.icon} alt="" width="44" height="44" decoding="async" />}
 				<div>
@@ -101,47 +96,19 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 				</div>
 			</div>
 			<p class="preview-summary">{data.summary}</p>
-		</div>
+		</PreviewCard>
 	))
 }
 
 {
 	openingProjects.map(({ id, body }) => (
-		<div class="preview-card opening" id={`preview-${id}-opening`} popover="manual" aria-hidden="true">
+		<PreviewCard name={`${id}-opening`} wide>
 			<p>{opening(id, body)}</p>
-		</div>
+		</PreviewCard>
 	))
 }
 
 <style>
-	/* Popovers are centred in the viewport by default; the script places
-	   these under their link instead. Browsers hide a closed popover
-	   themselves, but one without the popover API would show every card in
-	   the page, so they're hidden here too. Those browsers don't know
-	   :popover-open and drop the second rule. */
-	.preview-card {
-		display: none;
-		inset: auto;
-		margin: 0;
-		width: min(20rem, calc(100% - 1rem));
-		padding: 0.9rem 1rem;
-		border: 1px solid var(--rule-strong);
-		background: var(--surface);
-		color: var(--ink-secondary);
-		box-shadow: 0 4px 12px rgb(27 25 23 / 0.08);
-		font-size: var(--text-base);
-		line-height: 1.5;
-		overflow: visible;
-	}
-
-	.preview-card:popover-open {
-		display: block;
-	}
-
-	.preview-card.opening {
-		width: min(24rem, calc(100% - 1rem));
-	}
-
 	.preview-head {
 		display: flex;
 		align-items: center;
@@ -178,153 +145,3 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 		margin-top: 0.6rem;
 	}
 </style>
-
-<script>
-	const OPEN_DELAY = 300;
-	const CLOSE_DELAY = 150;
-	const GAP = 8;
-	const EDGE = 8;
-
-	const triggers = document.querySelectorAll<HTMLElement>('[data-preview]');
-
-	if (triggers.length > 0 && 'showPopover' in HTMLElement.prototype) {
-		// The card on screen, and whether keyboard focus opened it. A card that
-		// focus opened ignores the pointer: only moving focus or Esc closes it.
-		let current: { trigger: HTMLElement; card: HTMLElement; byFocus: boolean } | null = null;
-		// The link with keyboard focus. When a hover elsewhere ends, its card
-		// comes back, unless Esc dismissed it.
-		let focused: HTMLElement | null = null;
-		let dismissed = false;
-		// The link the mouse is moving over, once it has moved there. Chrome
-		// fires pointerenter when a scroll or a closing card puts a link under
-		// a still pointer, so a card waits for a real pointermove instead.
-		let armed: HTMLElement | null = null;
-		let openTimer = 0;
-		let closeTimer = 0;
-
-		// A logo can overflow its inline link box, so measure the link together
-		// with the images inside it, skipping the theme's hidden copy.
-		const boxOf = (trigger: HTMLElement) => {
-			const rects = [trigger, ...trigger.querySelectorAll('img, svg')]
-				.map((el) => el.getBoundingClientRect())
-				.filter((r) => r.width > 0);
-			if (rects.length === 0) return null;
-			return {
-				top: Math.min(...rects.map((r) => r.top)),
-				bottom: Math.max(...rects.map((r) => r.bottom)),
-				left: Math.min(...rects.map((r) => r.left)),
-			};
-		};
-
-		// Under the link, or above it when only that fits. When neither fits, as
-		// at high zoom, it goes on the side with more room. Sideways it stays
-		// inside the viewport. clientWidth and clientHeight leave out a
-		// scrollbar that takes up space, where innerWidth would count it.
-		const place = () => {
-			if (!current) return;
-			const { trigger, card } = current;
-			const box = boxOf(trigger);
-			if (!box) return;
-			const viewWidth = document.documentElement.clientWidth;
-			const viewHeight = document.documentElement.clientHeight;
-			const width = card.offsetWidth;
-			const height = card.offsetHeight;
-			const below = box.bottom + GAP;
-			const above = box.top - GAP - height;
-			const fitsBelow = below + height <= viewHeight - EDGE;
-			const fitsAbove = above >= EDGE;
-			const roomBelow = viewHeight - box.bottom;
-			const useBelow = fitsBelow || (!fitsAbove && roomBelow >= box.top);
-			const top = useBelow ? below : Math.max(EDGE, above);
-			const left = Math.max(EDGE, Math.min(box.left, viewWidth - width - EDGE));
-			card.style.top = `${top}px`;
-			card.style.left = `${left}px`;
-		};
-
-		const hide = () => {
-			clearTimeout(openTimer);
-			clearTimeout(closeTimer);
-			if (current?.card.matches(':popover-open')) current.card.hidePopover();
-			current = null;
-		};
-
-		const show = (trigger: HTMLElement, byFocus = false) => {
-			const card = document.getElementById(`preview-${trigger.dataset.preview}`);
-			if (!card) return;
-			clearTimeout(openTimer);
-			clearTimeout(closeTimer);
-			if (current && current.card !== card) hide();
-			current = { trigger, card, byFocus };
-			if (!card.matches(':popover-open')) card.showPopover();
-			place();
-		};
-
-		// After a hover ends, fall back to the focused link's card, if any.
-		const settle = () => {
-			if (focused && !dismissed) show(focused, true);
-			else hide();
-		};
-
-		const closeSoon = () => {
-			clearTimeout(closeTimer);
-			closeTimer = window.setTimeout(settle, CLOSE_DELAY);
-		};
-
-		for (const trigger of triggers) {
-			trigger.addEventListener('pointermove', (event) => {
-				if (event.pointerType !== 'mouse') return;
-				clearTimeout(closeTimer);
-				if (armed === trigger || current?.trigger === trigger) return;
-				armed = trigger;
-				clearTimeout(openTimer);
-				// With a hover card already open, moving to another link swaps at once.
-				const swap = current && !current.byFocus;
-				openTimer = window.setTimeout(() => show(trigger), swap ? 0 : OPEN_DELAY);
-			});
-			trigger.addEventListener('pointerleave', (event) => {
-				if (event.pointerType !== 'mouse') return;
-				if (armed === trigger) armed = null;
-				clearTimeout(openTimer);
-				if (current && !current.byFocus) closeSoon();
-			});
-			trigger.addEventListener('focus', () => {
-				if (!trigger.matches(':focus-visible')) return;
-				focused = trigger;
-				dismissed = false;
-				show(trigger, true);
-			});
-			trigger.addEventListener('blur', () => {
-				if (focused === trigger) focused = null;
-				if (current?.trigger === trigger && current.byFocus) hide();
-			});
-		}
-
-		for (const card of document.querySelectorAll<HTMLElement>('.preview-card')) {
-			card.addEventListener('pointerenter', () => clearTimeout(closeTimer));
-			card.addEventListener('pointerleave', () => {
-				if (current && !current.byFocus) closeSoon();
-			});
-		}
-
-		// Keyboard focus moving anywhere else closes a card the mouse opened, so
-		// it can't sit over the newly focused element.
-		document.addEventListener('focusin', (event) => {
-			if (!current || current.byFocus) return;
-			const target = event.target as HTMLElement;
-			if (target !== current.trigger && target.matches(':focus-visible')) hide();
-		});
-
-		document.addEventListener('keydown', (event) => {
-			if (event.key !== 'Escape' || !current) return;
-			if (focused) dismissed = true;
-			hide();
-		});
-		// Coming back to the page from the one a link opened, a card the mouse
-		// had opened would stay up until the mouse moved again.
-		addEventListener('pageshow', (event) => {
-			if (event.persisted && current && !current.byFocus) hide();
-		});
-		addEventListener('scroll', place, { passive: true });
-		addEventListener('resize', place);
-	}
-</script>

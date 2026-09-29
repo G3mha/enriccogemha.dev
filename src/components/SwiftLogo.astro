@@ -11,8 +11,9 @@
  * large:  shown next to the Lua logo above the compiler's project page.
  *
  * linked={false} drops the swift.org link, for places where the logo already
- * sits inside another link. decorative sets empty alt text, for places where
- * the word "Swift" is already written next to it.
+ * sits inside another link. decorative sets empty alt text and drops the
+ * credit title, which would otherwise still be read out, for places where the
+ * word "Swift" is already written next to it.
  */
 interface Props {
 	size?: 'inline' | 'large';
@@ -46,8 +47,8 @@ const credit = 'The Swift logo is a trademark of Apple Inc.';
 
 {
 	linked ? (
-		<a class="inline-mark" href="https://www.swift.org/" rel="noopener"><img class:list={['swift', size]} src="/assets/swift-logo.svg" alt={alt} title={credit} width="106" height="106" decoding="async" /></a>
+		<a class="inline-mark" href="https://www.swift.org/" rel="noopener"><img class:list={['swift', size]} src="/assets/swift-logo.svg" alt={alt} title={decorative ? undefined : credit} width="106" height="106" decoding="async" /></a>
 	) : (
-		<img class:list={['swift', size]} src="/assets/swift-logo.svg" alt={alt} title={credit} width="106" height="106" decoding="async" />
+		<img class:list={['swift', size]} src="/assets/swift-logo.svg" alt={alt} title={decorative ? undefined : credit} width="106" height="106" decoding="async" />
 	)
 }

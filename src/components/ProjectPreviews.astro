@@ -11,7 +11,7 @@
  *   Earlier rows, which already show everything a summary card would. Its name
  *   is the project id followed by "-opening".
  *
- * A card opens when a mouse rests on its link for 300ms, or at once when the
+ * A card opens 300ms after a mouse moves onto its link, or at once when the
  * link gets keyboard focus. It stays open while the pointer is on the link or
  * the card, and closes when the pointer leaves both, when focus moves on, or
  * on Esc. Touch gets nothing extra: a tap follows the link. Without JavaScript,
@@ -188,6 +188,10 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 		// comes back, unless Esc dismissed it.
 		let focused: HTMLElement | null = null;
 		let dismissed = false;
+		// The link the mouse is moving over, once it has moved there. Chrome
+		// fires pointerenter when a scroll or a closing card puts a link under
+		// a still pointer, so a card waits for a real pointermove instead.
+		let armed: HTMLElement | null = null;
 		let openTimer = 0;
 		let closeTimer = 0;
 
@@ -260,17 +264,19 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 		};
 
 		for (const trigger of triggers) {
-			trigger.addEventListener('pointerenter', (event) => {
+			trigger.addEventListener('pointermove', (event) => {
 				if (event.pointerType !== 'mouse') return;
 				clearTimeout(closeTimer);
+				if (armed === trigger || current?.trigger === trigger) return;
+				armed = trigger;
 				clearTimeout(openTimer);
-				if (current?.trigger === trigger) return;
 				// With a hover card already open, moving to another link swaps at once.
 				const swap = current && !current.byFocus;
 				openTimer = window.setTimeout(() => show(trigger), swap ? 0 : OPEN_DELAY);
 			});
 			trigger.addEventListener('pointerleave', (event) => {
 				if (event.pointerType !== 'mouse') return;
+				if (armed === trigger) armed = null;
 				clearTimeout(openTimer);
 				if (current && !current.byFocus) closeSoon();
 			});

@@ -5,6 +5,7 @@ status: live
 period: "2025"
 role: Sole author.
 featured: false
+icon: /assets/app-icon-pacbag.jpg
 order: 5
 stack:
   - Swift

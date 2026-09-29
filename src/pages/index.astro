@@ -148,7 +148,7 @@ const apps = [
 				{
 					rest.map((project) => (
 						<li>
-							<a href={`/work/${project.id}/`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.logoOnly ? <span class="sr-only">{project.data.title}</span> : project.data.title}</a>
+							<a href={`/work/${project.id}/`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.logoOnly ? <span class="sr-only">{project.data.title}</span> : <span class="compact-name">{project.data.title}</span>}</a>
 							<span class="compact-summary">{project.data.summary}</span>
 							<span class="compact-meta">
 								<span>{project.data.period}</span>
@@ -291,6 +291,18 @@ const apps = [
 		gap: 0.15rem 1rem;
 		padding-block: 0.9rem;
 		border-top: 1px solid var(--rule);
+	}
+
+	/* Only the name is underlined. Underlining the whole link also drew the
+	   line under the spaces beside the logos, which left short stubs between
+	   two logos in a row. */
+	.compact li > a {
+		text-decoration: none;
+	}
+
+	.compact-name {
+		text-decoration-line: underline;
+		text-decoration-thickness: 1px;
 	}
 
 	/* App projects show their icon before the name, the same shape as the

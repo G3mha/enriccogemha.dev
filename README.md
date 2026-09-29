@@ -5,7 +5,7 @@ My personal site and project write-ups, live at
 
 Built with [Astro](https://astro.build) and MDX, and served as static HTML from
 Vercel. There are no framework islands. The only client JavaScript is the theme
-toggle, the typing headline and the link previews.
+toggle, the typing headline and the preview cards.
 
 ## Running it
 
@@ -20,10 +20,21 @@ npm run build    # must pass before committing
 - `src/content/work/`: one Markdown or MDX file per project.
   `src/content.config.ts` validates the frontmatter, so a missing field fails
   the build instead of rendering blank.
-- `src/components/`: the pieces the pages are built from, including the logos
-  and the preview cards.
+- `src/components/`: the pieces the pages are built from, including the logos.
 - `src/styles/global.css`: the design tokens. Each text colour notes its
   measured contrast ratio, checked against WCAG AA.
+
+## Preview cards
+
+Links to projects and certifications open a small card on hover or keyboard
+focus. A project card is built from the same content file as its page: either a
+summary or the opening of the write-up. A certification card lists what the exam
+covers, from the issuer's own guide. On a phone a tap just follows the link, and
+without JavaScript every link still works.
+
+`PreviewCard.astro` holds the card and the script that opens and places it.
+`ProjectPreviews.astro` builds the project cards, and `Certifications.astro` the
+certification ones.
 
 ## Rules I hold this to
 

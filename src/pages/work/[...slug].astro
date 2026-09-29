@@ -4,6 +4,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Status from '../../components/Status.astro';
 import Tags from '../../components/Tags.astro';
 import RoboCupLogo from '../../components/RoboCupLogo.astro';
+import PinPagLogo from '../../components/PinPagLogo.astro';
+import LuaLogo from '../../components/LuaLogo.astro';
 import MarkedText from '../../components/MarkedText.astro';
 
 export async function getStaticPaths() {
@@ -25,6 +27,8 @@ const { data } = project;
 
 		<header class="stack gap-4">
 			{data.logo === 'robocup' && <div class="project-logo"><RoboCupLogo size="large" /></div>}
+			{data.logo === 'pinpag' && <div class="project-logo"><PinPagLogo size="large" /></div>}
+			{data.logo === 'lua' && <div class="project-logo"><LuaLogo size="large" /></div>}
 			<div class="head">
 				<h1>{data.title}</h1>
 				<Status status={data.status} />

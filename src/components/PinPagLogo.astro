@@ -13,17 +13,23 @@
  * margin keeps them from making the line taller.
  *
  * large: shown on its own above the capstone's project page.
- * linked={false} drops the pinpag.com.br link, for places where the logo already
- * sits inside another link. decorative sets empty alt text, for places where
- * the word "PinPag" is already written next to it.
+ * href points the logo somewhere other than pinpag.com.br, such as a project
+ * page. preview names the project whose card the link opens on hover or focus
+ * (see ProjectPreviews). linked={false} drops the link, for places where the
+ * logo already sits inside another link.
+ * decorative sets empty alt text, for places where the word "PinPag" is
+ * already written next to it.
  */
 interface Props {
 	size?: 'inline' | 'large';
 	linked?: boolean;
 	decorative?: boolean;
+	href?: string;
+	preview?: string;
 }
 
-const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const { size = 'inline', linked = true, decorative = false, href = 'https://www.pinpag.com.br/', preview } = Astro.props;
+const rel = href.startsWith('http') ? 'noopener' : undefined;
 const alt = decorative ? '' : 'PinPag';
 ---
 
@@ -68,7 +74,7 @@ const alt = decorative ? '' : 'PinPag';
 
 {
 	linked ? (
-		<a class="inline-mark" href="https://www.pinpag.com.br/" rel="noopener"><img class:list={['pinpag', size, 'light-only']} src="/assets/pinpag-logo-light.svg" alt={alt} width="1191" height="517" decoding="async" /><img class:list={['pinpag', size, 'dark-only']} src="/assets/pinpag-logo-dark.svg" alt={alt} width="1191" height="517" decoding="async" /></a>
+		<a class="inline-mark" href={href} rel={rel} data-preview={preview}><img class:list={['pinpag', size, 'light-only']} src="/assets/pinpag-logo-light.svg" alt={alt} width="1191" height="517" decoding="async" /><img class:list={['pinpag', size, 'dark-only']} src="/assets/pinpag-logo-dark.svg" alt={alt} width="1191" height="517" decoding="async" /></a>
 	) : (
 		<><img class:list={['pinpag', size, 'light-only']} src="/assets/pinpag-logo-light.svg" alt={alt} width="1191" height="517" decoding="async" /><img class:list={['pinpag', size, 'dark-only']} src="/assets/pinpag-logo-dark.svg" alt={alt} width="1191" height="517" decoding="async" /></>
 	)

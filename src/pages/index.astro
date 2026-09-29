@@ -14,6 +14,7 @@ import LuaLogo from '../components/LuaLogo.astro';
 import SwiftLogo from '../components/SwiftLogo.astro';
 import DeepRacerLogo from '../components/DeepRacerLogo.astro';
 import Certifications from '../components/Certifications.astro';
+import ProjectPreviews from '../components/ProjectPreviews.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -69,7 +70,7 @@ const apps = [
 			<div class="intro-text">
 				<BuildLine />
 				<p class="lede">
-					The biggest thing I’ve built is <OpenGivingLogo />, a
+					The biggest thing I’ve built is <OpenGivingLogo href="/work/opengiving/" preview="opengiving" />, a
 					marketplace where part of every sale goes to a fundraising campaign. I wrote all
 					the code for it: web, iOS and Android apps, and the backend API they share.
 				</p>
@@ -77,17 +78,17 @@ const apps = [
 					I grew up in <span class="nowrap">São Paulo <Flag country="br" label="Brazil" /></span>. Currently, I am studying at Brown
 					University until May 2027, pursuing an MS in Entrepreneurship, and studying
 					cybersecurity at Harvard University (cross-registered in person). Before Brown I
-					was the first engineering hire at <DaeroLogo />, a construction software startup
+					was the first engineering hire at <DaeroLogo href="/work/zeropunch/" preview="zeropunch" />, a construction software startup
 					in Boston backed by <NfxLogo />. I spent ten months leading their iOS app dev,
 					while also supporting the web, infra and backend work.
 				</p>
 				<p>
 					I got my B.Sc. in Computer Engineering at Insper. For my
-					<a href="/work/pinpag-capstone/">capstone</a>, I worked on multi-cloud security
-					monitoring for <PinPagLogo />, a Brazilian payments company. Part of it was a Python tool that mapped how their AWS
+					<a href="/work/pinpag-capstone/" data-preview="pinpag-capstone">capstone</a>, I worked on multi-cloud security
+					monitoring for <PinPagLogo href="/work/pinpag-capstone/" preview="pinpag-capstone" />, a Brazilian payments company. Part of it was a Python tool that mapped how their AWS
 					resources connected and flagged anything open to the internet that shouldn’t be.
 					I was also on a team of four building rescue robots, for 2 years. We won
-					a Best in Class award for sensing at <RoboCupLogo /> in
+					a Best in Class award for sensing at <RoboCupLogo href="/work/robocup/" preview="robocup" /> in
 					<span class="nowrap">2022 <Flag country="th" label="Bangkok, Thailand" /></span>,
 					and mapping and autonomous navigation in
 					<span class="nowrap">2023 <Flag country="fr" label="Bordeaux, France" /></span>.
@@ -107,6 +108,7 @@ const apps = [
 				fetchpriority="high"
 			/>
 		</header>
+		<ProjectPreviews ids={['opengiving', 'zeropunch', 'pinpag-capstone', 'robocup']} />
 
 		<section class="stack gap-4" aria-labelledby="shipped-heading">
 			<h2 class="section-label" id="shipped-heading">Things you can install</h2>

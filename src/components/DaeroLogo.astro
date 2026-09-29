@@ -7,7 +7,18 @@
  *
  * No whitespace between the anchor and the SVG, or after them, so no stray
  * space renders inside the link or before the comma that follows it.
+ *
+ * href points the mark somewhere other than daerogroup.com, such as the
+ * ZeroPunch project page. preview names the project whose card the link opens
+ * on hover or focus (see ProjectPreviews).
  */
+interface Props {
+	href?: string;
+	preview?: string;
+}
+
+const { href = 'https://www.daerogroup.com/', preview } = Astro.props;
+const rel = href.startsWith('http') ? 'noopener' : undefined;
 ---
 
 <style>
@@ -17,7 +28,7 @@
 	}
 </style>
 
-<a class="inline-mark" href="https://www.daerogroup.com/" rel="noopener"><svg
+<a class="inline-mark" href={href} rel={rel} data-preview={preview}><svg
 	class="daero"
 	viewBox="0 0 114 20"
 	role="img"

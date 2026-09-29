@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Flag from '../components/Flag.astro';
 import Certifications from '../components/Certifications.astro';
+import ProjectPreviews from '../components/ProjectPreviews.astro';
 ---
 
 <BaseLayout
@@ -41,18 +42,18 @@ import Certifications from '../components/Certifications.astro';
 					2022 in <span class="nowrap">Bangkok <Flag country="th" label="Thailand" /></span>, and that’s how I became president of the university’s
 					robotics and AI club. The next year they won Best in Class for Mapping and Autonomous Navigation at
 					RoboCup 2023 in <span class="nowrap">Bordeaux <Flag country="fr" label="France" /></span>. For my capstone I did
-					cloud security for <a href="/work/pinpag-capstone/">PinPag</a>, a Brazilian
+					cloud security for <a href="/work/pinpag-capstone/" data-preview="pinpag-capstone">PinPag</a>, a Brazilian
 					payments company, on their live platform.
 				</p>
 				<p>
 					I also took classes for a summer at Stanford and for a semester at Olin and
 					Babson, outside Boston. During that semester I started
-					<a href="/work/opengiving/">OpenGiving</a> with two American friends. It’s a
+					<a href="/work/opengiving/" data-preview="opengiving">OpenGiving</a> with two American friends. It’s a
 					marketplace where part of every sale goes to a fundraising campaign. I wrote all
 					of its code, and I’ve been on leave from it since I started at Brown.
 				</p>
 				<p>
-					In September 2025 I joined <a href="/work/zeropunch/">DAERO</a>, a Boston
+					In September 2025 I joined <a href="/work/zeropunch/" data-preview="zeropunch">DAERO</a>, a Boston
 					startup that makes software for construction crews, as its first engineering hire. The
 					first version of their iOS app already existed. I worked on it for ten months,
 					and in February 2026 I started rewriting it from scratch. I left in July 2026.
@@ -119,6 +120,7 @@ import Certifications from '../components/Certifications.astro';
 			</div>
 		</section>
 	</div>
+	<ProjectPreviews ids={['pinpag-capstone', 'opengiving', 'zeropunch']} />
 </BaseLayout>
 
 <style>

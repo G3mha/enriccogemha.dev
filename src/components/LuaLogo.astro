@@ -1,0 +1,56 @@
+---
+/**
+ * The Lua logo, designed by Alexandre Nakonechnyj. lua.org publishes it as
+ * PostScript (lua.org/images/lua-logo-nolabel.ps) and lets anyone use it for
+ * any purpose, on three conditions: don't misrepresent where it came from,
+ * don't change it beyond its orbiting text (this version has none), and keep
+ * its proportions. lua-logo.svg is that file converted with dvisvgm, with the
+ * lettering as outlines and the colours and geometry untouched; the only edit
+ * is a viewBox tightened to the drawing. The title credits the designer, as
+ * lua.org recommends.
+ *
+ * inline: a little taller than a line of text, so negative block margins keep
+ *   it from pushing the lines apart, like the RoboCup logo.
+ * large:  shown on its own above the compiler's project page.
+ *
+ * linked={false} drops the lua.org link, for places where the logo already
+ * sits inside another link. decorative sets empty alt text, for places where
+ * the word "Lua" is already written next to it.
+ */
+interface Props {
+	size?: 'inline' | 'large';
+	linked?: boolean;
+	decorative?: boolean;
+}
+
+const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const alt = decorative ? '' : 'Lua';
+const credit = 'Lua logo by Alexandre Nakonechnyj';
+---
+
+<style>
+	.lua {
+		display: inline-block;
+		width: auto;
+	}
+
+	.lua.inline {
+		height: 1.6em;
+		vertical-align: middle;
+		margin-block: -0.3em;
+	}
+
+	.lua.large {
+		display: block;
+		width: 7rem;
+		height: auto;
+	}
+</style>
+
+{
+	linked ? (
+		<a class="inline-mark" href="https://www.lua.org/" rel="noopener"><img class:list={['lua', size]} src="/assets/lua-logo.svg" alt={alt} title={credit} width="950" height="950" decoding="async" /></a>
+	) : (
+		<img class:list={['lua', size]} src="/assets/lua-logo.svg" alt={alt} title={credit} width="950" height="950" decoding="async" />
+	)
+}

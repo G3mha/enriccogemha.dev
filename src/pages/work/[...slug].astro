@@ -6,6 +6,7 @@ import Tags from '../../components/Tags.astro';
 import RoboCupLogo from '../../components/RoboCupLogo.astro';
 import PinPagLogo from '../../components/PinPagLogo.astro';
 import LuaLogo from '../../components/LuaLogo.astro';
+import SwiftLogo from '../../components/SwiftLogo.astro';
 import MarkedText from '../../components/MarkedText.astro';
 
 export async function getStaticPaths() {
@@ -22,7 +23,7 @@ const { data } = project;
 
 // Logos shown large above the title. DAERO's isn't, because ZeroPunch's page
 // names the company in its summary instead.
-const largeLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo } as const;
+const largeLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swift: SwiftLogo } as const;
 const pageLogos = data.logos.flatMap((l) => (l in largeLogos ? [largeLogos[l as keyof typeof largeLogos]] : []));
 ---
 

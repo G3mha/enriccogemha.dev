@@ -11,6 +11,7 @@ import Flag from '../components/Flag.astro';
 import BuildLine from '../components/BuildLine.astro';
 import PinPagLogo from '../components/PinPagLogo.astro';
 import LuaLogo from '../components/LuaLogo.astro';
+import SwiftLogo from '../components/SwiftLogo.astro';
 import Certifications from '../components/Certifications.astro';
 
 const projects = (await getCollection('work')).sort(
@@ -20,7 +21,7 @@ const featured = projects.filter((p) => p.data.featured);
 
 // Logos drawn before a name in the Earlier list. Each sits inside the row's
 // link, so it drops its own link and alt text.
-const listLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo } as const;
+const listLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swift: SwiftLogo } as const;
 const rest = projects.filter((p) => !p.data.featured);
 
 // Each app once, with every store it's on. The name opens the project page;

@@ -27,7 +27,7 @@ export const collections = {
 			/** In the Earlier list, show the logos without the title, for a logo that
 			 *  already names the project. The title stays for screen readers. */
 			logoOnly: z.boolean().default(false),
-			/** The app's icon, shown before the title on its Work entry and project page. */
+			/** The app's icon, shown before the title on its Work entry or Earlier row, and on its project page. */
 			icon: z.string().optional(),
 			img: z.string().optional(),
 			img_alt: z.string().optional(),

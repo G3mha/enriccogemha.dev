@@ -24,6 +24,8 @@ export const collections = {
 			order: z.number().default(50),
 			/** A company or event logo shown with the project. */
 			logo: z.enum(['robocup', 'daero', 'pinpag', 'lua']).optional(),
+			/** The app's icon, shown before the title on the homepage's Work entry. */
+			icon: z.string().optional(),
 			img: z.string().optional(),
 			img_alt: z.string().optional(),
 		}),

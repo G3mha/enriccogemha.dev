@@ -5,6 +5,7 @@ status: live
 period: May 2025 – Jun 2026
 role: I wrote all four codebases, the web, iOS and Android apps and the API they share. On leave since June 2026.
 featured: true
+icon: /assets/app-icon-opengiving.jpg
 order: 1
 stack:
   - FastAPI

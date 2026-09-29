@@ -10,7 +10,10 @@
  * units left of where the disc's vertical diameter meets the bottom edge. Its
  * 27 stars and motto are left out: at text size they'd be under a pixel.
  * Sweden follows its flag law: a 16 x 10 field with a cross two units wide,
- * the vertical bar five units from the hoist.
+ * the vertical bar five units from the hoist. Spain follows its constitution:
+ * red, yellow and red stripes, the yellow twice as tall as each red, on a
+ * 3 x 2 field. This is the civil flag, without the coat of arms, which Spanish
+ * law allows and which at text size would be a smudge.
  *
  * Pass decorative when the country is already named in the text beside the
  * flag, so screen readers don't read the name twice.
@@ -19,7 +22,7 @@
  * beside it. The hairline outline keeps white stripes visible on light paper.
  */
 interface Props {
-	country: 'th' | 'fr' | 'br' | 'se';
+	country: 'th' | 'fr' | 'br' | 'se' | 'es';
 	/** Place name, used as the accessible name and hover tooltip. */
 	label?: string;
 	/** Hide from screen readers; use when the text already names the country. */
@@ -45,6 +48,8 @@ const a11y = decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label
 		<svg class="flag" viewBox="0 0 9 6" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
 	) : country === 'fr' ? (
 		<svg class="flag" viewBox="0 0 3 2" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+	) : country === 'es' ? (
+		<svg class="flag" viewBox="0 0 12 8" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="12" height="8" fill="#aa151b" /><rect y="2" width="12" height="4" fill="#f1bf00" /></svg>
 	) : country === 'se' ? (
 		<svg class="flag" viewBox="0 0 16 10" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="16" height="10" fill="#005293" /><rect x="5" width="2" height="10" fill="#fecb00" /><rect y="4" width="16" height="2" fill="#fecb00" /></svg>
 	) : (

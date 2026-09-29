@@ -13,6 +13,7 @@ const { data, id } = Astro.props.project;
 
 <article class="entry">
 	<div class="head">
+		{data.icon && <img class="entry-icon" src={data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />}
 		<h3><a href={`/work/${id}/`}>{data.title}</a></h3>
 		<Status status={data.status} />
 	</div>
@@ -50,8 +51,18 @@ const { data, id } = Astro.props.project;
 	.head {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: baseline;
+		align-items: center;
 		gap: 0.5rem 1rem;
+	}
+
+	/* Same size and shape as the icons in Things you can install. The 31%
+	   radius hides the white corners baked into OpenGiving's artwork. */
+	.entry-icon {
+		flex: none;
+		width: 2.75rem;
+		height: 2.75rem;
+		border: 1px solid var(--rule);
+		border-radius: 31%;
 	}
 
 	h3 {

@@ -27,7 +27,7 @@ links:
     href: https://api.opengiving.us/openapi.json
 ---
 
-Four codebases in four languages, sharing no runtime: a Next.js web app, a SwiftUI iOS app, a Kotlin Compose Android app, and a FastAPI backend. The public API has 327 paths and 367 operations, which you can count yourself from the OpenAPI document linked above.
+Four codebases in four languages, sharing no runtime: a Next.js web app, a SwiftUI iOS app, a Kotlin Compose Android app, and a FastAPI backend. The public API has 327 paths and 367 operations, which you can count yourself from the [OpenAPI document](https://api.opengiving.us/openapi.json).
 
 ## The problem I spent longest on
 

@@ -5,6 +5,7 @@ status: live
 period: 2025 – 2026
 role: Sole author of the API, the web app and the iOS app.
 featured: true
+icon: /assets/app-icon-trophy-rooms.jpg
 order: 6
 stack:
   - TypeScript

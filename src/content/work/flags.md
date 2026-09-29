@@ -5,6 +5,7 @@ status: unreleased
 period: "2026"
 role: Sole author. 77 commits over four days.
 featured: true
+icon: /assets/app-icon-flags.jpg
 order: 2
 stack:
   - Swift

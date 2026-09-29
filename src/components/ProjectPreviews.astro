@@ -63,7 +63,7 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 		display: none;
 		inset: auto;
 		margin: 0;
-		width: min(20rem, calc(100vw - 1rem));
+		width: min(20rem, calc(100% - 1rem));
 		padding: 0.9rem 1rem;
 		border: 1px solid var(--rule-strong);
 		background: var(--surface);
@@ -140,6 +140,7 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 			const rects = [trigger, ...trigger.querySelectorAll('img, svg')]
 				.map((el) => el.getBoundingClientRect())
 				.filter((r) => r.width > 0);
+			if (rects.length === 0) return null;
 			return {
 				top: Math.min(...rects.map((r) => r.top)),
 				bottom: Math.max(...rects.map((r) => r.bottom)),
@@ -147,18 +148,27 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 			};
 		};
 
-		// Under the link, flipped above it when there's no room below, and kept
-		// inside the viewport sideways.
+		// Under the link, or above it when only that fits. When neither fits, as
+		// at high zoom, it goes on the side with more room. Sideways it stays
+		// inside the viewport. clientWidth and clientHeight leave out a
+		// scrollbar that takes up space, where innerWidth would count it.
 		const place = () => {
 			if (!current) return;
 			const { trigger, card } = current;
 			const box = boxOf(trigger);
+			if (!box) return;
+			const viewWidth = document.documentElement.clientWidth;
+			const viewHeight = document.documentElement.clientHeight;
 			const width = card.offsetWidth;
 			const height = card.offsetHeight;
 			const below = box.bottom + GAP;
 			const above = box.top - GAP - height;
-			const top = below + height <= innerHeight - EDGE || above < EDGE ? below : above;
-			const left = Math.max(EDGE, Math.min(box.left, innerWidth - width - EDGE));
+			const fitsBelow = below + height <= viewHeight - EDGE;
+			const fitsAbove = above >= EDGE;
+			const roomBelow = viewHeight - box.bottom;
+			const useBelow = fitsBelow || (!fitsAbove && roomBelow >= box.top);
+			const top = useBelow ? below : Math.max(EDGE, above);
+			const left = Math.max(EDGE, Math.min(box.left, viewWidth - width - EDGE));
 			card.style.top = `${top}px`;
 			card.style.left = `${left}px`;
 		};

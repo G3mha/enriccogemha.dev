@@ -306,6 +306,14 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 			});
 		}
 
+		// Keyboard focus moving anywhere else closes a card the mouse opened, so
+		// it can't sit over the newly focused element.
+		document.addEventListener('focusin', (event) => {
+			if (!current || current.byFocus) return;
+			const target = event.target as HTMLElement;
+			if (target !== current.trigger && target.matches(':focus-visible')) hide();
+		});
+
 		document.addEventListener('keydown', (event) => {
 			if (event.key !== 'Escape' || !current) return;
 			if (focused) dismissed = true;

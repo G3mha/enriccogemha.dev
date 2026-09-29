@@ -26,12 +26,13 @@ const featured = projects.filter((p) => p.data.featured);
 const listLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swift: SwiftLogo, deepracer: DeepRacerLogo } as const;
 const rest = projects.filter((p) => !p.data.featured);
 
-// Each app once, with every store it's on. The name opens the project page;
-// the store links open the listings.
+// Each app once, with every store it's on. The name opens the project page,
+// and on hover or focus the opening of its write-up (see ProjectPreviews); the
+// store links open the listings.
 const apps = [
 	{
 		name: 'OpenGiving',
-		page: '/work/opengiving/',
+		id: 'opengiving',
 		icon: '/assets/app-icon-opengiving.jpg',
 		about: 'Sellers route part of each sale to a fundraising campaign.',
 		stores: [
@@ -41,21 +42,21 @@ const apps = [
 	},
 	{
 		name: 'Trophy Rooms',
-		page: '/work/trophy-rooms/',
+		id: 'trophy-rooms',
 		icon: '/assets/app-icon-trophy-rooms.jpg',
 		about: 'Tracks game collections across 42 platforms.',
 		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/trophy-rooms/id6799829599' }],
 	},
 	{
 		name: 'PacBag',
-		page: '/work/pacbag/',
+		id: 'pacbag',
 		icon: '/assets/app-icon-pacbag.jpg',
 		about: 'Tracks what’s in each bag and weighs it against the airline limit.',
 		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/pacbag-digital-luggage/id6749021887' }],
 	},
 	{
 		name: 'ZeroPunch',
-		page: '/work/zeropunch/',
+		id: 'zeropunch',
 		icon: '/assets/app-icon-zeropunch.jpg',
 		about: 'A field app for construction crews, built at',
 		mark: 'daero',
@@ -118,7 +119,7 @@ const apps = [
 						<li>
 							<img class="app-icon" src={app.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />
 							<div class="app-text">
-								<a class="app-name" href={app.page}>{app.name}</a>
+								<a class="app-name" href={`/work/${app.id}/`} data-preview={`${app.id}-opening`}>{app.name}</a>
 								<span class="app-about">{app.about}{app.mark === 'daero' && <> <DaeroLogo />.</>}</span>
 							</div>
 							<ul class="stores">

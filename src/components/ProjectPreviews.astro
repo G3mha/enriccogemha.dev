@@ -231,6 +231,11 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 			if (focused) dismissed = true;
 			hide();
 		});
+		// Coming back to the page from the one a link opened, a card the mouse
+		// had opened would stay up until the mouse moved again.
+		addEventListener('pageshow', (event) => {
+			if (event.persisted && current && !current.byFocus) hide();
+		});
 		addEventListener('scroll', place, { passive: true });
 		addEventListener('resize', place);
 	}

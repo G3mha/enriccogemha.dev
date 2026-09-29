@@ -1,9 +1,15 @@
 ---
 /**
- * Preview cards for projects named in running text. A link opts in with
- * data-preview set to a project id (the logo components take it as their
- * preview prop), and this renders one card per id from the Work collection, so
- * a card always says what the project page says.
+ * Preview cards for projects. A link opts in with data-preview set to a card's
+ * name, and this renders the cards from the Work collection, so a card always
+ * says what the project page says. There are two kinds:
+ *
+ * ids: a summary card (icon or logos, title, dates, status and summary), for
+ *   links in running text. Its name is the project id, which the logo
+ *   components take as their preview prop.
+ * openings: the opening of the project's write-up, for the Work entries and
+ *   Earlier rows, which already show everything a summary card would. Its name
+ *   is the project id followed by "-opening".
  *
  * A card opens when a mouse rests on its link for 300ms, or at once when the
  * link gets keyboard focus. It stays open while the pointer is on the link or
@@ -12,8 +18,8 @@
  * or without the popover API, the links are plain links.
  *
  * The cards are aria-hidden. Everything on them is on the page the link opens,
- * and on the homepage it's also in the lists further down, so reading a card
- * out on every focus would only repeat it.
+ * and a summary card's content is also in the lists on the homepage, so
+ * reading a card out on every focus would only repeat it.
  */
 import { getCollection } from 'astro:content';
 import Status from './Status.astro';
@@ -24,11 +30,50 @@ import SwiftLogo from './SwiftLogo.astro';
 import DeepRacerLogo from './DeepRacerLogo.astro';
 
 interface Props {
-	ids: string[];
+	ids?: string[];
+	openings?: string[];
 }
 
-const { ids } = Astro.props;
-const projects = (await getCollection('work')).filter((p) => ids.includes(p.id));
+const { ids = [], openings = [] } = Astro.props;
+const work = await getCollection('work');
+const projects = work.filter((p) => ids.includes(p.id));
+const openingProjects = work.filter((p) => openings.includes(p.id));
+
+// The opening of a write-up as plain text: whole sentences from its first
+// paragraph, stopping before 300 characters so the card stays short and no
+// sentence that points further into the page ("what follows") comes along.
+// Markdown links and emphasis keep their words, and the few components used
+// in openings become the names they draw. Anything left in angle brackets or
+// braces fails the build, so a new component can't reach a card as markup.
+const markNames: Record<string, string> = { NfxLogo: 'NFX', ThresholdLogo: 'Threshold', DaeroLogo: 'DAERO' };
+
+function opening(id: string, body = '') {
+	const paragraph = body
+		.replace(/^import .*$/gm, '')
+		.split(/\n\s*\n/)
+		.map((p) => p.trim())
+		.find((p) => p && !/^(#|<|!|\||-|```)/.test(p));
+	if (!paragraph) throw new Error(`No opening paragraph to preview in ${id}`);
+	const text = paragraph
+		.replace(/\s*<Flag [^>]*\/>/g, '')
+		.replace(/<(\w+)\s*\/>/g, (tag, name) => {
+			if (!(name in markNames)) throw new Error(`Can't preview <${name} /> in the opening of ${id}`);
+			return markNames[name];
+		})
+		.replace(/<\/?span[^>]*>/g, '')
+		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+		.replace(/(\*\*|\*|`)(.+?)\1/g, '$2')
+		.replace(/\s+/g, ' ')
+		.trim();
+	if (/[<>{}]/.test(text)) throw new Error(`Markup left in the opening of ${id}: ${text}`);
+	const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z0-9“"(])/);
+	let kept = sentences[0];
+	for (const sentence of sentences.slice(1)) {
+		if (kept.length + 1 + sentence.length >= 300) break;
+		kept += ` ${sentence}`;
+	}
+	return kept;
+}
 
 // Projects without an app icon show their logos before the title, as in the
 // Earlier list.
@@ -49,6 +94,14 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 				</div>
 			</div>
 			<p class="preview-summary">{data.summary}</p>
+		</div>
+	))
+}
+
+{
+	openingProjects.map(({ id, body }) => (
+		<div class="preview-card opening" id={`preview-${id}-opening`} popover="manual" aria-hidden="true">
+			<p>{opening(id, body)}</p>
 		</div>
 	))
 }
@@ -76,6 +129,10 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 
 	.preview-card:popover-open {
 		display: block;
+	}
+
+	.preview-card.opening {
+		width: min(24rem, calc(100% - 1rem));
 	}
 
 	.preview-head {

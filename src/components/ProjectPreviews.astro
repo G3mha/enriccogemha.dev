@@ -11,9 +11,9 @@
  * on Esc. Touch gets nothing extra: a tap follows the link. Without JavaScript,
  * or without the popover API, the links are plain links.
  *
- * The cards are aria-hidden. Everything on them is in the lists further down
- * the page and on the page the link opens, so reading a card out on every
- * focus would only repeat it.
+ * The cards are aria-hidden. Everything on them is on the page the link opens,
+ * and on the homepage it's also in the lists further down, so reading a card
+ * out on every focus would only repeat it.
  */
 import { getCollection } from 'astro:content';
 import Status from './Status.astro';

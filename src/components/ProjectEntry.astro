@@ -14,7 +14,7 @@ const { data, id } = Astro.props.project;
 <article class="entry">
 	<div class="head">
 		{data.icon && <img class="entry-icon" src={data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />}
-		<h3><a href={`/work/${id}/`}>{data.title}</a></h3>
+		<h3><a href={`/work/${id}/`} data-preview={`${id}-opening`}>{data.title}</a></h3>
 		<Status status={data.status} />
 	</div>
 

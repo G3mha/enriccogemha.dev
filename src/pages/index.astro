@@ -108,7 +108,7 @@ const apps = [
 				fetchpriority="high"
 			/>
 		</header>
-		<ProjectPreviews ids={['opengiving', 'zeropunch', 'pinpag-capstone', 'robocup']} />
+		<ProjectPreviews ids={['opengiving', 'zeropunch', 'pinpag-capstone', 'robocup']} openings={projects.map((p) => p.id)} />
 
 		<section class="stack gap-4" aria-labelledby="shipped-heading">
 			<h2 class="section-label" id="shipped-heading">Things you can install</h2>
@@ -150,7 +150,7 @@ const apps = [
 				{
 					rest.map((project) => (
 						<li>
-							<a href={`/work/${project.id}/`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.logoOnly ? <span class="sr-only">{project.data.title}</span> : <span class="compact-name">{project.data.title}</span>}</a>
+							<a href={`/work/${project.id}/`} data-preview={`${project.id}-opening`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.logoOnly ? <span class="sr-only">{project.data.title}</span> : <span class="compact-name">{project.data.title}</span>}</a>
 							<span class="compact-summary">{project.data.summary}</span>
 							<span class="compact-meta">
 								<span>{project.data.period}</span>

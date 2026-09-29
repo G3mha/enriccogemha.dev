@@ -11,7 +11,18 @@
  * height and its baseline sits 38.4% up from the bottom. At 1.6em the icon is
  * about the size of the RoboCup ball further down the intro, and the wordmark
  * sits on the text's baseline at a little under its cap height.
+ *
+ * href points the logo somewhere other than opengiving.us, such as its project
+ * page. preview names the project whose card the link opens on hover or focus
+ * (see ProjectPreviews).
  */
+interface Props {
+	href?: string;
+	preview?: string;
+}
+
+const { href = 'https://opengiving.us/', preview } = Astro.props;
+const rel = href.startsWith('http') ? 'noopener' : undefined;
 ---
 
 <style>
@@ -45,4 +56,4 @@
 	}
 </style>
 
-<a class="inline-mark" href="https://opengiving.us/" rel="noopener"><img class="opengiving light-only" src="/assets/opengiving-logo-light.svg" alt="OpenGiving" width="985" height="276" decoding="async" /><img class="opengiving dark-only" src="/assets/opengiving-logo-dark.svg" alt="OpenGiving" width="985" height="276" decoding="async" /></a>
+<a class="inline-mark" href={href} rel={rel} data-preview={preview}><img class="opengiving light-only" src="/assets/opengiving-logo-light.svg" alt="OpenGiving" width="985" height="276" decoding="async" /><img class="opengiving dark-only" src="/assets/opengiving-logo-dark.svg" alt="OpenGiving" width="985" height="276" decoding="async" /></a>

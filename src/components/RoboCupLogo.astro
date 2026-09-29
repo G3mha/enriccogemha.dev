@@ -10,17 +10,23 @@
  *
  * In dark mode a light outline keeps the black lettering visible.
  *
- * linked={false} drops the robocup.org link, for places where the logo already
- * sits inside another link. decorative sets empty alt text, for places where
- * the word "RoboCup" is already written next to it.
+ * href points the logo somewhere other than robocup.org, such as a project
+ * page. preview names the project whose card the link opens on hover or focus
+ * (see ProjectPreviews). linked={false} drops the link, for places where the
+ * logo already sits inside another link.
+ * decorative sets empty alt text, for places where the word "RoboCup" is
+ * already written next to it.
  */
 interface Props {
 	size?: 'inline' | 'large';
 	linked?: boolean;
 	decorative?: boolean;
+	href?: string;
+	preview?: string;
 }
 
-const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const { size = 'inline', linked = true, decorative = false, href = 'https://www.robocup.org/', preview } = Astro.props;
+const rel = href.startsWith('http') ? 'noopener' : undefined;
 const image =
 	size === 'large'
 		? { src: '/assets/robocup-logo-large.png', width: 600, height: 344 }
@@ -67,7 +73,7 @@ const alt = decorative ? '' : 'RoboCup';
 
 {
 	linked ? (
-		<a class="inline-mark" href="https://www.robocup.org/" rel="noopener"><img class:list={['robocup', size]} src={image.src} alt={alt} width={image.width} height={image.height} decoding="async" /></a>
+		<a class="inline-mark" href={href} rel={rel} data-preview={preview}><img class:list={['robocup', size]} src={image.src} alt={alt} width={image.width} height={image.height} decoding="async" /></a>
 	) : (
 		<img class:list={['robocup', size]} src={image.src} alt={alt} width={image.width} height={image.height} decoding="async" />
 	)

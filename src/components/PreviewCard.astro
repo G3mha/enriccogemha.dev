@@ -97,9 +97,11 @@ const { name, wide = false, readable = false } = Astro.props;
 		};
 
 		// Under the link, or above it when only that fits. When neither fits, as
-		// at high zoom, it goes on the side with more room. Sideways it stays
-		// inside the viewport. clientWidth and clientHeight leave out a
-		// scrollbar that takes up space, where innerWidth would count it.
+		// at high zoom, it goes on the side with more room and is cut to that
+		// room, scrolling inside, so it never covers the link or its focus ring.
+		// Sideways it stays inside the viewport. clientWidth and clientHeight
+		// leave out a scrollbar that takes up space, where innerWidth would
+		// count it.
 		const place = () => {
 			if (!current) return;
 			const { trigger, card } = current;
@@ -107,15 +109,22 @@ const { name, wide = false, readable = false } = Astro.props;
 			if (!box) return;
 			const viewWidth = document.documentElement.clientWidth;
 			const viewHeight = document.documentElement.clientHeight;
+			card.style.maxHeight = '';
+			card.style.overflowY = '';
 			const width = card.offsetWidth;
 			const height = card.offsetHeight;
-			const below = box.bottom + GAP;
-			const above = box.top - GAP - height;
-			const fitsBelow = below + height <= viewHeight - EDGE;
-			const fitsAbove = above >= EDGE;
-			const roomBelow = viewHeight - box.bottom;
-			const useBelow = fitsBelow || (!fitsAbove && roomBelow >= box.top);
-			const top = useBelow ? below : Math.max(EDGE, above);
+			const roomBelow = viewHeight - EDGE - (box.bottom + GAP);
+			const roomAbove = box.top - GAP - EDGE;
+			let top: number;
+			if (height <= roomBelow) top = box.bottom + GAP;
+			else if (height <= roomAbove) top = box.top - GAP - height;
+			else {
+				const useBelow = roomBelow >= roomAbove;
+				const room = Math.max(0, useBelow ? roomBelow : roomAbove);
+				card.style.maxHeight = `${room}px`;
+				card.style.overflowY = 'auto';
+				top = useBelow ? box.bottom + GAP : box.top - GAP - room;
+			}
 			const left = Math.max(EDGE, Math.min(box.left, viewWidth - width - EDGE));
 			card.style.top = `${top}px`;
 			card.style.left = `${left}px`;

@@ -1,0 +1,51 @@
+---
+/**
+ * The AWS DeepRacer service icon: a white car on AWS's green machine-learning
+ * tile. aws-deepracer-icon.svg is Arch_AWS-DeepRacer_64.svg from AWS's
+ * Architecture Icons package (the July 31, 2026 release, linked from
+ * aws.amazon.com/architecture/icons/), unchanged. The tile is the same colour
+ * in both themes, since AWS publishes no dark version.
+ *
+ * inline: the same size as the app icons in the Earlier list.
+ * large:  shown on its own above the DeepRacer project page.
+ *
+ * linked={false} drops the aws.amazon.com link, for places where the icon
+ * already sits inside another link. decorative sets empty alt text, for places
+ * where the words "AWS DeepRacer" are already written next to it.
+ */
+interface Props {
+	size?: 'inline' | 'large';
+	linked?: boolean;
+	decorative?: boolean;
+}
+
+const { size = 'inline', linked = true, decorative = false } = Astro.props;
+const alt = decorative ? '' : 'AWS DeepRacer';
+---
+
+<style>
+	.deepracer {
+		display: inline-block;
+		width: auto;
+	}
+
+	.deepracer.inline {
+		height: 1.6em;
+		vertical-align: middle;
+		margin-block: -0.3em;
+	}
+
+	.deepracer.large {
+		display: block;
+		width: 5.5rem;
+		height: auto;
+	}
+</style>
+
+{
+	linked ? (
+		<a class="inline-mark" href="https://aws.amazon.com/deepracer/" rel="noopener"><img class:list={['deepracer', size]} src="/assets/aws-deepracer-icon.svg" alt={alt} width="80" height="80" decoding="async" /></a>
+	) : (
+		<img class:list={['deepracer', size]} src="/assets/aws-deepracer-icon.svg" alt={alt} width="80" height="80" decoding="async" />
+	)
+}

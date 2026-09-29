@@ -5,6 +5,7 @@ status: archived
 period: "2022"
 role: Sole author.
 featured: false
+logos: [deepracer]
 order: 10
 stack:
   - Python

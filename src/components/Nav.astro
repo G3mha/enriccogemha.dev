@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import NameWordmark from './NameWordmark.astro';
 
 const path = Astro.url.pathname;
 const links = [
@@ -13,7 +14,7 @@ const isCurrent = (href: string) =>
 
 <header>
 	<nav class="wrapper" aria-label="Main">
-		<a class="wordmark" href="/">Enricco&nbsp;Gemha</a>
+		<a class="wordmark" href="/"><NameWordmark /></a>
 
 		<ul class="links">
 			{
@@ -50,13 +51,20 @@ const isCurrent = (href: string) =>
 		padding-block: 1rem;
 	}
 
+	/* The name is a drawing of Sacramento script (see NameWordmark). Script
+	   lowercase is small, about 0.31em, so it's set well above the old text
+	   size to read at a glance. */
 	.wordmark {
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-size: var(--text-lg);
+		display: block;
+		flex: none;
 		color: var(--ink);
 		text-decoration: none;
-		letter-spacing: -0.01em;
+	}
+
+	.wordmark :global(.name-wordmark) {
+		display: block;
+		height: 2.375rem;
+		width: auto;
 	}
 
 	.wordmark:hover {
@@ -145,11 +153,11 @@ const isCurrent = (href: string) =>
 		border-bottom-color: var(--accent);
 	}
 
-	/* Below 36em the name, four links and the toggle no longer fit on one
+	/* Below 39em the name, four links and the toggle no longer fit on one
 	   line, and letting the links wrap split them unevenly (3 + 1 on a 402px
 	   iPhone). So the nav becomes two rows on purpose: the name and the toggle
 	   on top, and the links on a full-width row under them. */
-	@media (max-width: 36em) {
+	@media (max-width: 39em) {
 		nav {
 			flex-wrap: wrap;
 			row-gap: 0.5rem;

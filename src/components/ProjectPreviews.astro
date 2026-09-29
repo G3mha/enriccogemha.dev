@@ -39,7 +39,7 @@ const titleLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 	projects.map(({ id, data }) => (
 		<div class="preview-card" id={`preview-${id}`} popover="manual" aria-hidden="true">
 			<div class="preview-head">
-				{data.icon && <img class="preview-icon" src={data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />}
+				{data.icon && <img class="preview-icon" src={data.icon} alt="" width="44" height="44" decoding="async" />}
 				<div>
 					<p class="preview-title">{!data.icon && data.logos.map((l) => titleLogos[l as keyof typeof titleLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{data.title}</p>
 					<p class="preview-meta">

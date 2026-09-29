@@ -40,11 +40,14 @@ const projects = work.filter((p) => ids.includes(p.id));
 const openingProjects = work.filter((p) => openings.includes(p.id));
 
 // The opening of a write-up as plain text: whole sentences from its first
-// paragraph, stopping before 300 characters so the card stays short and no
-// sentence that points further into the page ("what follows") comes along.
-// Markdown links and emphasis keep their words, and the few components used
-// in openings become the names they draw. Anything left in angle brackets or
-// braces fails the build, so a new component can't reach a card as markup.
+// paragraph, the first always and then more while the total stays under 300
+// characters, so the card stays short and no sentence that points further
+// into the page ("what follows") comes along. Markdown links and emphasis
+// keep their words, and the few components used in openings become the names
+// they draw. Apostrophes and double quotes are curled, as Astro does when it
+// renders the page. Anything left in angle brackets or braces, or any
+// straight quote, fails the build, so a new component or an unusual quote
+// can't reach a card as it's typed.
 const markNames: Record<string, string> = { NfxLogo: 'NFX', ThresholdLogo: 'Threshold', DaeroLogo: 'DAERO' };
 
 function opening(id: string, body = '') {
@@ -64,8 +67,12 @@ function opening(id: string, body = '') {
 		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
 		.replace(/(\*\*|\*|`)(.+?)\1/g, '$2')
 		.replace(/\s+/g, ' ')
-		.trim();
+		.trim()
+		.replace(/(\w)'(\w)/g, '$1’$2')
+		.replace(/(\ws)'(?=[\s.,;:!?]|$)/g, '$1’')
+		.replace(/"([^"]*)"/g, '“$1”');
 	if (/[<>{}]/.test(text)) throw new Error(`Markup left in the opening of ${id}: ${text}`);
+	if (/['"]/.test(text)) throw new Error(`Straight quote left in the opening of ${id}: ${text}`);
 	const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z0-9“"(])/);
 	let kept = sentences[0];
 	for (const sentence of sentences.slice(1)) {

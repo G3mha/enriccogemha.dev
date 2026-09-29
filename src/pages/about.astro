@@ -1,28 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Flag from '../components/Flag.astro';
-
-// Each links to the issuer's own verification page. Dates are as shown there.
-const certifications = [
-	{
-		name: 'AWS Certified Cloud Practitioner',
-		badge: '/assets/badge-aws-cloud-practitioner.png',
-		width: 340,
-		height: 340,
-		dates: 'Earned Aug 2025, valid until Aug 2028',
-		verify: 'https://www.credly.com/badges/93f53b4d-ed60-47e9-abdd-bc266ec1bf42/public_url',
-		verifier: 'Credly',
-	},
-	{
-		name: 'GitHub Foundations',
-		badge: '/assets/badge-github-foundations.svg',
-		width: 348,
-		height: 349,
-		dates: 'Earned Aug 2026, valid until Sep 2028',
-		verify: 'https://learn.microsoft.com/en-us/users/enriccogemha-8257/credentials/141fe52eb223f209',
-		verifier: 'Microsoft Learn',
-	},
-];
+import Certifications from '../components/Certifications.astro';
 ---
 
 <BaseLayout
@@ -120,24 +99,7 @@ const certifications = [
 
 		<section class="stack gap-3" aria-labelledby="certifications">
 			<h2 class="section-label" id="certifications">Certifications</h2>
-			<ul class="certs">
-				{
-					certifications.map((cert) => (
-						<li>
-							{/* The badge is a second way to click through for the mouse. Keyboard
-							    and screen-reader users get the one text link below instead. */}
-							<a class="cert-badge" href={cert.verify} rel="noopener" tabindex="-1" aria-hidden="true">
-								<img src={cert.badge} alt="" width={cert.width} height={cert.height} loading="lazy" decoding="async" />
-							</a>
-							<div class="cert-text">
-								<span class="cert-name">{cert.name}</span>
-								<span class="cert-dates">{cert.dates}</span>
-								<a href={cert.verify} rel="noopener">Verify on {cert.verifier}</a>
-							</div>
-						</li>
-					))
-				}
-			</ul>
+			<Certifications />
 		</section>
 
 		<section class="stack gap-3" aria-labelledby="elsewhere">
@@ -160,51 +122,6 @@ const certifications = [
 </BaseLayout>
 
 <style>
-	/* Each badge sits on white in both themes: AWS asks for its badges to be
-	   shown unaltered on white or very light backgrounds, and the GitHub
-	   badge's dark shield reads best there too. */
-	.certs {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-		gap: 1.5rem 2rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.certs li {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.cert-badge {
-		flex: none;
-		display: block;
-		padding: 0.5rem;
-		background: #ffffff;
-		border: 1px solid var(--rule);
-	}
-
-	.cert-badge img {
-		width: 5.5rem;
-		height: auto;
-	}
-
-	.cert-text {
-		display: grid;
-		gap: 0.15rem;
-		font-size: var(--text-base);
-	}
-
-	.cert-name {
-		font-weight: 600;
-		color: var(--ink);
-	}
-
-	.cert-dates {
-		color: var(--ink-tertiary);
-	}
 
 	.intro {
 		display: flex;

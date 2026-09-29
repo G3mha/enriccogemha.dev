@@ -22,8 +22,8 @@ export const collections = {
 			featured: z.boolean().default(false),
 			/** Lower sorts first. */
 			order: z.number().default(50),
-			/** A company or event logo shown with the project. */
-			logo: z.enum(['robocup', 'daero', 'pinpag', 'lua']).optional(),
+			/** Company, event or language logos shown with the project, in order. */
+			logos: z.array(z.enum(['robocup', 'daero', 'pinpag', 'lua'])).default([]),
 			/** The app's icon, shown before the title on its Work entry and project page. */
 			icon: z.string().optional(),
 			img: z.string().optional(),

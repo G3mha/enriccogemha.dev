@@ -5,7 +5,7 @@ status: archived
 period: "2024"
 role: Sole author.
 featured: false
-logo: lua
+logos: [lua]
 order: 8
 stack:
   - Swift

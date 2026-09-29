@@ -17,6 +17,10 @@ const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
 );
 const featured = projects.filter((p) => p.data.featured);
+
+// Logos drawn before a name in the Earlier list. Each sits inside the row's
+// link, so it drops its own link and alt text.
+const listLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo } as const;
 const rest = projects.filter((p) => !p.data.featured);
 
 // Each app once, with every store it's on. The name opens the project page;
@@ -142,7 +146,7 @@ const apps = [
 				{
 					rest.map((project) => (
 						<li>
-							<a href={`/work/${project.id}/`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logo === 'robocup' && <><RoboCupLogo linked={false} decorative />{' '}</>}{project.data.logo === 'pinpag' && <><PinPagLogo linked={false} decorative />{' '}</>}{project.data.logo === 'lua' && <><LuaLogo linked={false} decorative />{' '}</>}{project.data.title}</a>
+							<a href={`/work/${project.id}/`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.title}</a>
 							<span class="compact-summary">{project.data.summary}</span>
 							<span class="compact-meta">
 								<span>{project.data.period}</span>

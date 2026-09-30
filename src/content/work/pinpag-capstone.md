@@ -18,8 +18,10 @@ stack:
   - ModSecurity
   - Grafana
 links:
-  - label: Final report, in Insper’s repository
+  - label: Final report in Portuguese, in Insper’s repository
     href: https://repositorio.insper.edu.br/handle/11224/7570
+  - label: English translation, redacted (PDF)
+    href: /reports/pinpag-capstone-en-redacted.pdf
 ---
 
 A capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that couldn't be explained to an auditor.
@@ -41,3 +43,5 @@ The point wasn't the picture. It was that nobody could previously answer "what's
 Semgrep wired into GitLab CI so every build is scanned, with findings catalogued by CWE and carried through to dashboards and alerts. A dashboard built on the AWS WAF logs. A ModSecurity WAF on the OWASP rule set, validated on a test server. A Wazuh SIEM repaired and put back into service. Alerting across several channels.
 
 The scale figures for PinPag's platform are theirs rather than mine, so they aren't reproduced here.
+
+I translated the report into English. The English version leaves out the screenshots and passages that showed details of PinPag's production systems, and marks each place where something was removed.

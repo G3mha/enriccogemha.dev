@@ -16,7 +16,7 @@ export const collections = {
 			role: z.string(),
 			stack: z.array(z.string()),
 			links: z
-				.array(z.object({ label: z.string(), href: z.string().url() }))
+				.array(z.object({ label: z.string(), href: z.union([z.string().url(), z.string().regex(/^\/[^/]/)]) }))
 				.default([]),
 			/** Featured entries get a full block on the homepage; the rest are listed. */
 			featured: z.boolean().default(false),

@@ -3,6 +3,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Flag from '../components/Flag.astro';
 import Certifications from '../components/Certifications.astro';
 import ProjectPreviews from '../components/ProjectPreviews.astro';
+import PreviewCard from '../components/PreviewCard.astro';
+
+// Preview cards for the schools the text links to. Every fact is from the
+// school's own site: stanford.edu/about/history and facts.stanford.edu/about,
+// olin.edu/about and olin.edu/about/accreditation, and babson.edu's history
+// and at-a-glance pages.
+const schools = [
+	{
+		id: 'stanford',
+		name: 'Stanford University',
+		place: 'Stanford, California',
+		year: 'Founded 1885',
+		about: 'A research university founded by Leland and Jane Lathrop Stanford. It opened to students in 1891.',
+	},
+	{
+		id: 'olin',
+		name: 'Olin College of Engineering',
+		place: 'Needham, Massachusetts',
+		year: 'Chartered 1997',
+		about: 'An engineering college with three ABET-accredited bachelor’s degrees, on a campus next to Babson’s.',
+	},
+	{
+		id: 'babson',
+		name: 'Babson College',
+		place: 'Wellesley, Massachusetts',
+		year: 'Founded 1919',
+		about: 'A business school built around entrepreneurship. Roger Babson founded it as the Babson Institute, and it took its current name in 1969.',
+	},
+];
 ---
 
 <BaseLayout
@@ -46,10 +75,13 @@ import ProjectPreviews from '../components/ProjectPreviews.astro';
 					<a href="/work/pinpag-capstone/" data-preview="pinpag-capstone">PinPag</a>, a Brazilian payments company, on their live platform.
 				</p>
 				<p>
-					I also did two exchange programs during undergrad. In the summer of 2024 at
-					Stanford, I took courses in High-Performance Computing and Entrepreneurship, and
-					conducted a 30-min interview with legendary computer scientist John L. Hennessy.
-					Later, in the spring of 2025, I went to Olin and Babson, outside Boston. During
+					I also studied away from Insper twice. In the summer of 2024 I was a visiting
+					student at <a href="https://www.stanford.edu/" rel="noopener" data-preview="school-stanford">Stanford</a>, where I took courses in High-Performance
+					Computing and Entrepreneurship and interviewed
+					<a href="https://hennessy.stanford.edu/biography" rel="noopener">John L. Hennessy</a> for 30 minutes. He was Stanford’s
+					president from 2000 to 2016 and shared the 2017 Turing Award with David
+					Patterson. Then, in the spring of 2025, I did an exchange program at
+					<a href="https://www.olin.edu/" rel="noopener" data-preview="school-olin">Olin</a> and <a href="https://www.babson.edu/" rel="noopener" data-preview="school-babson">Babson</a>, outside Boston. During
 					that semester I started <a href="/work/opengiving/" data-preview="opengiving">OpenGiving</a> with two American
 					friends. It’s a marketplace where part of every sale goes to a fundraising
 					campaign. I wrote all of its code, and I’ve been on leave from it since I started
@@ -129,9 +161,44 @@ import ProjectPreviews from '../components/ProjectPreviews.astro';
 		</section>
 	</div>
 	<ProjectPreviews ids={['robocup', 'pinpag-capstone', 'opengiving', 'zeropunch']} />
+	{
+		schools.map((school) => (
+			<PreviewCard name={`school-${school.id}`}>
+				<p class="card-title">{school.name}</p>
+				<p class="card-meta">
+					<span>{school.place}</span>
+					<span>{school.year}</span>
+				</p>
+				<p class="card-about">{school.about}</p>
+			</PreviewCard>
+		))
+	}
 </BaseLayout>
 
 <style>
+	/* The school preview cards, laid out like the certification cards. */
+	.card-title {
+		font-family: var(--font-display);
+		font-weight: 600;
+		font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 40;
+		font-size: var(--text-lg);
+		line-height: 1.3;
+		color: var(--ink);
+	}
+
+	.card-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.1rem 0.75rem;
+		font-size: var(--text-sm);
+		color: var(--ink-tertiary);
+	}
+
+	.card-about {
+		margin-top: 0.6rem;
+	}
+
+
 	.intro {
 		display: flex;
 		flex-direction: column;

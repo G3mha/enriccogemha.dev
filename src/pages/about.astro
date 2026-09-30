@@ -7,9 +7,11 @@ import ProjectPreviews from '../components/ProjectPreviews.astro';
 import PreviewCard from '../components/PreviewCard.astro';
 
 // Each card shows the owner's logo, unchanged: the file its own site serves
-// (Stanford's identity site, Olin's and Insper's site headers, Babson's brand
-// guidelines, Harvard's and Brown's site icons, magic.wizards.com's header,
-// Nintendo Japan's GBA page). Babson's sample is framed to its drawing, and
+// (Stanford's identity site, Olin's site header, Babson's brand guidelines,
+// Harvard's and Brown's site icons, magic.wizards.com's header, Nintendo
+// Japan's GBA page). Insper's is the red wordmark as seeklogo.com publishes
+// it, in #c5242d; insper.edu.br's own header uses a black version, and its
+// pages don't show that exact red. Babson's sample is framed to its drawing, and
 // Olin's inline SVG got a viewBox spelled for use as a file. The logos are
 // their owners' trademarks. Each sits on a chip in the colour it was drawn
 // for, white for most and Wizards' header black for Magic, in both themes.
@@ -22,7 +24,7 @@ import PreviewCard from '../components/PreviewCard.astro';
 const schools = [
 	{
 		id: 'insper',
-		logo: { src: '/assets/school-insper.svg', width: 137, height: 48, chip: 'light' },
+		logo: { src: '/assets/school-insper.svg', width: 2843, height: 1000, chip: 'light' },
 		name: 'Insper',
 		place: 'São Paulo, Brazil',
 		year: 'Founded 1987',

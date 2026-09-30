@@ -7,10 +7,18 @@ import ProjectPreviews from '../components/ProjectPreviews.astro';
 import PreviewCard from '../components/PreviewCard.astro';
 
 // Preview cards for the schools the text links to. Every fact is from the
-// school's own site: stanford.edu/about/history and facts.stanford.edu/about,
-// olin.edu/about and olin.edu/about/accreditation, and babson.edu's history
-// and at-a-glance pages.
+// school's own site: insper.edu.br/pt/quem-somos/faq-insper,
+// stanford.edu/about/history and facts.stanford.edu/about, olin.edu/about and
+// olin.edu/about/accreditation, babson.edu's history and at-a-glance pages,
+// brown.edu/about, and harvard.edu/about and harvard.edu/about/history.
 const schools = [
+	{
+		id: 'insper',
+		name: 'Insper',
+		place: 'São Paulo, Brazil',
+		year: 'Founded 1987',
+		about: 'A private, nonprofit school for higher education and research. It started as Ibmec São Paulo and took the name Insper in 2009.',
+	},
 	{
 		id: 'stanford',
 		name: 'Stanford University',
@@ -31,6 +39,20 @@ const schools = [
 		place: 'Wellesley, Massachusetts',
 		year: 'Founded 1919',
 		about: 'A business school built around entrepreneurship. Roger Babson founded it as the Babson Institute, and it took its current name in 1969.',
+	},
+	{
+		id: 'brown',
+		name: 'Brown University',
+		place: 'Providence, Rhode Island',
+		year: 'Founded 1764',
+		about: 'A nonprofit research university that describes its approach to learning as student-centered.',
+	},
+	{
+		id: 'harvard',
+		name: 'Harvard University',
+		place: 'Cambridge, Massachusetts',
+		year: 'Founded 1636',
+		about: 'The first college in the American colonies. It also has campuses in the Longwood and Allston neighborhoods of Boston.',
 	},
 ];
 ---
@@ -63,7 +85,7 @@ const schools = [
 				<p>
 					My first code was for my family’s medical accounting office, where I worked in
 					high school. Most of the job was paperwork done by hand, so I taught myself
-					Python to automate some of it. Then I went to Insper in São Paulo to pursue a
+					Python to automate some of it. Then I went to <a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a> in São Paulo to pursue a
 					B.Sc. in Computer Engineering.
 				</p>
 				<p>
@@ -103,12 +125,13 @@ const schools = [
 			<h2 class="section-label" id="now">What I’m doing now</h2>
 			<div class="prose">
 				<p>
-					I’m pursuing an M.Sc. in Innovation Management and Entrepreneurship at Brown, and
+					I’m pursuing an M.Sc. in Innovation Management and Entrepreneurship at
+					<a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a>, and
 					I finish in May 2027.
 				</p>
 				<p>
 					But I’m still building my technical skills. This term I’m taking Systems Security
-					at Harvard University (due to Brown offering cross-registration), and I’m
+					at <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard University</a> (due to Brown offering cross-registration), and I’m
 					studying for the CompTIA Security+ certification.
 				</p>
 			</div>

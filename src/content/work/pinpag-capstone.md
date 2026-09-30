@@ -17,9 +17,12 @@ stack:
   - Wazuh
   - ModSecurity
   - Grafana
+links:
+  - label: Final report, in Insper’s repository
+    href: https://repositorio.insper.edu.br/handle/11224/7570
 ---
 
-A 360-hour capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that couldn't be explained to an auditor.
+A capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that couldn't be explained to an auditor.
 
 ## Two clouds
 

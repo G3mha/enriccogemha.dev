@@ -55,6 +55,26 @@ const schools = [
 		about: 'The first college in the American colonies. It also has campuses in the Longwood and Allston neighborhoods of Boston.',
 	},
 ];
+
+// And for the games in Elsewhere, from magic.wizards.com (its footer, and its
+// articles dating the first set, Alpha, to August 1993) and Nintendo's own
+// history pages for the Game Boy Advance.
+const games = [
+	{
+		id: 'magic',
+		name: 'Magic: The Gathering',
+		place: 'Wizards of the Coast',
+		year: 'First released 1993',
+		about: 'A trading card game created by Richard Garfield. Its first set, Alpha, came out in August 1993.',
+	},
+	{
+		id: 'gba',
+		name: 'Game Boy Advance',
+		place: 'Nintendo',
+		year: 'Released 2001',
+		about: 'Nintendo’s 32-bit handheld with a 2.9‑inch colour screen, launched in Japan in March 2001 and in the US that June.',
+	},
+];
 ---
 
 <BaseLayout
@@ -174,7 +194,8 @@ const schools = [
 				</p>
 				<p>
 					In my free time, I play pickup soccer whenever I can find a game, or you’ll see
-					me playing Magic: The Gathering or retro games (yes, I love my GBA!).
+					me playing <a href="https://magic.wizards.com/en" rel="noopener" data-preview="game-magic">Magic: The Gathering</a> or retro games (yes, I love my
+					<a href="https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Game-Boy-Advance/Game-Boy-Advance-627139.html" rel="noopener" data-preview="game-gba">GBA</a>!).
 				</p>
 				<p>
 					Write to me at <a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>,
@@ -186,21 +207,21 @@ const schools = [
 	</div>
 	<ProjectPreviews ids={['robocup', 'pinpag-capstone', 'opengiving', 'zeropunch']} />
 	{
-		schools.map((school) => (
-			<PreviewCard name={`school-${school.id}`}>
-				<p class="card-title">{school.name}</p>
+		[...schools.map((s) => ({ ...s, key: `school-${s.id}` })), ...games.map((g) => ({ ...g, key: `game-${g.id}` }))].map((item) => (
+			<PreviewCard name={item.key}>
+				<p class="card-title">{item.name}</p>
 				<p class="card-meta">
-					<span>{school.place}</span>
-					<span>{school.year}</span>
+					<span>{item.place}</span>
+					<span>{item.year}</span>
 				</p>
-				<p class="card-about">{school.about}</p>
+				<p class="card-about">{item.about}</p>
 			</PreviewCard>
 		))
 	}
 </BaseLayout>
 
 <style>
-	/* The school preview cards, laid out like the certification cards. */
+	/* The school and game preview cards, laid out like the certification cards. */
 	.card-title {
 		font-family: var(--font-display);
 		font-weight: 600;

@@ -6,6 +6,14 @@ import Certifications from '../components/Certifications.astro';
 import ProjectPreviews from '../components/ProjectPreviews.astro';
 import PreviewCard from '../components/PreviewCard.astro';
 
+// Each card shows the owner's logo, unchanged: the file its own site serves
+// (Stanford's identity site, Olin's and Insper's site headers, Babson's brand
+// guidelines, Harvard's and Brown's site icons, magic.wizards.com's header,
+// Nintendo Japan's GBA page). Babson's sample is framed to its drawing, and
+// Olin's inline SVG got a viewBox spelled for use as a file. The logos are
+// their owners' trademarks. Each sits on a chip in the colour it was drawn
+// for, white for most and Wizards' header black for Magic, in both themes.
+//
 // Preview cards for the schools the text links to. Every fact is from the
 // school's own site: insper.edu.br/pt/quem-somos/faq-insper,
 // stanford.edu/about/history and facts.stanford.edu/about, olin.edu/about and
@@ -14,6 +22,7 @@ import PreviewCard from '../components/PreviewCard.astro';
 const schools = [
 	{
 		id: 'insper',
+		logo: { src: '/assets/school-insper.svg', width: 137, height: 48, chip: 'light' },
 		name: 'Insper',
 		place: 'São Paulo, Brazil',
 		year: 'Founded 1987',
@@ -21,6 +30,7 @@ const schools = [
 	},
 	{
 		id: 'stanford',
+		logo: { src: '/assets/school-stanford.png', width: 150, height: 150, chip: 'light' },
 		name: 'Stanford University',
 		place: 'Stanford, California',
 		year: 'Founded 1885',
@@ -28,6 +38,7 @@ const schools = [
 	},
 	{
 		id: 'olin',
+		logo: { src: '/assets/school-olin.svg', width: 330, height: 65, chip: 'light' },
 		name: 'Olin College of Engineering',
 		place: 'Needham, Massachusetts',
 		year: 'Chartered 1997',
@@ -35,6 +46,7 @@ const schools = [
 	},
 	{
 		id: 'babson',
+		logo: { src: '/assets/school-babson.svg', width: 299, height: 190, chip: 'light' },
 		name: 'Babson College',
 		place: 'Wellesley, Massachusetts',
 		year: 'Founded 1919',
@@ -42,6 +54,7 @@ const schools = [
 	},
 	{
 		id: 'brown',
+		logo: { src: '/assets/school-brown.png', width: 180, height: 180, chip: 'light' },
 		name: 'Brown University',
 		place: 'Providence, Rhode Island',
 		year: 'Founded 1764',
@@ -49,6 +62,7 @@ const schools = [
 	},
 	{
 		id: 'harvard',
+		logo: { src: '/assets/school-harvard.png', width: 192, height: 192, chip: 'light' },
 		name: 'Harvard University',
 		place: 'Cambridge, Massachusetts',
 		year: 'Founded 1636',
@@ -62,6 +76,7 @@ const schools = [
 const games = [
 	{
 		id: 'magic',
+		logo: { src: '/assets/game-magic.png', width: 257, height: 86, chip: 'dark' },
 		name: 'Magic: The Gathering',
 		place: 'Wizards of the Coast',
 		year: 'First released 1993',
@@ -69,6 +84,7 @@ const games = [
 	},
 	{
 		id: 'gba',
+		logo: { src: '/assets/game-gba.gif', width: 250, height: 44, chip: 'light' },
 		name: 'Game Boy Advance',
 		place: 'Nintendo',
 		year: 'Released 2001',
@@ -209,6 +225,7 @@ const games = [
 	{
 		[...schools.map((s) => ({ ...s, key: `school-${s.id}` })), ...games.map((g) => ({ ...g, key: `game-${g.id}` }))].map((item) => (
 			<PreviewCard name={item.key}>
+				<span class:list={['card-logo', item.logo.chip]}><img src={item.logo.src} alt="" width={item.logo.width} height={item.logo.height} decoding="async" /></span>
 				<p class="card-title">{item.name}</p>
 				<p class="card-meta">
 					<span>{item.place}</span>
@@ -222,6 +239,25 @@ const games = [
 
 <style>
 	/* The school and game preview cards, laid out like the certification cards. */
+	.card-logo {
+		display: inline-flex;
+		margin-bottom: 0.6rem;
+		padding: 0.4rem 0.6rem;
+		border: 1px solid var(--rule);
+		background: #ffffff;
+	}
+
+	.card-logo.dark {
+		background: #0c0f11;
+	}
+
+	.card-logo img {
+		height: 2rem;
+		width: auto;
+		max-width: 11rem;
+		object-fit: contain;
+	}
+
 	.card-title {
 		font-family: var(--font-display);
 		font-weight: 600;

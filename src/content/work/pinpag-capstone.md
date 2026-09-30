@@ -12,6 +12,7 @@ stack:
   - Python
   - boto3
   - AWS
+  - Azure
   - Semgrep
   - Wazuh
   - ModSecurity
@@ -19,6 +20,10 @@ stack:
 ---
 
 A 360-hour capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that couldn't be explained to an auditor.
+
+## Two clouds
+
+PinPag runs on both AWS and Azure. This was the second phase of a project that an earlier Insper team started in 2023, and [their public report](https://repositorio.insper.edu.br/handle/11224/6789) describes the cost monitoring they built on both clouds. By the time we started, parts of it had stopped working on each side, so the first job was bringing it back. On AWS that meant rebuilding the pipeline from the cost and usage report through Glue and Athena to Grafana. On Azure it meant restoring the daily cost export and the Data Factory and Data Explorer steps behind the Azure cost dashboard. We then added a weekly cost figure that shows both clouds side by side, and alerts that cover both.
 
 ## Mapping what could reach what
 
@@ -30,6 +35,6 @@ The point wasn't the picture. It was that nobody could previously answer "what's
 
 ## The rest
 
-Semgrep wired into GitLab CI so every build is scanned, with findings catalogued by CWE and carried through to dashboards and alerts. A ModSecurity WAF on the OWASP rule set. A Wazuh SIEM repaired and put back into service. Alerting across several channels.
+Semgrep wired into GitLab CI so every build is scanned, with findings catalogued by CWE and carried through to dashboards and alerts. A dashboard built on the AWS WAF logs. A ModSecurity WAF on the OWASP rule set, validated on a test server. A Wazuh SIEM repaired and put back into service. Alerting across several channels.
 
 The scale figures for PinPag's platform are theirs rather than mine, so they aren't reproduced here.

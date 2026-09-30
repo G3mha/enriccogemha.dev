@@ -1,15 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Flag from '../components/Flag.astro';
+import DaeroLogo from '../components/DaeroLogo.astro';
 import Certifications from '../components/Certifications.astro';
 import ProjectPreviews from '../components/ProjectPreviews.astro';
 import PreviewCard from '../components/PreviewCard.astro';
 
 // Preview cards for the schools the text links to. Every fact is from the
-// school's own site: stanford.edu/about/history and facts.stanford.edu/about,
-// olin.edu/about and olin.edu/about/accreditation, and babson.edu's history
-// and at-a-glance pages.
+// school's own site: insper.edu.br/pt/quem-somos/faq-insper,
+// stanford.edu/about/history and facts.stanford.edu/about, olin.edu/about and
+// olin.edu/about/accreditation, babson.edu's history and at-a-glance pages,
+// brown.edu/about, and harvard.edu/about and harvard.edu/about/history.
 const schools = [
+	{
+		id: 'insper',
+		name: 'Insper',
+		place: 'São Paulo, Brazil',
+		year: 'Founded 1987',
+		about: 'A private, nonprofit school for higher education and research. It started as Ibmec São Paulo and took the name Insper in 2009.',
+	},
 	{
 		id: 'stanford',
 		name: 'Stanford University',
@@ -30,6 +39,40 @@ const schools = [
 		place: 'Wellesley, Massachusetts',
 		year: 'Founded 1919',
 		about: 'A business school built around entrepreneurship. Roger Babson founded it as the Babson Institute, and it took its current name in 1969.',
+	},
+	{
+		id: 'brown',
+		name: 'Brown University',
+		place: 'Providence, Rhode Island',
+		year: 'Founded 1764',
+		about: 'A nonprofit research university that describes its approach to learning as student-centered.',
+	},
+	{
+		id: 'harvard',
+		name: 'Harvard University',
+		place: 'Cambridge, Massachusetts',
+		year: 'Founded 1636',
+		about: 'The first college in the American colonies. It also has campuses in the Longwood and Allston neighborhoods of Boston.',
+	},
+];
+
+// And for the games in Elsewhere, from magic.wizards.com (its footer, and its
+// articles dating the first set, Alpha, to August 1993) and Nintendo's own
+// history pages for the Game Boy Advance.
+const games = [
+	{
+		id: 'magic',
+		name: 'Magic: The Gathering',
+		place: 'Wizards of the Coast',
+		year: 'First released 1993',
+		about: 'A trading card game created by Richard Garfield. Its first set, Alpha, came out in August 1993.',
+	},
+	{
+		id: 'gba',
+		name: 'Game Boy Advance',
+		place: 'Nintendo',
+		year: 'Released 2001',
+		about: 'Nintendo’s 32-bit handheld with a 2.9‑inch colour screen, launched in Japan in March 2001 and in the US that June.',
 	},
 ];
 ---
@@ -62,7 +105,7 @@ const schools = [
 				<p>
 					My first code was for my family’s medical accounting office, where I worked in
 					high school. Most of the job was paperwork done by hand, so I taught myself
-					Python to automate some of it. Then I went to Insper in São Paulo to pursue a
+					Python to automate some of it. Then I went to <a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a> in São Paulo to pursue a
 					B.Sc. in Computer Engineering.
 				</p>
 				<p>
@@ -88,7 +131,7 @@ const schools = [
 					at Brown.
 				</p>
 				<p>
-					In September 2025 I joined <a href="/work/zeropunch/" data-preview="zeropunch">DAERO</a>, a Boston startup that
+					In September 2025 I joined <DaeroLogo href="/work/zeropunch/" preview="zeropunch" />, a Boston startup that
 					makes software for construction crews, as its first engineering hire. The first
 					version of their iOS app, their main product, already existed. I worked on it for
 					ten months, and in February 2026 I started rewriting it from scratch, which
@@ -102,12 +145,13 @@ const schools = [
 			<h2 class="section-label" id="now">What I’m doing now</h2>
 			<div class="prose">
 				<p>
-					I’m pursuing an M.Sc. in Innovation Management and Entrepreneurship at Brown, and
+					I’m pursuing an M.Sc. in Innovation Management and Entrepreneurship at
+					<a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a>, and
 					I finish in May 2027.
 				</p>
 				<p>
 					But I’m still building my technical skills. This term I’m taking Systems Security
-					at Harvard University (due to Brown offering cross-registration), and I’m
+					at <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard University</a> (due to Brown offering cross-registration), and I’m
 					studying for the CompTIA Security+ certification.
 				</p>
 			</div>
@@ -150,7 +194,8 @@ const schools = [
 				</p>
 				<p>
 					In my free time, I play pickup soccer whenever I can find a game, or you’ll see
-					me playing Magic: The Gathering or retro games (yes, I love my GBA!).
+					me playing <a href="https://magic.wizards.com/en" rel="noopener" data-preview="game-magic">Magic: The Gathering</a> or retro games (yes, I love my
+					<a href="https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Game-Boy-Advance/Game-Boy-Advance-627139.html" rel="noopener" data-preview="game-gba">GBA</a>!).
 				</p>
 				<p>
 					Write to me at <a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>,
@@ -162,21 +207,21 @@ const schools = [
 	</div>
 	<ProjectPreviews ids={['robocup', 'pinpag-capstone', 'opengiving', 'zeropunch']} />
 	{
-		schools.map((school) => (
-			<PreviewCard name={`school-${school.id}`}>
-				<p class="card-title">{school.name}</p>
+		[...schools.map((s) => ({ ...s, key: `school-${s.id}` })), ...games.map((g) => ({ ...g, key: `game-${g.id}` }))].map((item) => (
+			<PreviewCard name={item.key}>
+				<p class="card-title">{item.name}</p>
 				<p class="card-meta">
-					<span>{school.place}</span>
-					<span>{school.year}</span>
+					<span>{item.place}</span>
+					<span>{item.year}</span>
 				</p>
-				<p class="card-about">{school.about}</p>
+				<p class="card-about">{item.about}</p>
 			</PreviewCard>
 		))
 	}
 </BaseLayout>
 
 <style>
-	/* The school preview cards, laid out like the certification cards. */
+	/* The school and game preview cards, laid out like the certification cards. */
 	.card-title {
 		font-family: var(--font-display);
 		font-weight: 600;

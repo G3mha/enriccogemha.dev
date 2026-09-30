@@ -13,7 +13,10 @@
  * the vertical bar five units from the hoist. Spain follows its constitution:
  * red, yellow and red stripes, the yellow twice as tall as each red, on a
  * 3 x 2 field. This is the civil flag, without the coat of arms, which Spanish
- * law allows and which at text size would be a smudge.
+ * law allows and which at text size would be a smudge. The United States
+ * follows Executive Order 10834: a 1.9 x 1 field of thirteen stripes, the
+ * union 7/13 of the hoist tall and 0.76 of it wide. Its 50 stars are left out
+ * for the same reason as Brazil's.
  *
  * Pass decorative when the country is already named in the text beside the
  * flag, so screen readers don't read the name twice.
@@ -22,7 +25,7 @@
  * beside it. The hairline outline keeps white stripes visible on light paper.
  */
 interface Props {
-	country: 'th' | 'fr' | 'br' | 'se' | 'es';
+	country: 'th' | 'fr' | 'br' | 'se' | 'es' | 'us';
 	/** Place name, used as the accessible name and hover tooltip. */
 	label?: string;
 	/** Hide from screen readers; use when the text already names the country. */
@@ -48,6 +51,8 @@ const a11y = decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label
 		<svg class="flag" viewBox="0 0 9 6" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
 	) : country === 'fr' ? (
 		<svg class="flag" viewBox="0 0 3 2" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+	) : country === 'us' ? (
+		<svg class="flag" viewBox="0 0 247 130" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="247" height="130" fill="#bd3d44" /><path d="M0 15h247M0 35h247M0 55h247M0 75h247M0 95h247M0 115h247" stroke="#fff" stroke-width="10" /><rect width="98.8" height="70" fill="#192f5d" /></svg>
 	) : country === 'es' ? (
 		<svg class="flag" viewBox="0 0 12 8" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="12" height="8" fill="#aa151b" /><rect y="2" width="12" height="4" fill="#f1bf00" /></svg>
 	) : country === 'se' ? (

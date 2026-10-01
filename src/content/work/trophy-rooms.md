@@ -19,6 +19,12 @@ links:
     href: https://trophyrooms.org
   - label: App Store
     href: https://apps.apple.com/us/app/trophy-rooms/id6799829599
+  - label: API source
+    href: https://github.com/G3mha/trophy-rooms-backend
+  - label: Web source
+    href: https://github.com/G3mha/trophy-rooms-web
+  - label: iOS source
+    href: https://github.com/G3mha/trophy-rooms-ios
 ---
 
 ## Giving a game a stable identity
@@ -31,6 +37,6 @@ That produces 28,784 distinct titles across 47,616 platform entries. Those two n
 
 ## Shape
 
-138 GraphQL root fields across 65 queries and 73 mutations, 19 Prisma models, 12 enums, 13 migrations. 1,284 commits over nine months.
+138 GraphQL root fields across 65 queries and 73 mutations, 19 Prisma models, 12 enums, 13 migrations. 1,284 commits over nine months, across the three repositories.
 
-No automated tests, anywhere. CI was added late and runs lint and build only. For a schema this size that's the weakest thing about the project, and pretending otherwise would be silly.
+No automated tests, anywhere. CI was added late, to the API only, and runs lint, the build and a check that generated files are up to date. For a schema this size that's the weakest thing about the project, and pretending otherwise would be silly.

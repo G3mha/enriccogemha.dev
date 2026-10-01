@@ -4,109 +4,7 @@ import Flag from '../components/Flag.astro';
 import DaeroLogo from '../components/DaeroLogo.astro';
 import Certifications from '../components/Certifications.astro';
 import ProjectPreviews from '../components/ProjectPreviews.astro';
-import PreviewCard from '../components/PreviewCard.astro';
-
-// Each card shows the owner's logo, unchanged: the file its own site serves
-// (Stanford's identity site, Olin's site header, Babson's brand guidelines,
-// Harvard's and Brown's site icons, magic.wizards.com's header, Nintendo
-// Japan's GBA page). Insper's is the red wordmark as seeklogo.com publishes
-// it, in #c5242d; insper.edu.br's own header uses a black version, and its
-// pages don't show that exact red. Babson's sample is framed to its drawing, and
-// Olin's inline SVG got a viewBox spelled for use as a file. The logos are
-// their owners' trademarks. Each sits on a chip in the colour it was drawn
-// for, white for most and Wizards' header black for Magic, in both themes.
-//
-// Preview cards for the schools the text links to. Each line says what the
-// school is known for, from its own pages: Insper's teaching-method and
-// engineering pages and pfe.insper.edu.br (the Capstone);
-// facts.stanford.edu/research/technology-inventions; olin.edu/about and
-// olin.edu/about/history/founding-precepts; babson.edu's page for its
-// first-year course, Foundations of Management and Entrepreneurship; the
-// Open Curriculum pages on college.brown.edu; and Harvard Law School's and
-// Harvard Business School's pages on the case method (the share of cases
-// written by HBS faculty is HBS's own figure, so the line credits it). Places
-// and years are from insper.edu.br/pt/quem-somos/faq-insper,
-// stanford.edu/about, olin.edu/about, babson.edu's history page,
-// brown.edu/about/facts and harvard.edu/about.
-const schools = [
-	{
-		id: 'insper',
-		logo: { src: '/assets/school-insper.svg', width: 2843, height: 1000, chip: 'light' },
-		name: 'Insper',
-		place: 'São Paulo, Brazil',
-		year: 'Founded 1987',
-		about: 'Classes are built around real problems. Engineering students learn through hands-on projects and spend a full term building something for an outside partner.',
-	},
-	{
-		id: 'stanford',
-		logo: { src: '/assets/school-stanford.png', width: 150, height: 150, chip: 'light' },
-		name: 'Stanford University',
-		place: 'Stanford, California',
-		year: 'Founded 1885',
-		about: 'Recombinant DNA, the tool that launched the biotech industry, was co-developed at Stanford. So was PageRank, the grad-student algorithm that started Google.',
-	},
-	{
-		id: 'olin',
-		logo: { src: '/assets/school-olin.svg', width: 330, height: 65, chip: 'light' },
-		name: 'Olin College of Engineering',
-		place: 'Needham, Massachusetts',
-		year: 'Chartered 1997',
-		about: 'Started from scratch to change how engineers are taught. It has no departments, and students design and build real projects from their first semester.',
-	},
-	{
-		id: 'babson',
-		logo: { src: '/assets/school-babson.svg', width: 299, height: 190, chip: 'light' },
-		name: 'Babson College',
-		place: 'Wellesley, Massachusetts',
-		year: 'Founded 1919',
-		about: 'Every first-year student takes a yearlong course where they start and run a real business with classmates. All the profits go to charity.',
-	},
-	{
-		id: 'brown',
-		logo: { src: '/assets/school-brown.png', width: 180, height: 180, chip: 'light' },
-		name: 'Brown University',
-		place: 'Providence, Rhode Island',
-		year: 'Founded 1764',
-		about: 'Undergrads plan their own studies with no required core classes. There are no GPAs or class rankings, and any course can be taken satisfactory/no credit.',
-	},
-	{
-		id: 'harvard',
-		logo: { src: '/assets/school-harvard.png', width: 192, height: 192, chip: 'light' },
-		name: 'Harvard University',
-		place: 'Cambridge, Massachusetts',
-		year: 'Founded 1636',
-		about: 'Its law school pioneered the case method of teaching. Its business school borrowed it and says its faculty write most of the cases business schools use worldwide.',
-	},
-];
-
-// And for the games in Elsewhere. Magic: Hasbro calls it the world's first
-// trading card game (investor.hasbro.com/magic-gathering), Guinness World
-// Records its "first modern trading card game", and the Strong National
-// Museum of Play lists it as inducted into the National Toy Hall of Fame in
-// 2019 (museumofplay.org). The GBA:
-// Nintendo's sales totals for the whole Game Boy Advance family
-// (nintendo.co.jp/ir/en/finance/hard_soft, final since it's discontinued) and
-// its Japanese product page, which says it plays Game Boy and Game Boy Color
-// software. Makers and years are from magic.wizards.com's footer and
-// Nintendo's corporate history.
-const games = [
-	{
-		id: 'magic',
-		logo: { src: '/assets/game-magic.png', width: 257, height: 86, chip: 'dark' },
-		name: 'Magic: The Gathering',
-		place: 'Wizards of the Coast',
-		year: 'First released 1993',
-		about: 'It started the trading card game genre, where you build a deck from cards you collect and trade. It joined the National Toy Hall of Fame in 2019.',
-	},
-	{
-		id: 'gba',
-		logo: { src: '/assets/game-gba.gif', width: 250, height: 44, chip: 'light' },
-		name: 'Game Boy Advance',
-		place: 'Nintendo',
-		year: 'Released 2001',
-		about: 'It sold 81.51 million handhelds and 377.42 million games worldwide. It also plays Game Boy and Game Boy Color cartridges.',
-	},
-];
+import LogoCards from '../components/LogoCards.astro';
 ---
 
 <BaseLayout
@@ -238,64 +136,10 @@ const games = [
 		</section>
 	</div>
 	<ProjectPreviews ids={['robocup', 'pinpag-capstone', 'opengiving', 'zeropunch']} />
-	{
-		[...schools.map((s) => ({ ...s, key: `school-${s.id}` })), ...games.map((g) => ({ ...g, key: `game-${g.id}` }))].map((item) => (
-			<PreviewCard name={item.key}>
-				<span class:list={['card-logo', item.logo.chip]}><img src={item.logo.src} alt="" width={item.logo.width} height={item.logo.height} decoding="async" /></span>
-				<p class="card-title">{item.name}</p>
-				<p class="card-meta">
-					<span>{item.place}</span>
-					<span>{item.year}</span>
-				</p>
-				<p class="card-about">{item.about}</p>
-			</PreviewCard>
-		))
-	}
+	<LogoCards ids={['school-insper', 'school-stanford', 'school-olin', 'school-babson', 'school-brown', 'school-harvard', 'game-magic', 'game-gba']} />
 </BaseLayout>
 
 <style>
-	/* The school and game preview cards, laid out like the certification cards. */
-	.card-logo {
-		display: inline-flex;
-		margin-bottom: 0.6rem;
-		padding: 0.4rem 0.6rem;
-		border: 1px solid var(--rule);
-		background: #ffffff;
-	}
-
-	.card-logo.dark {
-		background: #0c0f11;
-	}
-
-	.card-logo img {
-		height: 2rem;
-		width: auto;
-		max-width: 11rem;
-		object-fit: contain;
-	}
-
-	.card-title {
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 40;
-		font-size: var(--text-lg);
-		line-height: 1.3;
-		color: var(--ink);
-	}
-
-	.card-meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.1rem 0.75rem;
-		font-size: var(--text-sm);
-		color: var(--ink-tertiary);
-	}
-
-	.card-about {
-		margin-top: 0.6rem;
-	}
-
-
 	.intro {
 		display: flex;
 		flex-direction: column;

@@ -26,26 +26,28 @@ npm run build    # must pass before committing
 
 ## Preview cards
 
-Links to projects, certifications, schools and games open a small card on hover
-or keyboard focus. A project card is built from the same content file as its
-page: either a summary or the opening of the write-up. A certification card
-lists what the exam covers, from the issuer's own guide. A school or game card
-on the About page says what that school or game is known for, like Brown having
+Links to projects, certifications, schools, games and companies open a small
+card on hover or keyboard focus. A project card is built from the same content
+file as its page: either a summary or the opening of the write-up. A
+certification card lists what the exam covers, from the issuer's own guide. A
+school, game or company card says what that one is known for, like Brown having
 no required core classes or Magic starting the trading card game genre. On a
 phone a tap just follows the link, and without JavaScript every link still
 works.
 
 `PreviewCard.astro` holds the card and the script that opens and places it.
 `ProjectPreviews.astro` builds the project cards, `Certifications.astro` the
-certification ones, and `src/pages/about.astro` the school and game ones. The
-comments above its `schools` and `games` arrays list the source for every fact
+certification ones, and `LogoCards.astro` the school, game and company ones from
+`src/data/cards.ts`. The comments in that file list the source for every fact
 on those cards.
 
 ## Rules I hold this to
 
-Every number on the site is one I counted, from a repository or a public page,
-and the page says where. If a reader can't check a figure, it doesn't go up.
-Projects carry a status, and `live` means a stranger can use it today.
+Every number on the site comes from a repository, a public page or my own
+records, and most pages link to where theirs come from. Some can't be checked
+from outside, like counts from OpenGiving's and ZeroPunch's private repositories
+and the RoboCup club's $40,000 budget. Projects carry a status, and `live` means
+a stranger can use it today.
 
 ## License
 

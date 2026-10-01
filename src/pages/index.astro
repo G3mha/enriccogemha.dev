@@ -15,6 +15,7 @@ import SwiftLogo from '../components/SwiftLogo.astro';
 import DeepRacerLogo from '../components/DeepRacerLogo.astro';
 import Certifications from '../components/Certifications.astro';
 import ProjectPreviews from '../components/ProjectPreviews.astro';
+import LogoCards from '../components/LogoCards.astro';
 
 const projects = (await getCollection('work')).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -76,15 +77,15 @@ const apps = [
 					the code for it: web, iOS and Android apps, and the backend API they share.
 				</p>
 				<p>
-					I grew up in <span class="nowrap">São Paulo <Flag country="br" label="Brazil" /></span>. Currently, I am studying at Brown
-					<span class="nowrap">University <Flag country="us" label="United States" /></span> until May 2027, pursuing an MS in Entrepreneurship, and studying
-					cybersecurity at Harvard University (cross-registered in person). Before Brown I
+					I grew up in <span class="nowrap">São Paulo <Flag country="br" label="Brazil" /></span>. Currently, I am studying at
+					<span class="nowrap"><a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a> <Flag country="us" label="United States" /></span> until May 2027, pursuing an MS in Entrepreneurship, and studying
+					cybersecurity at <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard</a> (cross-registered in person). Before Brown I
 					was the first engineering hire at <DaeroLogo href="/work/zeropunch/" preview="zeropunch" />, a construction software startup
 					in Boston backed by <NfxLogo />. I spent ten months leading their iOS app dev,
 					while also supporting the web, infra and backend work.
 				</p>
 				<p>
-					I got my B.Sc. in Computer Engineering at Insper. For my
+					I got my B.Sc. in Computer Engineering at <a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a>. For my
 					<a href="/work/pinpag-capstone/" data-preview="pinpag-capstone">capstone</a>, I worked on multi-cloud security
 					monitoring for <PinPagLogo href="/work/pinpag-capstone/" preview="pinpag-capstone" />, a Brazilian payments company. Part of it was a Python tool that mapped how their AWS
 					resources connected and flagged anything open to the internet that shouldn’t be.
@@ -110,6 +111,7 @@ const apps = [
 			/>
 		</header>
 		<ProjectPreviews ids={['opengiving', 'zeropunch', 'pinpag-capstone', 'robocup']} openings={projects.map((p) => p.id)} />
+		<LogoCards ids={['school-brown', 'school-harvard', 'school-insper']} />
 
 		<section class="stack gap-4" aria-labelledby="shipped-heading">
 			<h2 class="section-label" id="shipped-heading">Things you can install</h2>

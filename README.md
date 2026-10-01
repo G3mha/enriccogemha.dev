@@ -43,8 +43,11 @@ on those cards.
 
 ## Rules I hold this to
 
-Every number on the site is one I counted, from a repository or a public page,
-and the page says where. If a reader can't check a figure, it doesn't go up.
+Every number on the site comes from a repository, a public page or my own
+records. Most pages link where theirs come from, and the comments next to the
+school, game and company card data name their sources. Some can't be checked
+from outside: counts from OpenGiving's and ZeroPunch's private repositories,
+and the RoboCup club's $40,000 budget.
 Projects carry a status, and `live` means a stranger can use it today.
 
 ## License

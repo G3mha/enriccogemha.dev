@@ -7,7 +7,14 @@
  *
  * The anchor and the SVG are written with no whitespace between them or after
  * them, so no stray space renders inside the link or before the next period.
+ *
+ * preview names the card the link opens on hover or focus (see LogoCards).
  */
+interface Props {
+	preview?: string;
+}
+
+const { preview } = Astro.props;
 ---
 
 <style>
@@ -18,7 +25,7 @@
 	}
 </style>
 
-<a class="inline-mark" href="https://www.nfx.com/" rel="noopener"><svg
+<a class="inline-mark" href="https://www.nfx.com/" rel="noopener" data-preview={preview}><svg
 	class="nfx"
 	viewBox="0 0 201 123"
 	role="img"

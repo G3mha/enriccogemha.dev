@@ -15,12 +15,14 @@ export interface Card {
 // Each card shows the owner's logo, unchanged: the file its own site serves
 // (Stanford's identity site, Olin's site header, Babson's brand guidelines,
 // Harvard's and Brown's site icons, magic.wizards.com's header, Nintendo
-// Japan's GBA page). Insper's is the red wordmark as seeklogo.com publishes
-// it, in #c5242d; insper.edu.br's own header uses a black version, and its
-// pages don't show that exact red. Babson's sample is framed to its drawing, and
-// Olin's inline SVG got a viewBox spelled for use as a file. The logos are
-// their owners' trademarks. Each sits on a chip in the colour it was drawn
-// for, white for most and Wizards' header black for Magic, in both themes.
+// Japan's GBA page, and NFX's header logo from nfx.com/images/dark, drawn in
+// pale blue for that site's dark navy). Insper's is the red wordmark as
+// seeklogo.com publishes it, in #c5242d; insper.edu.br's own header uses a
+// black version, and its pages don't show that exact red. Babson's sample is
+// framed to its drawing, and Olin's inline SVG got a viewBox spelled for use
+// as a file. The logos are their owners' trademarks. Each sits on a chip that
+// suits it in both themes: white for most, and near-black for Magic and NFX,
+// whose logos are drawn for dark backgrounds.
 //
 // Preview cards for the schools the text links to. Each line says what the
 // school is known for, from its own pages: Insper's teaching-method and
@@ -114,7 +116,24 @@ const games: Card[] = [
 	},
 ];
 
+// And for companies. NFX: nfx.com/about says "NFX stands for network
+// effects", and its Network Effects Manual (nfx.com/post/network-effects-manual)
+// maps the types. The homepage's structured data gives San Francisco as its
+// headquarters and 2015 as its founding year, which its September 2026 post
+// on self-funding confirms ("In 2015, we started NFX").
+const companies: Card[] = [
+	{
+		id: 'nfx',
+		logo: { src: '/assets/org-nfx.svg', width: 201, height: 123, chip: 'dark' },
+		name: 'NFX',
+		place: 'San Francisco, California',
+		year: 'Founded 2015',
+		about: 'A venture firm named for network effects. Its Network Effects Manual maps the different ways a product gets more valuable as more people use it.',
+	},
+];
+
 export const cards: Record<string, Card> = Object.fromEntries([
 	...schools.map((c) => [`school-${c.id}`, c] as const),
 	...games.map((c) => [`game-${c.id}`, c] as const),
+	...companies.map((c) => [`org-${c.id}`, c] as const),
 ]);

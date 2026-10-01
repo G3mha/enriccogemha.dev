@@ -26,15 +26,20 @@ npm run build    # must pass before committing
 
 ## Preview cards
 
-Links to projects and certifications open a small card on hover or keyboard
-focus. A project card is built from the same content file as its page: either a
-summary or the opening of the write-up. A certification card lists what the exam
-covers, from the issuer's own guide. On a phone a tap just follows the link, and
-without JavaScript every link still works.
+Links to projects, certifications, schools and games open a small card on hover
+or keyboard focus. A project card is built from the same content file as its
+page: either a summary or the opening of the write-up. A certification card
+lists what the exam covers, from the issuer's own guide. A school or game card
+on the About page says what that school or game is known for, like Brown having
+no required core classes or Magic starting the trading card game genre. On a
+phone a tap just follows the link, and without JavaScript every link still
+works.
 
 `PreviewCard.astro` holds the card and the script that opens and places it.
-`ProjectPreviews.astro` builds the project cards, and `Certifications.astro` the
-certification ones.
+`ProjectPreviews.astro` builds the project cards, `Certifications.astro` the
+certification ones, and `src/pages/about.astro` the school and game ones. The
+comments above its `schools` and `games` arrays list the source for every fact
+on those cards.
 
 ## Rules I hold this to
 

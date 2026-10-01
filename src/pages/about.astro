@@ -16,11 +16,18 @@ import PreviewCard from '../components/PreviewCard.astro';
 // their owners' trademarks. Each sits on a chip in the colour it was drawn
 // for, white for most and Wizards' header black for Magic, in both themes.
 //
-// Preview cards for the schools the text links to. Every fact is from the
-// school's own site: insper.edu.br/pt/quem-somos/faq-insper,
-// stanford.edu/about/history and facts.stanford.edu/about, olin.edu/about and
-// olin.edu/about/accreditation, babson.edu's history and at-a-glance pages,
-// brown.edu/about, and harvard.edu/about and harvard.edu/about/history.
+// Preview cards for the schools the text links to. Each line says what the
+// school is known for, from its own pages: Insper's teaching-method and
+// engineering pages and pfe.insper.edu.br (the Capstone);
+// facts.stanford.edu/research/technology-inventions; olin.edu/about and
+// olin.edu/about/history/founding-precepts; babson.edu's page for its
+// first-year course, Foundations of Management and Entrepreneurship; the
+// Open Curriculum pages on college.brown.edu; and Harvard Law School's and
+// Harvard Business School's pages on the case method (the share of cases
+// written by HBS faculty is HBS's own figure, so the line credits it). Places
+// and years are from insper.edu.br/pt/quem-somos/faq-insper,
+// stanford.edu/about, olin.edu/about, babson.edu's history page,
+// brown.edu/about/facts and harvard.edu/about.
 const schools = [
 	{
 		id: 'insper',
@@ -28,7 +35,7 @@ const schools = [
 		name: 'Insper',
 		place: 'São Paulo, Brazil',
 		year: 'Founded 1987',
-		about: 'A private, nonprofit school for higher education and research. It started as Ibmec São Paulo and took the name Insper in 2009.',
+		about: 'Classes are built around real problems. Engineering students learn through hands-on projects and spend a full term building something for an outside partner.',
 	},
 	{
 		id: 'stanford',
@@ -36,7 +43,7 @@ const schools = [
 		name: 'Stanford University',
 		place: 'Stanford, California',
 		year: 'Founded 1885',
-		about: 'A research university founded by Leland and Jane Lathrop Stanford. It opened to students in 1891.',
+		about: 'Recombinant DNA, the tool that launched the biotech industry, was co-developed at Stanford. So was PageRank, the grad-student algorithm that started Google.',
 	},
 	{
 		id: 'olin',
@@ -44,7 +51,7 @@ const schools = [
 		name: 'Olin College of Engineering',
 		place: 'Needham, Massachusetts',
 		year: 'Chartered 1997',
-		about: 'An engineering college with three ABET-accredited bachelor’s degrees, on a campus next to Babson’s.',
+		about: 'Started from scratch to change how engineers are taught. It has no departments, and students design and build real projects from their first semester.',
 	},
 	{
 		id: 'babson',
@@ -52,7 +59,7 @@ const schools = [
 		name: 'Babson College',
 		place: 'Wellesley, Massachusetts',
 		year: 'Founded 1919',
-		about: 'A business school built around entrepreneurship. Roger Babson founded it as the Babson Institute, and it took its current name in 1969.',
+		about: 'Every first-year student takes a yearlong course where they start and run a real business with classmates. All the profits go to charity.',
 	},
 	{
 		id: 'brown',
@@ -60,7 +67,7 @@ const schools = [
 		name: 'Brown University',
 		place: 'Providence, Rhode Island',
 		year: 'Founded 1764',
-		about: 'A nonprofit research university that describes its approach to learning as student-centered.',
+		about: 'Undergrads plan their own studies with no required core classes. There are no GPAs or class rankings, and any course can be taken satisfactory/no credit.',
 	},
 	{
 		id: 'harvard',
@@ -68,7 +75,7 @@ const schools = [
 		name: 'Harvard University',
 		place: 'Cambridge, Massachusetts',
 		year: 'Founded 1636',
-		about: 'The first college in the American colonies. It also has campuses in the Longwood and Allston neighborhoods of Boston.',
+		about: 'Its law school pioneered the case method of teaching. Its business school borrowed it and says its faculty write most of the cases business schools use worldwide.',
 	},
 ];
 

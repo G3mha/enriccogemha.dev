@@ -1,9 +1,9 @@
 ---
 title: AWS DeepRacer
-summary: A reinforcement learning model for autonomous racing that placed 37th of about 3,940 racers in AWS’s October 2022 Open race.
+summary: A reinforcement learning model for autonomous racing that placed 37th of about 3,940 racers in AWS’s October 2022 Open qualifier.
 status: archived
 period: "2022"
-role: Team leader of Insper Dynamics’ DeepRacer team.
+role: Leader of Insper Dynamics’ DeepRacer team.
 featured: false
 logos: [deepracer]
 order: 10
@@ -18,6 +18,6 @@ img: /assets/aws-deepracer.jpg
 img_alt: A rendered AWS DeepRacer car on a purple background, next to the AWS DeepRacer League logo
 ---
 
-37th of about 3,940 racers in the October 2022 Open qualifier, racing as G3mha. That's the top 1%.
+37th of about 3,940 racers in the October 2022 Open qualifier, under the name G3mha. That's the top 1%.
 
-Nearly all of the result came from the reward function rather than the model. The default reward pays the car for staying near the centre line, which produces a car that drives slowly and safely and loses. Paying instead for speed held through a corner exit, with a penalty curve steep enough to keep it on the track, produces a lap that's quicker and much more prone to failure. Most of the season was spent finding where between those two a model still finishes.
+Nearly all of the result came from the reward function rather than the model. The default reward pays the car for staying near the centre line, which produces a car that drives slowly and safely and loses. Paying instead for speed held through a corner exit, with a penalty curve steep enough to keep it on the track, produces a lap that's quicker and much more prone to failure. Most of the 2022 season was spent finding where between those two a model still finishes.

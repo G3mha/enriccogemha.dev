@@ -212,10 +212,12 @@ p {
 	text-wrap: pretty;
 }
 
+/* Links carry no underline. Weight sets them apart from the text around
+   them as well as colour, so they don't rely on colour alone. */
 a {
 	color: var(--accent);
-	text-decoration-thickness: 1px;
-	text-underline-offset: 0.2em;
+	font-weight: 600;
+	text-decoration: none;
 	transition: color var(--theme-transition);
 }
 

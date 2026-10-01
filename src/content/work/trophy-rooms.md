@@ -33,7 +33,7 @@ IGDB returns one row per title-and-platform pair, named inconsistently, mixed in
 
 The fix is a four-level model. A `GameFamily` holds the canonical title, a unique slug and a normalised search title. A `Game` is one platform's edition of that family. Releases hang below that. Matching new upstream rows against existing families is done on the normalised title rather than the display title, so punctuation and regional subtitle differences collapse instead of creating duplicates.
 
-As of October 2026, that produces 28,784 distinct titles across 47,616 platform entries on 38 platforms. Those two numbers are different things and it's worth keeping them apart: the larger one counts editions, not games.
+As of October 2026, that produces 28,784 distinct titles across 47,616 platform entries on 38 platforms. The titles and the entries are different things, and it's worth keeping them apart: the larger number counts editions, not games.
 
 ## Shape
 

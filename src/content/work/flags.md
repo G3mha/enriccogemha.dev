@@ -1,6 +1,6 @@
 ---
 title: Flags
-summary: An iOS and watchOS app that puts a country flag on your watch face, built after a measurement spike proved the watch would actually render it in colour.
+summary: An iOS and watchOS app that puts a country flag on your watch face, lock screen, or home widget.
 status: unreleased
 period: "2026"
 role: Sole author. 77 commits over four days.

@@ -16,7 +16,7 @@ links:
     href: https://github.com/G3mha/lua-compiler
 ---
 
-866 lines of Swift taking Lua source to 32-bit x86 NASM: a tokeniser, a recursive-descent parser written against a documented EBNF, a symbol table tracking stack offsets, and a code generator.
+Swift program taking Lua source to 32-bit x86 NASM. Contains a tokeniser, a recursive-descent parser with documented EBNF, a symbol table for stack offsets, and a code generator.
 
 The generated assembly does real work rather than toy work. It allocates locals on the stack, resolves identifiers to offsets, and emits the control flow for conditionals and loops as labels and jumps.
 

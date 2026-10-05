@@ -1,6 +1,6 @@
 ---
 title: Lua compiler, written in Swift
-summary: Tokeniser, recursive-descent parser, symbol table and code generator, producing x86 assembly that runs.
+summary: Tokeniser, recursive-descent parser, symbol table and code generator, producing x86 assembly.
 status: archived
 period: "2024"
 role: Sole author.

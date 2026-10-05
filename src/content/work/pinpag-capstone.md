@@ -24,7 +24,7 @@ links:
     href: /reports/pinpag-capstone-en-redacted.pdf
 ---
 
-A capstone, defended in November 2024, carried out against a live payments platform rather than a sandbox. Working inside a PCI-DSS and ISO 27001 environment shaped the work more than any of the tooling did: nothing could be deployed that couldn't be explained to an auditor.
+A capstone, defended in November 2024, carried out against a live payments platform, inside a PCI-DSS and ISO 27001 environment. Nothing was deployed without being audited.
 
 ## Two clouds
 

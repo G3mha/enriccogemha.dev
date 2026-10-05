@@ -30,7 +30,9 @@ Vercel deploys `main` to production.
   `role` is optional. A project leaves it out when its summary and write-up
   already say what I did, and then its role line and My part row don't render.
   Its `links` become the row of links on its page, and on its homepage entry if
-  it's featured, like ZeroPunch's App Store and daerogroup.com links.
+  it's featured, like ZeroPunch's App Store and daerogroup.com links. A link to
+  a project's own website shows its domain as the label, like opengiving.us or
+  trophyrooms.org.
 - `src/components/`: the pieces the pages are built from, including the logos.
 - `src/styles/global.css`: the design tokens. Each text colour notes its
   measured contrast ratio, checked against WCAG AA.

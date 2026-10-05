@@ -37,6 +37,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				<code>localStorage</code> under the key <code>theme</code>. It never leaves your
 				browser and I can’t read it. Clearing site data removes it.
 			</p>
+			<p>
+				The site also hides seven Moons. To keep track of them, it saves which ones
+				you’ve found and how far you’ve got with the rest: the project pages you’ve
+				visited, the school and game cards you’ve opened, and the headline endings
+				you’ve seen. That starts on your first visit, stays in your browser under the
+				key <code>moons</code>, and never reaches me. Clearing site data removes it, and
+				so does this button:
+				<button type="button" class="forget-moons" data-forget>Forget my Moons</button>
+			</p>
 
 			<h2>Asking</h2>
 			<p>
@@ -46,3 +55,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		</div>
 	</div>
 </BaseLayout>
+
+<style>
+	/* Looks like the site's links, since it sits in a sentence. */
+	.forget-moons {
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-weight: 600;
+		color: var(--accent);
+		cursor: pointer;
+	}
+
+	.forget-moons:hover {
+		color: var(--accent-strong);
+	}
+</style>

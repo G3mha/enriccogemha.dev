@@ -21,7 +21,7 @@ links:
     href: https://github.com/G3mha/pacbag-ios
 ---
 
-Free, no account, no server. 14,063 lines of Swift across 42 files.
+Free, no account, no server. You own all your data.
 
 ## Building the data model in code
 

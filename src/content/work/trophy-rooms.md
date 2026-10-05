@@ -15,7 +15,7 @@ stack:
   - Next.js
   - SwiftUI
 links:
-  - label: Web app
+  - label: trophyrooms.org
     href: https://trophyrooms.org
   - label: App Store
     href: https://apps.apple.com/us/app/trophy-rooms/id6799829599

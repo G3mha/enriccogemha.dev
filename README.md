@@ -42,7 +42,7 @@ Vercel deploys `main` to production.
 Links to projects, certifications, schools, games and companies open a small
 card on hover or keyboard focus. A project card is built from the same content
 file as its page: either a summary or the opening of the write-up, like Trophy
-Rooms' card, which says in plain words where its game data comes from. A
+Rooms' card, which says what the app lets you do. A
 certification card lists what the exam covers, from the issuer's own guide. A
 school, game or company card says what that one is known for, like Brown having
 no required core classes or Magic starting the trading card game genre. On a

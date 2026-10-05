@@ -45,6 +45,10 @@ const { data, id } = Astro.props.project;
 		flex-direction: column;
 		gap: 0.6rem;
 		padding-block: 2rem;
+	}
+
+	/* A line between entries, none above the first. */
+	.entry + .entry {
 		border-top: 1px solid var(--rule);
 	}
 

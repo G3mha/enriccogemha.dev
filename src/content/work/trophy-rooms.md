@@ -27,13 +27,7 @@ links:
     href: https://github.com/G3mha/trophy-rooms-ios
 ---
 
-## Giving a game a stable identity
-
-Trophy Rooms gets its game data from IGDB. IGDB lists the same game once for each platform it came out on, often with the name spelled a little differently each time. A collector wants to see each game once.
-
-The fix is a four-level model. A `GameFamily` holds the canonical title, a unique slug and a normalised search title. A `Game` is one platform's edition of that family. Releases hang below that. Matching new upstream rows against existing families is done on the normalised title rather than the display title, so punctuation and regional subtitle differences collapse instead of creating duplicates.
-
-As of October 2026, that produces 28,784 distinct titles across 47,616 platform entries on 38 platforms. The titles and the entries are different things, and it's worth keeping them apart: the larger number counts editions, not games.
+Trophy Rooms lets you track the games you play, manually earn achievements, and catalogue your physical collection on iOS and web. Complete a game's achievements to add its trophy to your Trophy Room, keep a play journal, and manage games you want to buy or sell.
 
 ## Shape
 

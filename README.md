@@ -15,6 +15,13 @@ npm run dev      # http://localhost:4321
 npm run build    # must pass before committing
 ```
 
+## Shipping
+
+Changes go through pull requests with auto-merge on. `main` requires three
+checks to pass: Vercel's preview build, Vercel Preview Comments and
+GitGuardian's secret scan. When they do, GitHub merges the pull request and
+Vercel deploys `main` to production.
+
 ## Where things live
 
 - `src/content/work/`: one Markdown or MDX file per project.

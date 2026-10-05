@@ -25,8 +25,10 @@ Vercel deploys `main` to production.
 ## Where things live
 
 - `src/content/work/`: one Markdown or MDX file per project.
-  `src/content.config.ts` validates the frontmatter, so a missing field fails
-  the build instead of rendering blank.
+  `src/content.config.ts` validates the frontmatter, so a missing title,
+  summary, status, period or stack fails the build instead of rendering blank.
+  `role` is optional. A project leaves it out when its summary and write-up
+  already say what I did, and then its role line and My part row don't render.
 - `src/components/`: the pieces the pages are built from, including the logos.
 - `src/styles/global.css`: the design tokens. Each text colour notes its
   measured contrast ratio, checked against WCAG AA.

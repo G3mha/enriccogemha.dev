@@ -29,7 +29,7 @@ links:
 
 ## Giving a game a stable identity
 
-IGDB returns one row per title-and-platform pair, named inconsistently, mixed in with a long tail of shovelware. A collector who owns Chrono Trigger doesn't care that it appears four times under three spellings.
+Trophy Rooms gets its game data from IGDB. IGDB lists the same game once for each platform it came out on, often with the name spelled a little differently each time. A collector wants to see each game once.
 
 The fix is a four-level model. A `GameFamily` holds the canonical title, a unique slug and a normalised search title. A `Game` is one platform's edition of that family. Releases hang below that. Matching new upstream rows against existing families is done on the normalised title rather than the display title, so punctuation and regional subtitle differences collapse instead of creating duplicates.
 

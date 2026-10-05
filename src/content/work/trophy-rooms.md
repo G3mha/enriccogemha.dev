@@ -1,6 +1,6 @@
 ---
 title: Trophy Rooms
-summary: A cross-platform game collection tracker over a reconciled catalogue of 28,784 titles spanning 38 platforms.
+summary: A single platform to track all the achievements you conquered, and a single house for tracking your entire video game collection.
 status: live
 period: 2025 – 2026
 role: Sole author of the API, the web app and the iOS app.

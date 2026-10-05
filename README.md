@@ -29,6 +29,8 @@ Vercel deploys `main` to production.
   summary, status, period or stack fails the build instead of rendering blank.
   `role` is optional. A project leaves it out when its summary and write-up
   already say what I did, and then its role line and My part row don't render.
+  Its `links` become the row of links on its page, and on its homepage entry if
+  it's featured, like ZeroPunch's App Store and daerogroup.com links.
 - `src/components/`: the pieces the pages are built from, including the logos.
 - `src/styles/global.css`: the design tokens. Each text colour notes its
   measured contrast ratio, checked against WCAG AA.

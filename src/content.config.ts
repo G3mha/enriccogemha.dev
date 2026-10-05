@@ -12,8 +12,9 @@ export const collections = {
 			status: z.enum(['live', 'paused', 'unreleased', 'archived']),
 			/** Human-readable, e.g. "2025 – present" or "2024". */
 			period: z.string(),
-			/** What he personally did, in plain words. */
-			role: z.string(),
+			/** What he personally did, in plain words. Left out where the summary and
+			 *  the write-up already say it. */
+			role: z.string().optional(),
 			stack: z.array(z.string()),
 			links: z
 				.array(z.object({ label: z.string(), href: z.union([z.string().url(), z.string().regex(/^\/[^/]/)]) }))

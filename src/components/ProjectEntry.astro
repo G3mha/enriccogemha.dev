@@ -20,7 +20,7 @@ const { data, id } = Astro.props.project;
 
 	<p class="period">{data.period}</p>
 	<p class="summary"><MarkedText text={data.summary} logos={data.logos} /></p>
-	<p class="role">{data.role}</p>
+	{data.role && <p class="role">{data.role}</p>}
 
 	<Tags items={data.stack} />
 

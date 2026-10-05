@@ -45,10 +45,14 @@ const pageLogos = data.logos.flatMap((l) => (l in largeLogos ? [largeLogos[l as 
 					<dt>When</dt>
 					<dd>{data.period}</dd>
 				</div>
-				<div>
-					<dt>My part</dt>
-					<dd>{data.role}</dd>
-				</div>
+				{
+					data.role && (
+						<div>
+							<dt>My part</dt>
+							<dd>{data.role}</dd>
+						</div>
+					)
+				}
 			</dl>
 			<Tags items={data.stack} />
 			{

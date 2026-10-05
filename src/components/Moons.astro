@@ -1,0 +1,513 @@
+---
+/**
+ * Seven hidden Moons, a nod to the Power Moons in Super Mario Odyssey. Each
+ * is earned by poking around the site, and a counter shows up in the footer
+ * once the first one is found. The moon drawing is the theme toggle's own,
+ * filled gold, not Nintendo's artwork.
+ *
+ * Every trigger listens to something the site already does, so no other
+ * component knows about the Moons: the theme attribute on <html>, the toggle
+ * event preview cards fire when they open (and clicks on their links, since
+ * phones open the link instead of the card), the headline's typed text,
+ * clicks on the capstone PDF, and two markers, data-moon-lost on the 404 page
+ * and data-project on each project page.
+ *
+ * Progress is kept in localStorage under "moons" from the first visit and
+ * never leaves the browser (see the privacy page, which also has a button to
+ * clear it). The school and game lists come from src/data/cards.ts, so every
+ * card there has to be linked from some page or its Moon can't be earned.
+ */
+import { getCollection } from 'astro:content';
+import { cards } from '../data/cards';
+
+const work = await getCollection('work');
+const projects = work.map((p) => p.id).sort();
+const pdf = work.find((p) => p.id === 'pinpag-capstone')?.data.links.find((l) => l.href.endsWith('.pdf'))?.href;
+if (!pdf) throw new Error('Moons: the capstone page has no PDF link for the Redacted Moon');
+const schools = Object.keys(cards).filter((k) => k.startsWith('school-')).map((k) => k.slice('school-'.length));
+const games = Object.keys(cards).filter((k) => k.startsWith('game-')).map((k) => k.slice('game-'.length));
+if (games.length !== 2) throw new Error('Moons: the Game Night hint says "both games"; update it for a different count');
+
+const moons = [
+	{ id: 'night-owl', name: 'Night Owl', hint: 'Switch between light and dark in the header.' },
+	{ id: 'every-phrase', name: 'Every Phrase', hint: 'Watch the homepage headline type every ending.', calm: 'Spend half a minute with the homepage headline.' },
+	{ id: 'scholar', name: 'Scholar', hint: `Look up all ${schools.length} schools on the About page.` },
+	{ id: 'game-night', name: 'Game Night', hint: 'Look up both games on the About page.' },
+	{ id: 'redacted', name: 'Redacted', hint: 'Read the capstone report.' },
+	{ id: 'lost-kingdom', name: 'Lost Kingdom', hint: 'Wander somewhere that doesn’t exist.' },
+	{ id: 'grand-tour', name: 'Grand Tour', hint: `Visit all ${projects.length} project pages.` },
+];
+
+const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
+---
+
+<span
+	class="moons"
+	data-moons={JSON.stringify(moons.map(({ id, name }) => ({ id, name })))}
+	data-projects={JSON.stringify(projects)}
+	data-schools={JSON.stringify(schools)}
+	data-games={JSON.stringify(games)}
+	data-pdf={pdf}
+>
+	<button type="button" class="moon-count" popovertarget="moons-panel" aria-haspopup="dialog" hidden>
+		<svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24"><path d={icon}></path></svg>
+		<span data-count></span>
+	</button>
+</span>
+
+<div id="moons-panel" class="moons-panel" popover role="dialog" aria-labelledby="moons-title" tabindex="-1" autofocus>
+	<p id="moons-title" class="panel-title">Moons</p>
+	<ul class="moon-list">
+		{
+			moons.map((moon) => (
+				<li data-moon={moon.id}>
+					<svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24"><path d={icon}></path></svg>
+					<span class="moon-name">
+						{moon.name} <span class="moon-state" data-state></span>
+					</span>
+					<span class="moon-hint" data-hint={moon.hint} data-calm={moon.calm}>{moon.hint}</span>
+				</li>
+			))
+		}
+	</ul>
+	<div class="panel-actions">
+		<button type="button" class="panel-button" data-forget>Forget my Moons</button>
+		<button type="button" class="panel-button" popovertarget="moons-panel" popovertargetaction="hide">Close</button>
+	</div>
+</div>
+
+<p class="sr-only" role="status" data-announce></p>
+<div class="moon-toast" popover="manual" aria-hidden="true"></div>
+
+<script>
+	(() => {
+		const root = document.querySelector<HTMLElement>('.moons');
+		if (!root) return;
+		const moons: { id: string; name: string }[] = JSON.parse(root.dataset.moons!);
+		const lists: Record<string, string[]> = {
+			projects: JSON.parse(root.dataset.projects!),
+			schools: JSON.parse(root.dataset.schools!),
+			games: JSON.parse(root.dataset.games!),
+			phrases: [],
+		};
+		const pdf = root.dataset.pdf;
+		const counter = root.querySelector<HTMLButtonElement>('.moon-count')!;
+		const count = root.querySelector<HTMLElement>('[data-count]')!;
+		const panel = document.getElementById('moons-panel')!;
+		const toast = document.querySelector<HTMLElement>('.moon-toast')!;
+		const status = document.querySelector<HTMLElement>('[data-announce]')!;
+		const calm = matchMedia('(prefers-reduced-motion: reduce)');
+
+		// State: what's found, and progress towards the Moons that need a set.
+		// Anything else in storage (old ids, wrong types) is dropped on read.
+		const KEY = 'moons';
+		const ids = new Set(moons.map((m) => m.id));
+		const strings = (v: unknown) => (Array.isArray(v) ? [...new Set(v.filter((x): x is string => typeof x === 'string'))] : []);
+		type State = { found: string[]; seen: Record<string, string[]> };
+		const empty = (): State => ({ found: [], seen: {} });
+		let stored = true;
+		const load = (): State => {
+			let saved: any = {};
+			try {
+				saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {};
+			} catch (error) {
+				if (error instanceof DOMException) stored = false;
+			}
+			const seen = saved.seen && typeof saved.seen === 'object' && !Array.isArray(saved.seen) ? saved.seen : {};
+			return {
+				found: strings(saved.found).filter((id) => ids.has(id)),
+				seen: Object.fromEntries(Object.keys(lists).map((b) => [b, strings(seen[b])])),
+			};
+		};
+		let state = load();
+		// Re-read before each change, so two tabs don't overwrite each other.
+		const refresh = () => {
+			if (stored) state = load();
+		};
+		const save = () => {
+			try {
+				localStorage.setItem(KEY, JSON.stringify(state));
+			} catch {
+				/* Without storage the Moons still count for this page view. */
+			}
+		};
+
+		const forget = () => {
+			state = empty();
+			try {
+				localStorage.removeItem(KEY);
+			} catch {
+				/* Nothing saved to remove. */
+			}
+		};
+
+		// Announcements go to a visually hidden status line; the visible note is a
+		// top-layer popover so it shows above an open preview card. Awards made
+		// while the page loads wait for it to settle, so screen readers hear them.
+		let hideTimer: number | undefined;
+		const say = (lead: string, rest: string) => {
+			const show = () => {
+				status.textContent = `${lead} ${rest}`;
+				const strong = document.createElement('strong');
+				strong.textContent = lead;
+				toast.replaceChildren(strong, ` ${rest}`);
+				if (toast.matches(':popover-open')) toast.hidePopover();
+				toast.showPopover();
+				clearTimeout(hideTimer);
+				hideTimer = window.setTimeout(() => {
+					toast.hidePopover();
+					toast.replaceChildren();
+					status.textContent = '';
+				}, 4000);
+			};
+			if (document.readyState === 'complete') show();
+			else addEventListener('load', () => setTimeout(show, 750), { once: true });
+		};
+
+		const forgetButtons = document.querySelectorAll<HTMLButtonElement>('[data-forget]');
+		const supported = 'showPopover' in HTMLElement.prototype;
+
+		for (const button of forgetButtons) {
+			button.addEventListener('click', () => {
+				const fromPanel = panel.contains(button);
+				forget();
+				if (supported) {
+					render();
+					if (panel.matches(':popover-open')) panel.hidePopover();
+					if (fromPanel) document.querySelector<HTMLElement>('footer a[href="/privacy/"]')?.focus();
+					say('Your Moons are forgotten.', 'Progress starts again from zero.');
+				} else {
+					button.textContent = 'Forgotten';
+				}
+			});
+		}
+
+		// Without the popover API the list and note can't open, so the Moons stay
+		// hidden (the privacy page's Forget button still works).
+		if (!supported) return;
+
+		const render = () => {
+			const n = state.found.length;
+			counter.hidden = n === 0;
+			count.textContent = `${n} of ${moons.length} Moons`;
+			for (const li of panel.querySelectorAll<HTMLElement>('[data-moon]')) {
+				const found = state.found.includes(li.dataset.moon!);
+				li.classList.toggle('found', found);
+				const label = li.querySelector<HTMLElement>('[data-state]')!;
+				label.textContent = found ? 'Found' : 'Not found yet';
+				label.classList.toggle('sr-only', !found);
+				const hint = li.querySelector<HTMLElement>('[data-hint]')!;
+				hint.textContent = calm.matches && hint.dataset.calm ? hint.dataset.calm : hint.dataset.hint!;
+			}
+		};
+
+		const stops: Record<string, () => void> = {};
+		const award = (id: string) => {
+			refresh();
+			if (state.found.includes(id)) return;
+			state.found.push(id);
+			save();
+			render();
+			stops[id]?.();
+			const n = state.found.length;
+			const name = moons.find((m) => m.id === id)!.name;
+			say('You got a Moon!', n === moons.length ? `${name}. That’s all ${n}.` : `${name}. ${n} of ${moons.length}.`);
+		};
+
+		// Collect items towards a Moon that needs all of them, across visits.
+		const collect = (bucket: string, item: string, id: string) => {
+			refresh();
+			const seen = new Set(state.seen[bucket]);
+			if (!seen.has(item)) {
+				seen.add(item);
+				state.seen[bucket] = [...seen];
+				save();
+			}
+			if (lists[bucket].length && lists[bucket].every((x) => seen.has(x))) award(id);
+		};
+		const has = (id: string) => state.found.includes(id);
+
+		render();
+		addEventListener('storage', (event) => {
+			if (event.key !== KEY && event.key !== null) return;
+			state = load();
+			render();
+		});
+		addEventListener('pageshow', (event) => {
+			if (!event.persisted) return;
+			state = load();
+			render();
+		});
+
+		// Keyboard users who tab out of the open list close it, like a click
+		// outside does.
+		panel.addEventListener('focusout', (event) => {
+			const next = event.relatedTarget as Node | null;
+			if (next && !panel.contains(next)) panel.hidePopover();
+		});
+
+		// Night Owl: the theme toggle sets data-theme on <html>. The saved theme is
+		// applied in <head> before this runs, so only a toggle counts.
+		if (!has('night-owl')) {
+			const observer = new MutationObserver(() => award('night-owl'));
+			observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+			stops['night-owl'] = () => observer.disconnect();
+		}
+
+		// Scholar and Game Night: preview cards are popovers, and their toggle
+		// event doesn't bubble, so listen in the capture phase.
+		document.addEventListener(
+			'toggle',
+			(event) => {
+				const target = event.target as HTMLElement;
+				if ((event as ToggleEvent).newState !== 'open' || !target.id) return;
+				if (target.id.startsWith('preview-school-')) collect('schools', target.id.slice('preview-school-'.length), 'scholar');
+				if (target.id.startsWith('preview-game-')) collect('games', target.id.slice('preview-game-'.length), 'game-night');
+			},
+			true,
+		);
+
+		// Redacted, and the phone path for Scholar and Game Night: a tap on a
+		// school or game name follows the link instead of opening the card.
+		// Middle-clicks count too; right-clicks don't.
+		const onClick = (event: MouseEvent) => {
+			if (event.type === 'auxclick' && event.button !== 1) return;
+			const link = (event.target as Element).closest?.('a');
+			if (!link) return;
+			if (pdf && link.getAttribute('href') === pdf) award('redacted');
+			const key = link.dataset.preview;
+			if (key?.startsWith('school-')) collect('schools', key.slice('school-'.length), 'scholar');
+			if (key?.startsWith('game-')) collect('games', key.slice('game-'.length), 'game-night');
+		};
+		document.addEventListener('click', onClick, true);
+		document.addEventListener('auxclick', onClick, true);
+
+		// Lost Kingdom and Grand Tour: markers on the 404 page and project pages.
+		if (document.querySelector('[data-moon-lost]')) award('lost-kingdom');
+		const project = document.querySelector<HTMLElement>('[data-project]');
+		if (project) collect('projects', project.dataset.project!, 'grand-tour');
+
+		// Every Phrase: count each ending once it has been typed out in full. With
+		// reduced motion the headline doesn't type, so half a minute with it on
+		// screen counts instead.
+		const line = document.querySelector<HTMLElement>('.build-line');
+		if (line && !has('every-phrase')) {
+			lists.phrases = JSON.parse(line.dataset.phrases!);
+			// The headline also holds hidden copies of every phrase for measuring,
+			// so read the one inside .words, the line people actually see.
+			const typed = line.querySelector('.words .typed');
+			let dwell: number | undefined;
+			let view: IntersectionObserver | undefined;
+			const watchView = () => {
+				if (view) return;
+				view = new IntersectionObserver((entries) => {
+					clearTimeout(dwell);
+					if (entries[entries.length - 1].isIntersecting) dwell = window.setTimeout(() => award('every-phrase'), 30000);
+				});
+				view.observe(line);
+			};
+			let typing: MutationObserver | undefined;
+			if (calm.matches) watchView();
+			else if (typed) {
+				const check = () => {
+					const text = typed.textContent ?? '';
+					if (text.endsWith('.') && lists.phrases.includes(text.slice(0, -1))) collect('phrases', text.slice(0, -1), 'every-phrase');
+				};
+				check();
+				typing = new MutationObserver(check);
+				typing.observe(typed, { childList: true, characterData: true, subtree: true });
+			}
+			calm.addEventListener('change', () => {
+				render();
+				if (calm.matches) watchView();
+			});
+			stops['every-phrase'] = () => {
+				typing?.disconnect();
+				view?.disconnect();
+				clearTimeout(dwell);
+			};
+		}
+	})();
+</script>
+
+<style>
+	.moons,
+	.moons-panel {
+		--moon-gold: #ad7e17;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-theme='light'])) .moons,
+		:global(:root:not([data-theme='light'])) .moons-panel {
+			--moon-gold: #d8a32b;
+		}
+	}
+
+	:global(:root[data-theme='dark']) .moons,
+	:global(:root[data-theme='dark']) .moons-panel {
+		--moon-gold: #d8a32b;
+	}
+
+	.moon-icon {
+		width: 1em;
+		height: 1em;
+		flex: none;
+		fill: var(--moon-gold);
+	}
+
+	.moon-count {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-weight: 600;
+		color: var(--ink-tertiary);
+		cursor: pointer;
+	}
+
+	.moon-count:hover {
+		color: var(--accent);
+	}
+
+	.moon-count[hidden] {
+		display: none;
+	}
+
+	/* Hidden unless open, so browsers without the popover API never show it.
+	   The site's reset zeroes margins, which would pin it to the top left; auto
+	   margins put it back in the middle, and max-height keeps it on screen. */
+	.moons-panel {
+		display: none;
+		inset: 0;
+		margin: auto;
+		height: fit-content;
+		max-height: calc(100% - 2rem);
+		width: min(24rem, calc(100% - 2rem));
+		padding: 1.25rem;
+		border: 1px solid var(--rule-strong);
+		background: var(--surface);
+		color: var(--ink);
+	}
+
+	.moons-panel:popover-open {
+		display: block;
+	}
+
+	.moons-panel:focus {
+		outline: none;
+	}
+
+	.moons-panel::backdrop {
+		background: rgb(0 0 0 / 0.25);
+	}
+
+	.panel-title {
+		margin: 0 0 0.75rem;
+		font-family: var(--font-display);
+		font-weight: 600;
+		font-size: var(--text-lg);
+	}
+
+	.moon-list {
+		display: grid;
+		gap: 0.6rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.moon-list li {
+		display: grid;
+		grid-template-columns: 1.1rem 1fr;
+		gap: 0 0.6rem;
+		align-items: baseline;
+	}
+
+	.moon-list .moon-icon {
+		grid-row: span 2;
+		align-self: center;
+		fill: none;
+		stroke: var(--ink-tertiary);
+		stroke-width: 1.6;
+	}
+
+	.moon-list .found .moon-icon {
+		fill: var(--moon-gold);
+		stroke: none;
+	}
+
+	.moon-name {
+		font-weight: 600;
+		color: var(--ink-tertiary);
+	}
+
+	.found .moon-name {
+		color: var(--ink);
+	}
+
+	.moon-state {
+		margin-left: 0.4rem;
+		font-size: var(--text-sm);
+		font-weight: 600;
+		color: var(--accent);
+	}
+
+	.moon-hint {
+		font-size: var(--text-sm);
+		color: var(--ink-tertiary);
+	}
+
+	.panel-actions {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 1rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	.panel-button {
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-size: var(--text-sm);
+		font-weight: 600;
+		color: var(--accent);
+		cursor: pointer;
+	}
+
+	/* The note sits in the top layer, centred near the bottom without shrinking
+	   to half the screen on phones. It fades in where @starting-style works. */
+	.moon-toast {
+		inset: auto 1rem 1.5rem 1rem;
+		margin: 0 auto;
+		width: fit-content;
+		max-width: 32rem;
+		padding: 0.6rem 1rem;
+		border: 0;
+		background: var(--ink);
+		color: var(--paper);
+		font-size: var(--text-sm);
+		pointer-events: none;
+		transition:
+			opacity 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	@starting-style {
+		.moon-toast:popover-open {
+			opacity: 0;
+			transform: translateY(0.5rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.moon-toast {
+			transition: none;
+		}
+	}
+</style>

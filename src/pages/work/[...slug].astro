@@ -29,7 +29,7 @@ const pageLogos = data.logos.flatMap((l) => (l in largeLogos ? [largeLogos[l as 
 ---
 
 <BaseLayout title={`${data.title} | Enricco Gemha`} description={data.summary}>
-	<div class="wrapper wrapper-narrow stack gap-10">
+	<div class="wrapper wrapper-narrow stack gap-10" data-project={project.id}>
 		<p class="back"><a href="/">Back to work</a></p>
 
 		<header class="stack gap-4">

@@ -5,7 +5,7 @@ My personal site and project write-ups, live at
 
 Built with [Astro](https://astro.build) and MDX, and served as static HTML from
 Vercel. There are no framework islands. The only client JavaScript is the theme
-toggle, the typing headline and the preview cards.
+toggle, the typing headline, the preview cards and the hidden Moons.
 
 ## Running it
 
@@ -54,6 +54,18 @@ works.
 certification ones, and `LogoCards.astro` the school, game and company ones from
 `src/data/cards.ts`. The comments in that file list the source for every fact
 on those cards.
+
+## Hidden Moons
+
+Seven Moons, a nod to Super Mario Odyssey, are hidden around the site. You find
+them by switching the theme, watching the headline type every ending, looking up
+every school and both games, opening the capstone report, landing on the 404
+page and visiting every project page. A counter shows up in the footer after the
+first one, and it opens a list with hints.
+
+`Moons.astro` holds all of it. It only listens to things the site already does,
+plus two markers, one on the 404 page and one on each project page. Progress
+stays in the visitor's browser, and the privacy page says what's stored.
 
 ## Rules I hold this to
 

@@ -14,16 +14,24 @@ import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
-	ogImage?: string | undefined;
 }
 
 const {
 	title = 'Enricco Gemha',
 	description = 'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.',
-	ogImage = '/assets/portrait.jpg',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
+
+// The card chat apps show when a link to any page is shared. scripts/og-card.mjs
+// draws it. Stating its size lets Facebook's crawler show it on the first share
+// instead of after it has downloaded and processed the image.
+const card = {
+	src: new URL('/og-card.jpg', canonical),
+	width: 1200,
+	height: 630,
+	alt: 'The name Enricco Gemha and the headline “I build iOS apps.” beside a photo of Enricco smiling in a navy suit.',
+};
 ---
 
 <meta charset="UTF-8" />
@@ -42,11 +50,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemh
 <meta name="theme-color" content="#14120f" media="(prefers-color-scheme: dark)" />
 
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Enricco Gemha" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-<meta property="og:image" content={new URL(ogImage, canonical)} />
+<meta property="og:image" content={card.src} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content={card.width} />
+<meta property="og:image:height" content={card.height} />
+<meta property="og:image:alt" content={card.alt} />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image:alt" content={card.alt} />
 
 {/* Set the theme before first paint so the page never flashes the wrong one. */}
 <script is:inline>

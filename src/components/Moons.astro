@@ -2,8 +2,10 @@
 /**
  * Seven hidden Moons, a nod to the Power Moons in Super Mario Odyssey. Each
  * is earned by poking around the site, and a counter shows up in the footer
- * once the first one is found. The moon drawing is the theme toggle's own,
- * filled gold, not Nintendo's artwork.
+ * once the first one is found. The Moon is Nintendo's own Power Moon art,
+ * served unmodified from supermario.nintendo.com/assets/img/explore/moon.svg
+ * as public/assets/power-moon.svg. It belongs to Nintendo. Moons not found yet
+ * show it faded, like the see-through Moons the game leaves once collected.
  *
  * Every trigger listens to something the site already does, so no other
  * component knows about the Moons: the theme attribute on <html>, the toggle
@@ -38,7 +40,7 @@ const moons = [
 	{ id: 'grand-tour', name: 'Grand Tour', hint: `Visit all ${projects.length} project pages.` },
 ];
 
-const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
+const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 ---
 
 <span
@@ -50,7 +52,7 @@ const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
 	data-pdf={pdf}
 >
 	<button type="button" class="moon-count" popovertarget="moons-panel" aria-haspopup="dialog" hidden>
-		<svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24"><path d={icon}></path></svg>
+		<img class="moon-icon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
 		<span data-count></span>
 	</button>
 </span>
@@ -61,7 +63,7 @@ const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
 		{
 			moons.map((moon) => (
 				<li data-moon={moon.id}>
-					<svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24"><path d={icon}></path></svg>
+					<img class="moon-icon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
 					<span class="moon-name">
 						{moon.name} <span class="moon-state" data-state></span>
 					</span>
@@ -331,28 +333,10 @@ const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
 </script>
 
 <style>
-	.moons,
-	.moons-panel {
-		--moon-gold: #ad7e17;
-	}
-
-	@media (prefers-color-scheme: dark) {
-		:global(:root:not([data-theme='light'])) .moons,
-		:global(:root:not([data-theme='light'])) .moons-panel {
-			--moon-gold: #d8a32b;
-		}
-	}
-
-	:global(:root[data-theme='dark']) .moons,
-	:global(:root[data-theme='dark']) .moons-panel {
-		--moon-gold: #d8a32b;
-	}
-
 	.moon-icon {
-		width: 1em;
-		height: 1em;
+		width: auto;
+		height: 1.15em;
 		flex: none;
-		fill: var(--moon-gold);
 	}
 
 	.moon-count {
@@ -366,6 +350,12 @@ const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
 		font-weight: 600;
 		color: var(--ink-tertiary);
 		cursor: pointer;
+	}
+
+	/* The text sets the button's baseline, so it lines up with the copyright
+	   line. Without this the image would, and its baseline is its bottom edge. */
+	.moon-count [data-count] {
+		align-self: baseline;
 	}
 
 	.moon-count:hover {
@@ -421,22 +411,23 @@ const icon = 'M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z';
 
 	.moon-list li {
 		display: grid;
-		grid-template-columns: 1.1rem 1fr;
+		grid-template-columns: 1.4rem 1fr;
 		gap: 0 0.6rem;
 		align-items: baseline;
 	}
 
+	/* Not found yet: a faded grey Moon, like the game's see-through replicas. */
 	.moon-list .moon-icon {
 		grid-row: span 2;
 		align-self: center;
-		fill: none;
-		stroke: var(--ink-tertiary);
-		stroke-width: 1.6;
+		height: 1.3rem;
+		filter: grayscale(1);
+		opacity: 0.35;
 	}
 
 	.moon-list .found .moon-icon {
-		fill: var(--moon-gold);
-		stroke: none;
+		filter: none;
+		opacity: 1;
 	}
 
 	.moon-name {

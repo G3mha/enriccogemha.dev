@@ -449,7 +449,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 
 		// Every Phrase: count each ending once it has been typed out in full. With
 		// reduced motion the headline doesn't type, so half a minute with it on
-		// screen counts instead.
+		// screen counts instead, and the clock only runs while the tab is showing.
 		const line = document.querySelector<HTMLElement>('.build-line');
 		if (line && !has('every-phrase')) {
 			lists.phrases = JSON.parse(line.dataset.phrases!);
@@ -458,13 +458,19 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			const typed = line.querySelector('.words .typed');
 			let dwell: number | undefined;
 			let view: IntersectionObserver | undefined;
+			let inView = false;
+			const arm = () => {
+				clearTimeout(dwell);
+				if (inView && !document.hidden) dwell = window.setTimeout(() => award('every-phrase'), 30000);
+			};
 			const watchView = () => {
 				if (view) return;
 				view = new IntersectionObserver((entries) => {
-					clearTimeout(dwell);
-					if (entries[entries.length - 1].isIntersecting) dwell = window.setTimeout(() => award('every-phrase'), 30000);
+					inView = entries[entries.length - 1].isIntersecting;
+					arm();
 				});
 				view.observe(line);
+				document.addEventListener('visibilitychange', arm);
 			};
 			let typing: MutationObserver | undefined;
 			if (calm.matches) watchView();
@@ -484,6 +490,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			stops['every-phrase'] = () => {
 				typing?.disconnect();
 				view?.disconnect();
+				document.removeEventListener('visibilitychange', arm);
 				clearTimeout(dwell);
 			};
 		}

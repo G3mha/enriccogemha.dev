@@ -197,6 +197,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		// the first one. It rests between chimes; once a browser has let it start,
 		// it lets it wake again without another click.
 		let audio: AudioContext | undefined;
+		let voice: GainNode | undefined;
 		let restTimer: number | undefined;
 		let busyUntil = 0;
 		const rest = (after: number) => {
@@ -219,6 +220,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			const out = ctx.createGain();
 			out.gain.value = 0.14;
 			out.connect(ctx.destination);
+			voice = out;
 			const tone = (hz: number, at: number, length: number, type: OscillatorType, level: number) => {
 				const osc = ctx.createOscillator();
 				const env = ctx.createGain();
@@ -337,7 +339,13 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			state.muted = !state.muted;
 			save();
 			render();
-			if (state.muted) audio?.suspend().catch(() => {});
+			// Cut a chime that's still ringing. Pausing it would leave the rest
+			// scheduled, and it would play on the next click.
+			if (state.muted) {
+				voice?.disconnect();
+				voice = undefined;
+				audio?.suspend().catch(() => {});
+			}
 		});
 
 		const stops: Record<string, () => void> = {};

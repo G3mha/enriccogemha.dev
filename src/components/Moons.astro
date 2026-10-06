@@ -237,10 +237,14 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			tone(2093, start + 0.3, 0.9, 'sine', 0.12);
 			busyUntil = performance.now() + 2000;
 		};
-		// Only chime while the moment is on screen. If the browser holds the
-		// sound back until a later click, that click ends the moment, so the
-		// chime never arrives late on its own.
+		// Each chime belongs to its own moment: only the newest moment chimes,
+		// once, within a second of opening, in a tab that's showing, while it's
+		// still on screen. If the browser holds the sound back longer than that
+		// (no click or key press yet), the chime is dropped rather than played
+		// late, and held chimes from earlier Moons can't pile up and play at once.
+		let chimeFor = 0;
 		const playChime = () => {
+			const id = ++chimeFor;
 			if (state.muted) return;
 			try {
 				audio ??= new AudioContext();
@@ -248,9 +252,11 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 				return;
 			}
 			const ctx = audio;
+			const asked = performance.now();
 			const go = () => {
-				if (ctx.state !== 'running' || !moment.matches(':popover-open') || moment.classList.contains('leaving')) return;
-				chime(ctx);
+				const current = id === chimeFor && performance.now() - asked < 1000 && !document.hidden && !state.muted;
+				const showing = moment.matches(':popover-open') && !moment.classList.contains('leaving');
+				if (ctx.state === 'running' && current && showing) chime(ctx);
 				rest(0);
 			};
 			if (ctx.state === 'running') go();

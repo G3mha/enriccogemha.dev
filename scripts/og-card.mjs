@@ -1,8 +1,8 @@
 /**
  * Draws the link preview card, the image WhatsApp, iMessage, Slack, LinkedIn
  * and others show when someone shares a link to the site, and saves it as
- * public/og-card.jpg. Run it with `npm run og-card` after changing anything
- * the card shows: the headline, the portrait, the name or the fonts.
+ * src/assets/og-card.jpg. Run it with `npm run og-card` after changing
+ * anything the card shows: the headline, the portrait, the name or the fonts.
  *
  * The card is a 1200 x 630 page laid out like the homepage's first screen:
  * the name, the "I build iOS apps." headline with its caret, and the portrait.
@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const require = createRequire(import.meta.url);
 const chrome = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const output = join(root, 'public/og-card.jpg');
+const output = join(root, 'src/assets/og-card.jpg');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -165,7 +165,7 @@ try {
 	const size = execFileSync('sips', ['-g', 'pixelWidth', '-g', 'pixelHeight', output], { encoding: 'utf8' });
 	const [w, h] = size.match(/\d+(?=\s*$)/gm).map(Number);
 	if (w !== WIDTH || h !== HEIGHT) throw new Error(`Expected ${WIDTH}x${HEIGHT}, got ${w}x${h}`);
-	console.log(`Saved public/og-card.jpg (${w}x${h}, ${Math.round(statSync(output).size / 1024)} KB)`);
+	console.log(`Saved src/assets/og-card.jpg (${w}x${h}, ${Math.round(statSync(output).size / 1024)} KB)`);
 } finally {
 	rmSync(work, { recursive: true, force: true });
 }

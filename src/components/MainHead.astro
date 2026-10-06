@@ -10,6 +10,7 @@ import '../styles/global.css';
 // text is set in its real fonts before the first paint and nothing swaps.
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
+import ogCard from '../assets/og-card.jpg';
 
 interface Props {
 	title?: string | undefined;
@@ -30,12 +31,14 @@ const previewDescription =
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
 
 // The card chat apps show when a link to any page is shared. scripts/og-card.mjs
-// draws it. Stating its size lets Facebook's crawler show it on the first share
-// instead of after it has downloaded and processed the image.
+// draws it. Facebook caches the image by its URL, so it's imported rather than
+// kept in public/: the build names the file after a hash of its contents, and
+// a redrawn card gets a new URL. Stating its size lets Facebook's crawler show
+// it on the first share instead of after it has downloaded and processed it.
 const card = {
-	src: new URL('/og-card.jpg', canonical),
-	width: 1200,
-	height: 630,
+	src: new URL(ogCard.src, canonical),
+	width: ogCard.width,
+	height: ogCard.height,
 	alt: 'The name Enricco Gemha and the headline “I build iOS apps.” beside a photo of Enricco smiling in a navy suit.',
 };
 ---

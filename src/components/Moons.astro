@@ -6,6 +6,9 @@
  * served unmodified from supermario.nintendo.com/assets/img/explore/moon.svg
  * as public/assets/power-moon.svg. It belongs to Nintendo. Moons not found yet
  * show it faded, like the see-through Moons the game leaves once collected.
+ * Finding one dims the screen while the Moon jumps up in the middle under the
+ * game's line, "You got a Moon!". In the game Mario poses with the Moon; here
+ * the Moon takes his place.
  *
  * Every trigger listens to something the site already does, so no other
  * component knows about the Moons: the theme attribute on <html>, the toggle
@@ -79,10 +82,12 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 </div>
 
 <p class="sr-only" role="status" data-announce></p>
-<div class="moon-toast" popover="manual" aria-hidden="true">
-	<img class="toast-moon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
-	<span data-toast-text></span>
+<div class="moon-get" popover="manual" aria-hidden="true">
+	<img class="get-moon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
+	<p class="get-title">You got a Moon!</p>
+	<p class="get-name" data-get-name></p>
 </div>
+<div class="moon-toast" popover="manual" aria-hidden="true"></div>
 
 <script>
 	(() => {
@@ -100,6 +105,8 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		const count = root.querySelector<HTMLElement>('[data-count]')!;
 		const panel = document.getElementById('moons-panel')!;
 		const toast = document.querySelector<HTMLElement>('.moon-toast')!;
+		const moment = document.querySelector<HTMLElement>('.moon-get')!;
+		const momentName = moment.querySelector<HTMLElement>('[data-get-name]')!;
 		const status = document.querySelector<HTMLElement>('[data-announce]')!;
 		const calm = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -146,35 +153,68 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			}
 		};
 
-		// Announcements go to a visually hidden status line; the visible note is a
-		// top-layer popover so it shows above an open preview card. Awards made
-		// while the page loads wait for it to settle, so screen readers hear them.
-		let hideTimer: number | undefined;
-		const toastText = toast.querySelector<HTMLElement>('[data-toast-text]')!;
-		const say = (lead: string, rest: string, moon = true) => {
-			const show = () => {
-				status.textContent = `${lead} ${rest}`;
-				const strong = document.createElement('strong');
-				strong.textContent = lead;
-				toastText.replaceChildren(strong, ` ${rest}`);
-				toast.classList.toggle('has-moon', moon);
-				// Reading a layout value between hide and show makes the browser apply
-				// the hidden state, so the Moon spins again for a second Moon in a row.
-				if (toast.matches(':popover-open')) {
-					toast.hidePopover();
-					void toast.offsetWidth;
-				}
-				toast.showPopover();
-				clearTimeout(hideTimer);
-				hideTimer = window.setTimeout(() => {
-					toast.hidePopover();
-					toastText.replaceChildren();
-					status.textContent = '';
-				}, 4000);
-			};
+		// Announcements go to a visually hidden status line, and what's on screen
+		// is hidden from screen readers so they don't hear it twice. Both visible
+		// pieces are top-layer popovers, so they show above an open preview card.
+		// Anything that happens while the page loads waits for it to settle, so
+		// screen readers hear it.
+		const settled = (show: () => void) => {
 			if (document.readyState === 'complete') show();
 			else addEventListener('load', () => setTimeout(show, 750), { once: true });
 		};
+
+		let statusTimer: number | undefined;
+		const announce = (text: string) => {
+			status.textContent = text;
+			clearTimeout(statusTimer);
+			statusTimer = window.setTimeout(() => (status.textContent = ''), 4000);
+		};
+
+		let toastTimer: number | undefined;
+		const note = (lead: string, rest: string) =>
+			settled(() => {
+				announce(`${lead} ${rest}`);
+				const strong = document.createElement('strong');
+				strong.textContent = lead;
+				toast.replaceChildren(strong, ` ${rest}`);
+				if (toast.matches(':popover-open')) toast.hidePopover();
+				toast.showPopover();
+				clearTimeout(toastTimer);
+				toastTimer = window.setTimeout(() => {
+					toast.hidePopover();
+					toast.replaceChildren();
+				}, 4000);
+			});
+
+		// The Moon-get moment. It never takes focus and lets clicks through, and
+		// any click or Esc ends it early. Otherwise it fades after three seconds,
+		// so with the fade it's gone well inside the five seconds WCAG allows for
+		// motion nobody asked for.
+		let momentTimer: number | undefined;
+		const leave = () => {
+			if (!moment.matches(':popover-open') || moment.classList.contains('leaving')) return;
+			clearTimeout(momentTimer);
+			moment.classList.add('leaving');
+			momentTimer = window.setTimeout(() => {
+				moment.hidePopover();
+				moment.classList.remove('leaving');
+			}, 350);
+		};
+		const celebrate = (rest: string) =>
+			settled(() => {
+				announce(`You got a Moon! ${rest}`);
+				momentName.textContent = rest;
+				clearTimeout(momentTimer);
+				moment.classList.remove('leaving');
+				// Reading a layout value between hide and show makes the browser apply
+				// the hidden state, so the Moon jumps again for a second Moon in a row.
+				if (moment.matches(':popover-open')) {
+					moment.hidePopover();
+					void moment.offsetWidth;
+				}
+				moment.showPopover();
+				momentTimer = window.setTimeout(leave, 3000);
+			});
 
 		const forgetButtons = document.querySelectorAll<HTMLButtonElement>('[data-forget]');
 		const supported = 'showPopover' in HTMLElement.prototype;
@@ -187,7 +227,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 					render();
 					if (panel.matches(':popover-open')) panel.hidePopover();
 					if (fromPanel) document.querySelector<HTMLElement>('footer a[href="/privacy/"]')?.focus();
-					say('Your Moons are forgotten.', 'Progress starts again from zero.', false);
+					note('Your Moons are forgotten.', 'Progress starts again from zero.');
 				} else {
 					button.textContent = 'Forgotten';
 				}
@@ -223,7 +263,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			stops[id]?.();
 			const n = state.found.length;
 			const name = moons.find((m) => m.id === id)!.name;
-			say('You got a Moon!', n === moons.length ? `${name}. That’s all ${n}.` : `${name}. ${n} of ${moons.length}.`);
+			celebrate(n === moons.length ? `${name}. That’s all ${n}.` : `${name}. ${n} of ${moons.length}.`);
 		};
 
 		// Collect items towards a Moon that needs all of them, across visits.
@@ -250,6 +290,11 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			state = load();
 			render();
 		});
+
+		addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') leave();
+		});
+		addEventListener('pointerdown', leave, true);
 
 		// Keyboard users who tab out of the open list close it, like a click
 		// outside does.
@@ -489,8 +534,6 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		width: fit-content;
 		max-width: 32rem;
 		padding: 0.6rem 1rem;
-		align-items: center;
-		gap: 0.7rem;
 		border: 0;
 		background: var(--ink);
 		color: var(--paper);
@@ -501,10 +544,6 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			transform 0.2s ease;
 	}
 
-	.moon-toast:popover-open {
-		display: flex;
-	}
-
 	@starting-style {
 		.moon-toast:popover-open {
 			opacity: 0;
@@ -512,40 +551,109 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		}
 	}
 
-	/* The Moon spins in each time the note opens, the way a collected Moon
-	   turns before it settles. Opening the popover restarts the animation. */
-	.toast-moon {
-		display: none;
+	/* The Moon-get moment fills the middle of the screen over a dark backdrop.
+	   The backdrop is dark in both themes, so the text stays light in both:
+	   #fbfaf7 over the dimmed light page measures 12.3:1. Neither the box nor
+	   the backdrop catches clicks, so the page underneath still works. */
+	.moon-get {
+		inset: 0;
+		margin: auto;
+		width: fit-content;
+		max-width: calc(100% - 2rem);
+		height: fit-content;
+		padding: 0;
+		border: 0;
+		background: none;
+		overflow: visible;
+		color: #fbfaf7;
+		text-align: center;
+		pointer-events: none;
+	}
+
+	.moon-get:popover-open {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.moon-get::backdrop {
+		background: rgb(0 0 0 / 0.8);
+		transition: opacity 0.25s ease;
+	}
+
+	@starting-style {
+		.moon-get:popover-open::backdrop {
+			opacity: 0;
+		}
+	}
+
+	.moon-get.leaving,
+	.moon-get.leaving::backdrop {
+		opacity: 0;
+		transition: opacity 0.35s ease;
+	}
+
+	.get-moon {
 		width: auto;
-		height: 2rem;
-		flex: none;
+		height: clamp(6rem, 24vw, 9rem);
+		margin-bottom: 0.9rem;
 	}
 
-	.has-moon .toast-moon {
-		display: block;
-		animation: moon-get 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+	.get-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 1.2rem + 3vw, 2.75rem);
+		font-weight: 600;
+		line-height: 1.1;
+		letter-spacing: 0.01em;
+		text-transform: uppercase;
 	}
 
-	@keyframes moon-get {
+	.get-name {
+		font-size: var(--text-md);
+		font-weight: 600;
+	}
+
+	/* The Moon jumps up from below, turning twice as it rises, overshoots a
+	   little and settles. The text follows once it's nearly there. Opening the
+	   popover restarts both. */
+	.moon-get:popover-open .get-moon {
+		animation: moon-jump 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+	}
+
+	.moon-get:popover-open :is(.get-title, .get-name) {
+		animation: get-text 0.4s ease-out 0.45s both;
+	}
+
+	@keyframes moon-jump {
 		from {
 			opacity: 0;
-			transform: perspective(200px) scale(0.3) rotateY(0deg);
+			transform: perspective(600px) translateY(90%) scale(0.35) rotateY(0deg);
 		}
-		60% {
+		55% {
 			opacity: 1;
-			transform: perspective(200px) scale(1.15) rotateY(720deg);
+			transform: perspective(600px) translateY(-18%) scale(1.08) rotateY(720deg);
 		}
 		to {
-			transform: perspective(200px) scale(1) rotateY(720deg);
+			transform: perspective(600px) translateY(0) scale(1) rotateY(720deg);
 		}
 	}
 
+	@keyframes get-text {
+		from {
+			opacity: 0;
+			transform: translateY(0.5rem);
+		}
+	}
+
+	/* With reduced motion the moment still dims and shows the Moon, but nothing
+	   jumps or turns. */
 	@media (prefers-reduced-motion: reduce) {
 		.moon-toast {
 			transition: none;
 		}
 
-		.has-moon .toast-moon {
+		.moon-get:popover-open :is(.get-moon, .get-title, .get-name) {
 			animation: none;
 		}
 	}

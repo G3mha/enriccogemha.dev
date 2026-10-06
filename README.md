@@ -61,7 +61,7 @@ Seven Moons, a nod to Super Mario Odyssey, are hidden around the site. You find
 them by switching the theme, watching the headline type every ending, looking up
 every school and both games, opening the capstone report, landing on the 404
 page and visiting every project page. Finding one dims the screen while a Power
-Moon jumps up under "You got a Moon!", with a short chime. A counter shows up in
+Moon jumps up above "You got a Moon!", with a short chime. A counter shows up in
 the footer after the first one, and it opens a list with hints and a button to
 turn the sound off.
 

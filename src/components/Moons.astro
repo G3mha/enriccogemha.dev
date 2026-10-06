@@ -186,6 +186,73 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 				}, 4000);
 			});
 
+		// The chime is written for this site, not taken from the game: a quick
+		// rising C major arpeggio, then a ringing chord, under two seconds. It's
+		// built from oscillators, so there's no file to load, and iPhones mute it
+		// with the silent switch. Browsers only allow sound after a click, tap or
+		// key press on the page (hovering doesn't count), so the audio starts on
+		// the first one. It rests between chimes; once a browser has let it start,
+		// it lets it wake again without another click.
+		let audio: AudioContext | undefined;
+		let restTimer: number | undefined;
+		let busyUntil = 0;
+		const rest = (after: number) => {
+			clearTimeout(restTimer);
+			const wait = Math.max(after, busyUntil - performance.now());
+			restTimer = window.setTimeout(() => audio?.suspend().catch(() => {}), wait);
+		};
+		const wakeAudio = () => {
+			if (state.found.length === moons.length) return;
+			try {
+				audio ??= new AudioContext();
+			} catch {
+				return;
+			}
+			if (audio.state === 'suspended') audio.resume().catch(() => {});
+			rest(1000);
+		};
+		const chime = (ctx: AudioContext) => {
+			const start = ctx.currentTime + 0.03;
+			const out = ctx.createGain();
+			out.gain.value = 0.14;
+			out.connect(ctx.destination);
+			const tone = (hz: number, at: number, length: number, type: OscillatorType, level: number) => {
+				const osc = ctx.createOscillator();
+				const env = ctx.createGain();
+				osc.type = type;
+				osc.frequency.value = hz;
+				env.gain.setValueAtTime(0.0001, at);
+				env.gain.exponentialRampToValueAtTime(level, at + 0.012);
+				env.gain.exponentialRampToValueAtTime(0.0001, at + length);
+				osc.connect(env).connect(out);
+				osc.start(at);
+				osc.stop(at + length + 0.05);
+			};
+			// C5 E5 G5 C6, 70 ms apart, then G5 C6 E6 ringing with a soft C7 on top.
+			[523.25, 659.25, 783.99, 1046.5].forEach((hz, i) => tone(hz, start + i * 0.07, 0.28, 'triangle', 1));
+			for (const hz of [783.99, 1046.5, 1318.51]) tone(hz, start + 0.3, 1.5, 'sine', 0.5);
+			tone(2093, start + 0.3, 0.9, 'sine', 0.12);
+			busyUntil = performance.now() + 2000;
+		};
+		// Only chime while the moment is on screen. If the browser holds the
+		// sound back until a later click, that click ends the moment, so the
+		// chime never arrives late on its own.
+		const playChime = () => {
+			try {
+				audio ??= new AudioContext();
+			} catch {
+				return;
+			}
+			const ctx = audio;
+			const go = () => {
+				if (ctx.state !== 'running' || !moment.matches(':popover-open') || moment.classList.contains('leaving')) return;
+				chime(ctx);
+				rest(0);
+			};
+			if (ctx.state === 'running') go();
+			else ctx.resume().then(go, () => {});
+		};
+
 		// The Moon-get moment. It never takes focus and lets clicks through, and
 		// any click or Esc ends it early. Otherwise it fades after three seconds,
 		// so with the fade it's gone well inside the five seconds WCAG allows for
@@ -213,6 +280,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 					void moment.offsetWidth;
 				}
 				moment.showPopover();
+				playChime();
 				momentTimer = window.setTimeout(leave, 3000);
 			});
 
@@ -295,6 +363,14 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			if (event.key === 'Escape') leave();
 		});
 		addEventListener('pointerdown', leave, true);
+
+		// The presses browsers count as permission to play sound: a mouse button
+		// going down, a finger or pen lifting, or a key other than Esc or a bare
+		// modifier.
+		addEventListener('pointerdown', (event) => event.pointerType === 'mouse' && wakeAudio(), true);
+		addEventListener('pointerup', (event) => event.pointerType !== 'mouse' && wakeAudio(), true);
+		const notActivation = new Set(['Escape', 'Shift', 'Control', 'Alt', 'Meta', 'CapsLock']);
+		addEventListener('keydown', (event) => !notActivation.has(event.key) && wakeAudio(), true);
 
 		// Keyboard users who tab out of the open list close it, like a click
 		// outside does.

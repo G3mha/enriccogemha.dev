@@ -70,7 +70,11 @@ the sound off.
 The chime isn't the game's jingle. Nintendo doesn't publish that as a file, so
 the site plays its own: a rising C major arpeggio and a ringing chord, built
 with Web Audio. Browsers only allow sound after a click, tap or key press on
-the page, so a Moon found on a page load or a hover can arrive quietly.
+the page, so a Moon found on a page load or a hover can arrive quietly. If the
+browser holds the sound back for more than a second, the chime is dropped rather
+than played late. Only the newest Moon chimes, and only in a tab that's showing,
+so two Moons found before the first click don't play together later. Turning the
+sound off also cuts a chime that's still ringing.
 
 `Moons.astro` holds all of it. It only listens to things the site already does,
 plus two markers, one on the 404 page and one on each project page. Progress

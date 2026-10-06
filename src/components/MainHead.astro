@@ -16,10 +16,16 @@ interface Props {
 	description?: string | undefined;
 }
 
-const {
-	title = 'Enricco Gemha',
-	description = 'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.',
-} = Astro.props;
+const { title = 'Enricco Gemha' } = Astro.props;
+
+// Pages without their own description, like the homepage, get two. Search
+// results show the long one. Chat previews get a shorter one, because WhatsApp
+// shows about 80 characters and the card above it already says what I build.
+const description =
+	Astro.props.description ??
+	'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.';
+const previewDescription =
+	Astro.props.description ?? 'I’m doing a master’s at Brown. Before that I was DAERO’s first engineering hire.';
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
 
@@ -52,7 +58,7 @@ const card = {
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Enricco Gemha" />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={previewDescription} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={card.src} />
 <meta property="og:image:type" content="image/jpeg" />

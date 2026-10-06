@@ -79,7 +79,10 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 </div>
 
 <p class="sr-only" role="status" data-announce></p>
-<div class="moon-toast" popover="manual" aria-hidden="true"></div>
+<div class="moon-toast" popover="manual" aria-hidden="true">
+	<img class="toast-moon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
+	<span data-toast-text></span>
+</div>
 
 <script>
 	(() => {
@@ -147,18 +150,25 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		// top-layer popover so it shows above an open preview card. Awards made
 		// while the page loads wait for it to settle, so screen readers hear them.
 		let hideTimer: number | undefined;
-		const say = (lead: string, rest: string) => {
+		const toastText = toast.querySelector<HTMLElement>('[data-toast-text]')!;
+		const say = (lead: string, rest: string, moon = true) => {
 			const show = () => {
 				status.textContent = `${lead} ${rest}`;
 				const strong = document.createElement('strong');
 				strong.textContent = lead;
-				toast.replaceChildren(strong, ` ${rest}`);
-				if (toast.matches(':popover-open')) toast.hidePopover();
+				toastText.replaceChildren(strong, ` ${rest}`);
+				toast.classList.toggle('has-moon', moon);
+				// Reading a layout value between hide and show makes the browser apply
+				// the hidden state, so the Moon spins again for a second Moon in a row.
+				if (toast.matches(':popover-open')) {
+					toast.hidePopover();
+					void toast.offsetWidth;
+				}
 				toast.showPopover();
 				clearTimeout(hideTimer);
 				hideTimer = window.setTimeout(() => {
 					toast.hidePopover();
-					toast.replaceChildren();
+					toastText.replaceChildren();
 					status.textContent = '';
 				}, 4000);
 			};
@@ -177,7 +187,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 					render();
 					if (panel.matches(':popover-open')) panel.hidePopover();
 					if (fromPanel) document.querySelector<HTMLElement>('footer a[href="/privacy/"]')?.focus();
-					say('Your Moons are forgotten.', 'Progress starts again from zero.');
+					say('Your Moons are forgotten.', 'Progress starts again from zero.', false);
 				} else {
 					button.textContent = 'Forgotten';
 				}
@@ -479,6 +489,8 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		width: fit-content;
 		max-width: 32rem;
 		padding: 0.6rem 1rem;
+		align-items: center;
+		gap: 0.7rem;
 		border: 0;
 		background: var(--ink);
 		color: var(--paper);
@@ -489,6 +501,10 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			transform 0.2s ease;
 	}
 
+	.moon-toast:popover-open {
+		display: flex;
+	}
+
 	@starting-style {
 		.moon-toast:popover-open {
 			opacity: 0;
@@ -496,9 +512,41 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		}
 	}
 
+	/* The Moon spins in each time the note opens, the way a collected Moon
+	   turns before it settles. Opening the popover restarts the animation. */
+	.toast-moon {
+		display: none;
+		width: auto;
+		height: 2rem;
+		flex: none;
+	}
+
+	.has-moon .toast-moon {
+		display: block;
+		animation: moon-get 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+	}
+
+	@keyframes moon-get {
+		from {
+			opacity: 0;
+			transform: perspective(200px) scale(0.3) rotateY(0deg);
+		}
+		60% {
+			opacity: 1;
+			transform: perspective(200px) scale(1.15) rotateY(720deg);
+		}
+		to {
+			transform: perspective(200px) scale(1) rotateY(720deg);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.moon-toast {
 			transition: none;
+		}
+
+		.has-moon .toast-moon {
+			animation: none;
 		}
 	}
 </style>

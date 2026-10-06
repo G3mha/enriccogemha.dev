@@ -1,14 +1,15 @@
 /**
  * Draws the link preview card, the image WhatsApp, iMessage, Slack, LinkedIn
  * and others show when someone shares a link to the site, and saves it as
- * public/og-card.jpg. Run it with `npm run og-card` after changing anything
- * the card shows: the headline, the portrait, the name or the fonts.
+ * src/assets/og-card.jpg. Run it with `npm run og-card` after changing
+ * anything the card shows: the headline, the portrait, the name or the fonts.
  *
  * The card is a 1200 x 630 page laid out like the homepage's first screen:
- * the name, the "I build iOS apps." headline with its caret, and the portrait.
- * It uses the site's own fonts, colours and wordmark, so it looks like the
- * site. Headless Chrome screenshots it, and sips (built into macOS) saves it
- * as a JPEG, which keeps it far below WhatsApp's 600 KB limit for previews.
+ * the name, "I build things." with the homepage headline's caret, and the
+ * portrait. It uses the site's own fonts, colours and wordmark, so it looks
+ * like the site. Headless Chrome screenshots it, and sips (built into macOS)
+ * saves it as a JPEG, which keeps it far below WhatsApp's 600 KB limit for
+ * previews.
  *
  * Chrome is looked for at its usual macOS path. Set CHROME_PATH to use another.
  */
@@ -22,7 +23,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const require = createRequire(import.meta.url);
 const chrome = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const output = join(root, 'public/og-card.jpg');
+const output = join(root, 'src/assets/og-card.jpg');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -94,8 +95,8 @@ const html = `<!doctype html>
 		color: var(--ink);
 	}
 
-	/* The homepage headline, at the same settings as the site's h1, with the
-	   caret it types behind. */
+	/* Set like the homepage headline: the site's h1 settings, and the caret
+	   that headline types behind. */
 	h1 {
 		font-family: 'Fraunces Variable', serif;
 		font-weight: 600;
@@ -136,7 +137,7 @@ const html = `<!doctype html>
 <body>
 	<div class="text">
 		${wordmark}
-		<h1>I build<br /><span class="typed">iOS apps.</span></h1>
+		<h1>I build<br /><span class="typed">things.</span></h1>
 		<p class="domain">enriccogemha.dev</p>
 	</div>
 	<div class="photo">
@@ -165,7 +166,7 @@ try {
 	const size = execFileSync('sips', ['-g', 'pixelWidth', '-g', 'pixelHeight', output], { encoding: 'utf8' });
 	const [w, h] = size.match(/\d+(?=\s*$)/gm).map(Number);
 	if (w !== WIDTH || h !== HEIGHT) throw new Error(`Expected ${WIDTH}x${HEIGHT}, got ${w}x${h}`);
-	console.log(`Saved public/og-card.jpg (${w}x${h}, ${Math.round(statSync(output).size / 1024)} KB)`);
+	console.log(`Saved src/assets/og-card.jpg (${w}x${h}, ${Math.round(statSync(output).size / 1024)} KB)`);
 } finally {
 	rmSync(work, { recursive: true, force: true });
 }

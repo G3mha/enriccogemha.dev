@@ -58,8 +58,8 @@ on those cards.
 ## Link previews
 
 When a link to any page is shared in WhatsApp, iMessage, Slack or LinkedIn,
-the preview shows `public/og-card.jpg`. It's laid out like the top of the
-homepage: the name, the "I build iOS apps." headline with its caret, and the
+the preview shows `src/assets/og-card.jpg`. It's laid out like the top of the
+homepage: the name, "I build things." with the headline's caret, and the
 portrait. `scripts/og-card.mjs` draws it with the site's own fonts, colours
 and wordmark, so after changing any of those, draw it again:
 
@@ -70,6 +70,11 @@ npm run og-card
 The script needs Google Chrome, and it saves the JPEG with `sips`, which comes
 with macOS. The card is 1200 × 630, the size Facebook recommends, and about
 125 KB. WhatsApp asks for preview images under 600 KB.
+
+Facebook caches a preview image by its URL, so a card redrawn at the same URL
+could keep showing the old one. That's why the card lives in `src/assets/`
+instead of `public/`: the build names it after a hash of its contents, so
+every redrawn card gets a new URL.
 
 ## Hidden Moons
 

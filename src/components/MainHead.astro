@@ -10,27 +10,36 @@ import '../styles/global.css';
 // text is set in its real fonts before the first paint and nothing swaps.
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
+import ogCard from '../assets/og-card.jpg';
 
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
 }
 
-const {
-	title = 'Enricco Gemha',
-	description = 'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.',
-} = Astro.props;
+const { title = 'Enricco Gemha' } = Astro.props;
+
+// Pages without their own description, like the homepage, get two. Search
+// results show the long one. Chat previews get a shorter one, because WhatsApp
+// shows about 80 characters and the card above it already says what I build.
+const description =
+	Astro.props.description ??
+	'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.';
+const previewDescription =
+	Astro.props.description ?? 'I’m doing a master’s at Brown. Before that I was DAERO’s first engineering hire.';
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
 
 // The card chat apps show when a link to any page is shared. scripts/og-card.mjs
-// draws it. Stating its size lets Facebook's crawler show it on the first share
-// instead of after it has downloaded and processed the image.
+// draws it. Facebook caches the image by its URL, so it's imported rather than
+// kept in public/: the build names the file after a hash of its contents, and
+// a redrawn card gets a new URL. Stating its size lets Facebook's crawler show
+// it on the first share instead of after it has downloaded and processed it.
 const card = {
-	src: new URL('/og-card.jpg', canonical),
-	width: 1200,
-	height: 630,
-	alt: 'The name Enricco Gemha and the headline “I build iOS apps.” beside a photo of Enricco smiling in a navy suit.',
+	src: new URL(ogCard.src, canonical),
+	width: ogCard.width,
+	height: ogCard.height,
+	alt: 'The name Enricco Gemha and the headline “I build things.” beside a photo of Enricco smiling in a navy suit.',
 };
 ---
 
@@ -52,7 +61,7 @@ const card = {
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Enricco Gemha" />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={previewDescription} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={card.src} />
 <meta property="og:image:type" content="image/jpeg" />

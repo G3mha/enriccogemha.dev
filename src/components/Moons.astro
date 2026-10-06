@@ -386,9 +386,19 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			render();
 		});
 
-		addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') leave();
-		});
+		// While the moment shows, Esc closes only the moment. It runs first and
+		// keeps the key from also closing a preview card or the Moons list under
+		// it. During the fade, Esc goes through as normal.
+		addEventListener(
+			'keydown',
+			(event) => {
+				if (event.key !== 'Escape' || !moment.matches(':popover-open') || moment.classList.contains('leaving')) return;
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				leave();
+			},
+			true,
+		);
 		addEventListener('pointerdown', leave, true);
 
 		// The presses browsers count as permission to play sound: a mouse button

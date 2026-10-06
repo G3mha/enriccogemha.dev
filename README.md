@@ -60,12 +60,14 @@ on those cards.
 Seven Moons, a nod to Super Mario Odyssey, are hidden around the site. You find
 them by switching the theme, watching the headline type every ending, looking up
 every school and both games, opening the capstone report, landing on the 404
-page and visiting every project page. Finding one dims the screen while a Power
-Moon jumps up above "You got a Moon!", with a short chime. It goes away after
-about three seconds, or sooner on a click or Esc. Esc closes only the moment, so
-a preview card or the Moons list under it stays open. A counter shows up in the
-footer after the first one, and it opens a list with hints and a button to turn
-the sound off.
+page and visiting every project page. With reduced motion the headline doesn't
+type, so half a minute in a row with it on screen counts instead. Switching to
+another tab starts that half minute over. Finding one dims the screen while a
+Power Moon jumps up above "You got a Moon!", with a short chime. It goes away
+after about three seconds, or sooner on a click or Esc. Esc closes only the
+moment, so a preview card or the Moons list under it stays open. A counter shows
+up in the footer after the first one, and it opens a list with hints and a
+button to turn the sound off.
 
 The chime isn't the game's jingle. Nintendo doesn't publish that as a file, so
 the site plays its own: a rising C major arpeggio and a ringing chord, built

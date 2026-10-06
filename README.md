@@ -77,5 +77,5 @@ a stranger can use it today.
 
 ## License
 
-The code is [AGPL-3.0](LICENSE). The logos, badges and the name wordmark belong
-to their owners and aren't covered by it.
+The code is [AGPL-3.0](LICENSE). The logos, badges, the name wordmark and
+Nintendo's Power Moon art belong to their owners and aren't covered by it.

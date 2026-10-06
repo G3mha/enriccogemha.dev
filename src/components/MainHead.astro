@@ -21,13 +21,14 @@ const { title = 'Enricco Gemha' } = Astro.props;
 
 // Pages without their own description, like the homepage, get two. Search
 // results show the long one. Chat previews get their own, which leaves out
-// what I build because the card above it already says that.
+// what I build because the card above it already says that. WhatsApp's docs
+// say 80 characters is enough there, and phones cut off longer lines, so this
+// one stays close to that.
 const description =
 	Astro.props.description ??
 	'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.';
 const previewDescription =
-	Astro.props.description ??
-	'I’m doing a master’s in Entrepreneurship at Brown. Previously, a full-time founding iOS engineer at DAERO.';
+	Astro.props.description ?? 'Master’s in Entrepreneurship at Brown. Before that, founding iOS engineer at DAERO.';
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
 

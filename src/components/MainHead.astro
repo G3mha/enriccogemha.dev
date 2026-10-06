@@ -20,13 +20,14 @@ interface Props {
 const { title = 'Enricco Gemha' } = Astro.props;
 
 // Pages without their own description, like the homepage, get two. Search
-// results show the long one. Chat previews get a shorter one, because WhatsApp
-// shows about 80 characters and the card above it already says what I build.
+// results show the long one. Chat previews get their own, which leaves out
+// what I build because the card above it already says that.
 const description =
 	Astro.props.description ??
 	'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.';
 const previewDescription =
-	Astro.props.description ?? 'I’m doing a master’s at Brown. Before that I was DAERO’s first engineering hire.';
+	Astro.props.description ??
+	'I’m doing a master’s in Entrepreneurship at Brown. Previously, a full-time founding iOS engineer at DAERO.';
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
 

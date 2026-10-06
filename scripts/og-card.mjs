@@ -5,10 +5,11 @@
  * anything the card shows: the headline, the portrait, the name or the fonts.
  *
  * The card is a 1200 x 630 page laid out like the homepage's first screen:
- * the name, the "I build iOS apps." headline with its caret, and the portrait.
- * It uses the site's own fonts, colours and wordmark, so it looks like the
- * site. Headless Chrome screenshots it, and sips (built into macOS) saves it
- * as a JPEG, which keeps it far below WhatsApp's 600 KB limit for previews.
+ * the name, "I build things." with the homepage headline's caret, and the
+ * portrait. It uses the site's own fonts, colours and wordmark, so it looks
+ * like the site. Headless Chrome screenshots it, and sips (built into macOS)
+ * saves it as a JPEG, which keeps it far below WhatsApp's 600 KB limit for
+ * previews.
  *
  * Chrome is looked for at its usual macOS path. Set CHROME_PATH to use another.
  */
@@ -94,8 +95,8 @@ const html = `<!doctype html>
 		color: var(--ink);
 	}
 
-	/* The homepage headline, at the same settings as the site's h1, with the
-	   caret it types behind. */
+	/* Set like the homepage headline: the site's h1 settings, and the caret
+	   that headline types behind. */
 	h1 {
 		font-family: 'Fraunces Variable', serif;
 		font-weight: 600;
@@ -136,7 +137,7 @@ const html = `<!doctype html>
 <body>
 	<div class="text">
 		${wordmark}
-		<h1>I build<br /><span class="typed">iOS apps.</span></h1>
+		<h1>I build<br /><span class="typed">things.</span></h1>
 		<p class="domain">enriccogemha.dev</p>
 	</div>
 	<div class="photo">

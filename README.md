@@ -59,7 +59,7 @@ on those cards.
 
 When a link to any page is shared in WhatsApp, iMessage, Slack or LinkedIn,
 the preview shows `src/assets/og-card.jpg`. It's laid out like the top of the
-homepage: the name, the "I build iOS apps." headline with its caret, and the
+homepage: the name, "I build things." with the headline's caret, and the
 portrait. `scripts/og-card.mjs` draws it with the site's own fonts, colours
 and wordmark, so after changing any of those, draw it again:
 

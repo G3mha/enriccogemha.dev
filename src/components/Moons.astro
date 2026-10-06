@@ -617,8 +617,11 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 	}
 
 	/* The note sits in the top layer, centred near the bottom without shrinking
-	   to half the screen on phones. It fades in where @starting-style works. */
+	   to half the screen on phones. It fades in where @starting-style works.
+	   Like the moment below, it's hidden unless open, so browsers without the
+	   popover API don't show it in the footer. */
 	.moon-toast {
+		display: none;
 		inset: auto 1rem 1.5rem 1rem;
 		margin: 0 auto;
 		width: fit-content;
@@ -634,6 +637,10 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			transform 0.2s ease;
 	}
 
+	.moon-toast:popover-open {
+		display: block;
+	}
+
 	@starting-style {
 		.moon-toast:popover-open {
 			opacity: 0;
@@ -646,6 +653,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 	   #fbfaf7 over the dimmed light page measures 12.3:1. Neither the box nor
 	   the backdrop catches clicks, so the page underneath still works. */
 	.moon-get {
+		display: none;
 		inset: 0;
 		margin: auto;
 		width: fit-content;

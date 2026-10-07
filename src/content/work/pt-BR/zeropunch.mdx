@@ -1,0 +1,32 @@
+---
+title: ZeroPunch
+summary: Um app de campo para equipes de obra, feito na DAERO.
+period: set. 2025 – jul. 2026
+role: Engenheiro iOS líder, depois também trabalhando em observabilidade, backend e recursos web.
+links:
+  - App Store
+  - daerogroup.com
+---
+
+import NfxLogo from '../../../components/NfxLogo.astro';
+import ThresholdLogo from '../../../components/ThresholdLogo.astro';
+
+Entrei na DAERO em setembro de 2025 como seu primeiro engenheiro contratado, pouco depois do pre-seed. A DAERO é apoiada pela <NfxLogo /> e pela <ThresholdLogo />. Trabalhei em dois redesenhos completos do app. O produto continua sendo entregue e a equipe segue sem mim, então o que vem a seguir é só a parte pela qual posso responder.
+
+## O que foi meu
+
+A pilha de observabilidade do cliente, de ponta a ponta. O contrato de analytics vive em um repositório separado que gera Swift tipado. Escrevi o lado consumidor: 88% do pacote de Observability do iOS, cobrindo o cliente de eventos, o modelo de sessão e os painéis por trás dele.
+
+O design system, 68% desse pacote. Três redesenhos de interface passaram por ele.
+
+A camada de funcionalidades, cerca de metade.
+
+## Sobre os números
+
+No rewrite, fiz 1.963 dos 2.375 commits sem contar merges, ou 82,7%. Minha parte das linhas que sobreviveram é 34,1%. Os dois números são verdadeiros. A diferença vem de como eu trabalho: faço commits em pedaços pequenos, e muito do que escrevi no começo foi substituído depois. Menciono os dois porque o número de commits sozinho soa como uma afirmação sobre volume de código, e o `git blame` a derrubaria em mais ou menos um minuto.
+
+Na primeira versão, anterior à minha chegada, fiz 91 de 342 commits.
+
+O catálogo de strings na minha saída tinha 748 chaves em inglês, espanhol e português. Russo e ucraniano foram adicionados depois que saí.
+
+Não tenho números de usuários nem de projetos para dar. Os painéis que construí definem os gráficos que os mostrariam, e eu não tenho mais acesso aos dados por trás deles.

@@ -15,8 +15,9 @@
  * PreviewCard's default of being hidden from screen readers. PreviewCard also
  * has the script that opens and places them.
  */
-import { getCollection } from 'astro:content';
 import PreviewCard from './PreviewCard.astro';
+import { getWork } from '../data/work';
+import { localeOf } from '../i18n';
 import Status from './Status.astro';
 import PinPagLogo from './PinPagLogo.astro';
 import RoboCupLogo from './RoboCupLogo.astro';
@@ -30,7 +31,7 @@ interface Props {
 }
 
 const { ids = [], openings = [] } = Astro.props;
-const work = await getCollection('work');
+const work = await getWork(localeOf(Astro.url.pathname));
 const projects = work.filter((p) => ids.includes(p.id));
 const openingProjects = work.filter((p) => openings.includes(p.id));
 

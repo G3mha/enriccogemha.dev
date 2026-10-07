@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import type { Work } from '../data/work';
 import Status from './Status.astro';
 import Tags from './Tags.astro';
 import MarkedText from './MarkedText.astro';
 
 interface Props {
-	project: CollectionEntry<'work'>;
+	project: Work;
 }
 
 const { data, id } = Astro.props.project;

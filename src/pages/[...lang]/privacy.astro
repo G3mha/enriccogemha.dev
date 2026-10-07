@@ -2,10 +2,12 @@
 import { localeFromParams, localePaths } from '../../i18n';
 import En from '../../copy/en/privacy.astro';
 import PtBR from '../../copy/pt-BR/privacy.astro';
+import EsES from '../../copy/es-ES/privacy.astro';
+import Sv from '../../copy/sv/privacy.astro';
 
 export const getStaticPaths = localePaths;
 
-const Page = { en: En, 'pt-BR': PtBR }[localeFromParams(Astro.params)];
+const Page = { en: En, 'pt-BR': PtBR, 'es-ES': EsES, sv: Sv }[localeFromParams(Astro.params)];
 ---
 
 <Page />

@@ -7,8 +7,8 @@
  * focus leaves it, the way a menu is expected to behave.
  *
  * English gets the US flag, since that's where the site's author lives and
- * the spelling the site uses, and Portuguese the Brazilian one. Both flags
- * are drawn by Flag.astro.
+ * the spelling the site uses; Portuguese the Brazilian one, Spanish the
+ * Spanish one and Swedish the Swedish one. Flag.astro draws them all.
  */
 import Flag from './Flag.astro';
 import { locales, localeOf, localePath, stripLocale, type Locale } from '../i18n';
@@ -17,7 +17,7 @@ import { ui } from '../i18n/ui';
 const locale = localeOf(Astro.url.pathname);
 const t = ui[locale];
 const page = stripLocale(Astro.url.pathname);
-const flags: Record<Locale, 'us' | 'br'> = { en: 'us', 'pt-BR': 'br' };
+const flags: Record<Locale, 'us' | 'br' | 'es' | 'se'> = { en: 'us', 'pt-BR': 'br', 'es-ES': 'es', sv: 'se' };
 ---
 
 <details class="language">

@@ -12,7 +12,9 @@ import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-op
 import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
 import ogCardEn from '../assets/og-card.jpg';
 import ogCardPtBR from '../assets/og-card.pt-BR.jpg';
-import { locales, localeOf, localePath, ogLocale, stripLocale } from '../i18n';
+import ogCardEsES from '../assets/og-card.es-ES.jpg';
+import ogCardSv from '../assets/og-card.sv.jpg';
+import { langAliases, locales, localeOf, localePath, ogLocale, stripLocale, type Locale } from '../i18n';
 import { ui } from '../i18n/ui';
 
 interface Props {
@@ -40,12 +42,13 @@ const page = stripLocale(Astro.url.pathname);
 const alternates = locales.map((l) => ({ lang: l, href: new URL(localePath(l, page), origin) }));
 
 // The card chat apps show when a link to any page is shared, in the page's
-// language. scripts/og-card.mjs draws both. Facebook caches the image by its
-// URL, so they're imported rather than kept in public/: the build names each
-// file after a hash of its contents, and a redrawn card gets a new URL.
+// language. scripts/og-card.mjs draws them all. Facebook caches the image by
+// its URL, so they're imported rather than kept in public/: the build names
+// each file after a hash of its contents, and a redrawn card gets a new URL.
 // Stating the size lets Facebook's crawler show it on the first share instead
 // of after it has downloaded and processed it.
-const ogCard = locale === 'pt-BR' ? ogCardPtBR : ogCardEn;
+const ogCards: Record<Locale, ImageMetadata> = { en: ogCardEn, 'pt-BR': ogCardPtBR, 'es-ES': ogCardEsES, sv: ogCardSv };
+const ogCard = ogCards[locale];
 const card = {
 	src: new URL(ogCard.src, canonical),
 	width: ogCard.width,
@@ -86,21 +89,22 @@ const card = {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image:alt" content={card.alt} />
 
-{/* ?lang=pt_BR (or en) on any address goes to that language's copy of the
-    page. On Vercel the redirects in vercel.json do this before the page is
-    sent; this is for astro dev and any host without them, and runs before
-    anything is painted. */}
-<script is:inline>
+{/* ?lang=pt_BR (or es, sv, en) on any address goes to that language's copy
+    of the page. On Vercel the redirects in vercel.json do this before the
+    page is sent; this is for astro dev and any host without them, and runs
+    before anything is painted. The aliases and prefixes are the ones in
+    src/i18n/index.ts. */}
+<script is:inline define:vars={{ aliases: langAliases }}>
 	(() => {
 		const params = new URLSearchParams(location.search);
-		const asked = params.get('lang');
+		const asked = params.get('lang')?.toLowerCase();
 		if (!asked) return;
-		const want = /^pt([_-]br)?$/i.test(asked) ? 'pt-BR' : /^en([_-]us)?$/i.test(asked) ? 'en' : null;
+		const want = Object.keys(aliases).find((l) => aliases[l].includes(asked));
 		if (!want) return;
 		const path = location.pathname;
-		const inPt = path === '/pt-BR' || path.startsWith('/pt-BR/');
-		const page = inPt ? path.slice('/pt-BR'.length) || '/' : path;
-		const target = (want === 'pt-BR' ? '/pt-BR' : '') + page;
+		const current = Object.keys(aliases).find((l) => l !== 'en' && (path === `/${l}` || path.startsWith(`/${l}/`)));
+		const page = current ? path.slice(`/${current}`.length) || '/' : path;
+		const target = (want === 'en' ? '' : `/${want}`) + page;
 		if (target === path) return;
 		params.delete('lang');
 		const query = params.toString();

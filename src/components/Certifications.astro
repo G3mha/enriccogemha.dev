@@ -20,7 +20,7 @@ const t = ui[locale].certs;
 // exam, level and covers come from the issuer's exam guide for the version
 // that was live on the date earned. source names that guide, around the exam
 // code: whose it is, then what it's called. The names, exam codes and
-// verifiers stay in English; the rest is written in both languages.
+// verifiers stay in English; the rest is written in every language.
 const certifications = [
 	{
 		name: 'AWS Certified Cloud Practitioner',
@@ -55,6 +55,28 @@ const certifications = [
 					['Cobrança, preços e suporte', '12%'],
 				],
 				source: ['da AWS', 'do guia do exame'],
+			},
+			'es-ES': {
+				dates: 'Obtenida en ago. de 2025, válida hasta ago. de 2028',
+				level: 'Básico',
+				covers: [
+					['Conceptos de la nube', '24%'],
+					['Seguridad y conformidad', '30%'],
+					['Tecnología y servicios de la nube', '34%'],
+					['Facturación, precios y soporte', '12%'],
+				],
+				source: ['de AWS', 'de la guía del examen'],
+			},
+			sv: {
+				dates: 'Tagen aug. 2025, giltig till aug. 2028',
+				level: 'Grundläggande',
+				covers: [
+					['Molnkoncept', '24%'],
+					['Säkerhet och efterlevnad', '30%'],
+					['Molnteknik och molntjänster', '34%'],
+					['Fakturering, priser och support', '12%'],
+				],
+				source: ['AWS:s', 'provguide'],
 			},
 		},
 	},
@@ -97,6 +119,34 @@ const certifications = [
 					['Explorar a comunidade do GitHub', '5–10%'],
 				],
 				source: ['do Microsoft Learn', 'do guia de estudo'],
+			},
+			'es-ES': {
+				dates: 'Obtenida en ago. de 2026, válida hasta sept. de 2028',
+				level: 'Principiante',
+				covers: [
+					['Entender los fundamentos de Git y GitHub', '25–30%'],
+					['Trabajar con repositorios de GitHub', '10–15%'],
+					['Colaborar con GitHub', '10–15%'],
+					['Aplicar prácticas de desarrollo modernas', '10–15%'],
+					['Gestionar proyectos con GitHub', '5–10%'],
+					['Entender la privacidad, la seguridad y la administración', '10–15%'],
+					['Explorar la comunidad de GitHub', '5–10%'],
+				],
+				source: ['de Microsoft Learn', 'de la guía de estudio'],
+			},
+			sv: {
+				dates: 'Tagen aug. 2026, giltig till sep. 2028',
+				level: 'Nybörjare',
+				covers: [
+					['Förstå grunderna i Git och GitHub', '25–30%'],
+					['Arbeta med GitHub-repositorier', '10–15%'],
+					['Samarbeta med GitHub', '10–15%'],
+					['Tillämpa moderna utvecklingsmetoder', '10–15%'],
+					['Hantera projekt med GitHub', '5–10%'],
+					['Förstå integritet, säkerhet och administration', '10–15%'],
+					['Utforska GitHub-communityn', '5–10%'],
+				],
+				source: ['Microsoft Learns', 'studieguide'],
 			},
 		},
 	},

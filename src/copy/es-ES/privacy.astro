@@ -1,0 +1,61 @@
+---
+/** La página de privacidad, en español. El marco es PrivacyPage. */
+import PrivacyPage from '../../components/pages/PrivacyPage.astro';
+---
+
+<PrivacyPage>
+	<p>
+		Este es un sitio personal. No tiene cuentas, ni formularios, ni comentarios, ni
+		analítica. No recojo tu nombre, tu correo electrónico ni nada de lo que haces aquí,
+		y no hay ninguna base de datos detrás de esta página a la que pueda ir nada de eso.
+	</p>
+
+	<h2>Lo que llega a otras personas</h2>
+	<p>
+		Todo lo que hay en estas páginas, fuentes incluidas, viene de este sitio, así que tu
+		navegador no contacta con nadie más para mostrarlas.
+	</p>
+	<p>
+		<strong>Alojamiento.</strong> El sitio funciona en Vercel, cuyos servidores guardan los
+		registros habituales de peticiones, que incluyen direcciones IP. No los leo y no
+		construyo nada a partir de ellos.
+	</p>
+
+	<h2>Enlaces hacia fuera</h2>
+	<p>
+		Los enlaces a la App Store, Google Play, GitHub y los propios proyectos llevan a
+		servicios con sus propias políticas de privacidad, y esta termina en el borde de
+		este sitio.
+	</p>
+
+	<h2>Almacenamiento en tu dispositivo</h2>
+	<p>
+		Si usas el botón de tema claro y oscuro, tu elección se guarda en
+		<code>localStorage</code> bajo la clave <code>theme</code>. Nunca sale de tu
+		navegador y yo no puedo leerla. Borrar los datos del sitio la elimina.
+	</p>
+	<p>
+		El sitio también esconde siete Lunas. Para llevar la cuenta, guarda cuáles has
+		encontrado y hasta dónde has llegado con el resto: las páginas de proyecto que has
+		visitado, las tarjetas de escuelas y juegos que has abierto y los finales del titular
+		que has visto. También guarda si el sonido que suena al encontrar una está activado
+		o no. Todo eso empieza en tu primera visita, se queda en tu navegador bajo la clave
+		<code>moons</code> y nunca me llega. Borrar los datos del sitio lo elimina, y este
+		botón también:
+		<button type="button" class="forget-moons" data-forget>Olvidar mis Lunas</button>
+	</p>
+	<p>
+		El sonido se genera en tu navegador, así que no se carga ningún archivo de audio para él.
+	</p>
+	<p>
+		Tu idioma no se guarda en ningún sitio. El sitio está en inglés en sus direcciones de
+		siempre, en portugués bajo <code>/pt-BR/</code>, en español bajo <code>/es-ES/</code> y en
+		sueco bajo <code>/sv/</code>, y el menú de la cabecera es un enlace normal entre ellos.
+	</p>
+
+	<h2>Preguntas</h2>
+	<p>
+		Si algo de esto no queda claro, escríbeme a
+		<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>.
+	</p>
+</PrivacyPage>

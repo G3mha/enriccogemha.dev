@@ -1,0 +1,44 @@
+---
+/** Startsidans inledning, på svenska. Layouten är HomePage. */
+import HomePage from '../../components/pages/HomePage.astro';
+import NfxLogo from '../../components/NfxLogo.astro';
+import DaeroLogo from '../../components/DaeroLogo.astro';
+import OpenGivingLogo from '../../components/OpenGivingLogo.astro';
+import RoboCupLogo from '../../components/RoboCupLogo.astro';
+import PinPagLogo from '../../components/PinPagLogo.astro';
+import Flag from '../../components/Flag.astro';
+---
+
+<HomePage>
+	<Fragment slot="intro">
+		<p class="lede">
+			Det största jag har byggt är <OpenGivingLogo href="/sv/work/opengiving/" preview="opengiving" />, en
+			marknadsplats där en del av varje försäljning går till en insamlingskampanj. Jag skrev
+			all kod: webb-, iOS- och Android-apparna, och backend-API:et de delar.
+		</p>
+		<p>
+			Jag växte upp i <span class="nowrap">São Paulo <Flag country="br" label="Brasilien" /></span>. Just nu studerar jag på
+			<span class="nowrap"><a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a> <Flag country="us" label="USA" /></span> till maj 2027, en master i entreprenörskap, och läser
+			cybersäkerhet på <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard</a> (korsregistrerad, på plats). Före Brown
+			var jag den första ingenjören på <DaeroLogo href="/sv/work/zeropunch/" preview="zeropunch" />, en startup i Boston som gör programvara
+			för byggbranschen, med <span class="nowrap"><NfxLogo preview="org-nfx" /></span> som investerare. Jag ledde utvecklingen av deras
+			iOS-app i tio månader, och hjälpte samtidigt till med webb, infrastruktur och backend.
+		</p>
+		<p>
+			Jag tog min kandidatexamen i datateknik på <a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a>. I mitt
+			<a href="/sv/work/pinpag-capstone/" data-preview="pinpag-capstone">examensarbete</a> arbetade jag med säkerhetsövervakning
+			över flera moln för <PinPagLogo href="/sv/work/pinpag-capstone/" preview="pinpag-capstone" />, ett brasilianskt betalningsföretag. En del av det var ett Python-verktyg som kartlade
+			hur deras AWS-resurser hängde ihop och flaggade allt som var öppet mot internet och inte borde vara det.
+			Jag var också med i Insper Dynamics, ett studentlag som bygger räddningsrobotar, i två år. Vi vann
+			ett Best in Class-pris för sensorer på <RoboCupLogo href="/sv/work/robocup/" preview="robocup" /> i
+			<span class="nowrap">2022 <Flag country="th" label="Bangkok, Thailand" /></span>,
+			och ett för utforskning, det autonoma kartläggningstestet, i
+			<span class="nowrap">2023 <Flag country="fr" label="Bordeaux, Frankrike" /></span>.
+			I början av 2023 blev jag ordförande för universitetets robotikklubb.
+		</p>
+		<p class="contact">
+			E-post är det enklaste sättet att nå mig:
+			<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>
+		</p>
+	</Fragment>
+</HomePage>

@@ -22,7 +22,7 @@ const flags: Record<Locale, 'us' | 'br' | 'es' | 'se'> = { en: 'us', 'pt-BR': 'b
 
 <details class="language">
 	<summary aria-label={t.language.current} title={t.language.label}>
-		<Flag country={flags[locale]} decorative />
+		<Flag country={flags[locale]} decorative cover />
 		<svg class="chevron" aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3.5 5 6.5 8 3.5" /></svg>
 	</summary>
 	<ul class="menu" aria-label={t.language.label}>
@@ -30,7 +30,7 @@ const flags: Record<Locale, 'us' | 'br' | 'es' | 'se'> = { en: 'us', 'pt-BR': 'b
 			locales.map((l) => (
 				<li>
 					<a href={localePath(l, page)} hreflang={l} lang={l} aria-current={l === locale ? 'true' : undefined}>
-						<Flag country={flags[l]} decorative />
+						<Flag country={flags[l]} decorative cover />
 						<span>{ui[l].languageName}</span>
 					</a>
 				</li>
@@ -69,7 +69,10 @@ const flags: Record<Locale, 'us' | 'br' | 'es' | 'se'> = { en: 'us', 'pt-BR': 'b
 		border-color: var(--accent);
 	}
 
+	/* Every flag in the same 3:2 box, so the names line up. Flags with a wider
+	   shape (the US and Swedish ones) lose a little at the sides. */
 	.language :global(.flag) {
+		width: 1.425rem;
 		height: 0.95rem;
 	}
 
@@ -83,13 +86,14 @@ const flags: Record<Locale, 'us' | 'br' | 'es' | 'se'> = { en: 'us', 'pt-BR': 'b
 	}
 
 	/* The list hangs under the button, aligned to its right edge so it stays
-	   inside the page, and sits above the content like a preview card. */
+	   inside the page, and sits above the content like a preview card. It's as
+	   wide as its longest name and no wider. */
 	.menu {
 		position: absolute;
 		top: calc(100% + 0.4rem);
 		right: 0;
 		z-index: 10;
-		min-width: 12rem;
+		width: max-content;
 		margin: 0;
 		padding: 0.3rem;
 		list-style: none;

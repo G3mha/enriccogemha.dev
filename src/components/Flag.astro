@@ -23,6 +23,10 @@
  *
  * Sized to the height of lining figures, so a flag sits level with the year
  * beside it. The hairline outline keeps white stripes visible on light paper.
+ *
+ * Pass cover for a row of flags that should all be the same size, as in the
+ * language menu: the caller sets the width and height, and the flag fills
+ * that box, cropped a little at the sides where its own shape is wider.
  */
 interface Props {
 	country: 'th' | 'fr' | 'br' | 'se' | 'es' | 'us';
@@ -30,10 +34,13 @@ interface Props {
 	label?: string;
 	/** Hide from screen readers; use when the text already names the country. */
 	decorative?: boolean;
+	/** Fill the box the caller sizes, cropping the sides, instead of keeping the flag's own shape. */
+	cover?: boolean;
 }
 
-const { country, label = '', decorative = false } = Astro.props;
+const { country, label = '', decorative = false, cover = false } = Astro.props;
 const a11y = decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label': label };
+const fit = cover ? { preserveAspectRatio: 'xMidYMid slice' } : {};
 ---
 
 <style>
@@ -48,16 +55,16 @@ const a11y = decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label
 
 {
 	country === 'th' ? (
-		<svg class="flag" viewBox="0 0 9 6" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
+		<svg class="flag" viewBox="0 0 9 6" {...a11y} {...fit} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="9" height="6" fill="#a51931" /><rect y="1" width="9" height="4" fill="#f4f5f8" /><rect y="2" width="9" height="2" fill="#2d2a4a" /></svg>
 	) : country === 'fr' ? (
-		<svg class="flag" viewBox="0 0 3 2" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
+		<svg class="flag" viewBox="0 0 3 2" {...a11y} {...fit} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="3" height="2" fill="#fff" /><rect width="1" height="2" fill="#000091" /><rect x="2" width="1" height="2" fill="#e1000f" /></svg>
 	) : country === 'us' ? (
-		<svg class="flag" viewBox="0 0 247 130" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="247" height="130" fill="#bd3d44" /><path d="M0 15h247M0 35h247M0 55h247M0 75h247M0 95h247M0 115h247" stroke="#fff" stroke-width="10" /><rect width="98.8" height="70" fill="#192f5d" /></svg>
+		<svg class="flag" viewBox="0 0 247 130" {...a11y} {...fit} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="247" height="130" fill="#bd3d44" /><path d="M0 15h247M0 35h247M0 55h247M0 75h247M0 95h247M0 115h247" stroke="#fff" stroke-width="10" /><rect width="98.8" height="70" fill="#192f5d" /></svg>
 	) : country === 'es' ? (
-		<svg class="flag" viewBox="0 0 12 8" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="12" height="8" fill="#aa151b" /><rect y="2" width="12" height="4" fill="#f1bf00" /></svg>
+		<svg class="flag" viewBox="0 0 12 8" {...a11y} {...fit} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="12" height="8" fill="#aa151b" /><rect y="2" width="12" height="4" fill="#f1bf00" /></svg>
 	) : country === 'se' ? (
-		<svg class="flag" viewBox="0 0 16 10" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="16" height="10" fill="#005293" /><rect x="5" width="2" height="10" fill="#fecb00" /><rect y="4" width="16" height="2" fill="#fecb00" /></svg>
+		<svg class="flag" viewBox="0 0 16 10" {...a11y} {...fit} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="16" height="10" fill="#005293" /><rect x="5" width="2" height="10" fill="#fecb00" /><rect y="4" width="16" height="2" fill="#fecb00" /></svg>
 	) : (
-		<svg class="flag" viewBox="0 0 20 14" {...a11y} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="20" height="14" fill="#309e3a" /><path d="M10 1.7 18.3 7 10 12.3 1.7 7Z" fill="#f8e509" /><circle cx="10" cy="7" r="3.5" fill="#2b49a3" /><path d="M6.612 6.121A8 8 0 0 1 13.341 8.044A3.5 3.5 0 0 0 13.466 7.490A8.5 8.5 0 0 0 6.799 5.585A3.5 3.5 0 0 0 6.612 6.121Z" fill="#fff" /></svg>
+		<svg class="flag" viewBox="0 0 20 14" {...a11y} {...fit} xmlns="http://www.w3.org/2000/svg">{!decorative && <title>{label}</title>}<rect width="20" height="14" fill="#309e3a" /><path d="M10 1.7 18.3 7 10 12.3 1.7 7Z" fill="#f8e509" /><circle cx="10" cy="7" r="3.5" fill="#2b49a3" /><path d="M6.612 6.121A8 8 0 0 1 13.341 8.044A3.5 3.5 0 0 0 13.466 7.490A8.5 8.5 0 0 0 6.799 5.585A3.5 3.5 0 0 0 6.612 6.121Z" fill="#fff" /></svg>
 	)
 }

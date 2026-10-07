@@ -4,8 +4,9 @@ My personal site and project write-ups, live at
 [enriccogemha.dev](https://enriccogemha.dev).
 
 Built with [Astro](https://astro.build) and MDX, and served as static HTML from
-Vercel. There are no framework islands. The only client JavaScript is the theme
-toggle, the typing headline, the preview cards and the hidden Moons.
+Vercel, in English, Brazilian Portuguese, Spanish and Swedish. There are no
+framework islands. The only client JavaScript is the theme toggle, the language
+menu, the typing headline, the preview cards and the hidden Moons.
 
 ## Running it
 
@@ -33,9 +34,48 @@ Vercel deploys `main` to production.
   it's featured, like ZeroPunch's App Store and daerogroup.com links. A link to
   a project's own website shows its domain as the label, like opengiving.us or
   trophyrooms.org.
+- `src/content/work/pt-BR/`, `es-ES/` and `sv/`: the write-up for each
+  project in the other languages, named like the English file. See Languages
+  below.
+- `src/pages/[...lang]/`: the routes. Each page builds once per language, at
+  its usual address in English and under `/pt-BR/`, `/es-ES/` or `/sv/`.
+- `src/components/pages/`: the layout of each page (the homepage, About and
+  Privacy), with the headings in the page's language.
+- `src/copy/<language>/`: the running text of those pages, one file per page
+  per language, poured into the layout's slots.
+- `src/i18n/`: the languages, the helpers that read and write their prefixes,
+  and `ui.ts`, every short interface string in every language.
 - `src/components/`: the pieces the pages are built from, including the logos.
 - `src/styles/global.css`: the design tokens. Each text colour notes its
   measured contrast ratio, checked against WCAG AA.
+
+## Languages
+
+Every page exists in English, Brazilian Portuguese, Spanish (as spoken in
+Spain) and Swedish. English is at the root and the others under `/pt-BR/`,
+`/es-ES/` and `/sv/`, so `/about/`, `/pt-BR/about/`, `/es-ES/about/` and
+`/sv/about/` are the same page. The flag in the header opens a menu that links
+between them, and each page carries `hreflang` links to its other versions.
+Names stay as they are in every language: schools, companies, products,
+technologies, exam codes.
+
+`?lang=pt_BR`, `?lang=es`, `?lang=sv` or `?lang=en` on any address goes to that
+language's copy of the page. On Vercel, `vercel.json` answers those with a
+redirect before the page is sent; `scripts/redirects.mjs` writes that file from
+the language list, so run `npm run redirects` after adding a language or an
+alias. Elsewhere, including `astro dev`, a few lines in `MainHead.astro` do the
+same before the page paints.
+
+A project's file in another language holds only the words: title, summary,
+role, period when it reads differently, the labels of its links in order, the
+image's alt text, and the write-up. Status, stack, link addresses, logos, icon
+and order have one copy, in the English file, and `src/data/work.ts` lays the
+translated words over it. A project missing a translation fails the build, so a
+new project can't ship half translated.
+
+Nothing about the language is saved in the browser. The Moons count the same
+in every language: a project page visited in any of them is visited, and a
+headline ending typed in any of them is the same ending.
 
 ## Preview cards
 
@@ -58,17 +98,18 @@ on those cards.
 ## Link previews
 
 When a link to any page is shared in WhatsApp, iMessage, Slack or LinkedIn,
-the preview shows `src/assets/og-card.jpg`. It's laid out like the top of the
-homepage: the name, "I build things." with the headline's caret, and the
-portrait. `scripts/og-card.mjs` draws it with the site's own fonts, colours
-and wordmark, so after changing any of those, draw it again:
+the preview shows `src/assets/og-card.jpg`, or `og-card.<language>.jpg` for a
+page in another language. Each is laid out like the top of the homepage: the
+name, "I build things." in that language with the headline's caret, and the
+portrait. `scripts/og-card.mjs` draws them all with the site's own fonts,
+colours and wordmark, so after changing any of those, draw them again:
 
 ```bash
 npm run og-card
 ```
 
-The script needs Google Chrome, and it saves the JPEG with `sips`, which comes
-with macOS. The card is 1200 × 630, the size Facebook recommends, and about
+The script needs Google Chrome, and it saves the JPEGs with `sips`, which comes
+with macOS. Each card is 1200 × 630, the size Facebook recommends, and about
 125 KB. WhatsApp asks for preview images under 600 KB.
 
 Facebook caches a preview image by its URL, so a card redrawn at the same URL

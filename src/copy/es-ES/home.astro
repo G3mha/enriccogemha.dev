@@ -1,0 +1,44 @@
+---
+/** La introducción de la portada, en español. El layout es HomePage. */
+import HomePage from '../../components/pages/HomePage.astro';
+import NfxLogo from '../../components/NfxLogo.astro';
+import DaeroLogo from '../../components/DaeroLogo.astro';
+import OpenGivingLogo from '../../components/OpenGivingLogo.astro';
+import RoboCupLogo from '../../components/RoboCupLogo.astro';
+import PinPagLogo from '../../components/PinPagLogo.astro';
+import Flag from '../../components/Flag.astro';
+---
+
+<HomePage>
+	<Fragment slot="intro">
+		<p class="lede">
+			Lo más grande que he construido es <OpenGivingLogo href="/es-ES/work/opengiving/" preview="opengiving" />, un
+			marketplace en el que parte de cada venta va a una campaña de recaudación. Escribí
+			todo el código: las apps web, de iOS y de Android, y la API de backend que comparten.
+		</p>
+		<p>
+			Crecí en <span class="nowrap">São Paulo <Flag country="br" label="Brasil" /></span>. Ahora estudio en
+			<span class="nowrap"><a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a> <Flag country="us" label="Estados Unidos" /></span>, hasta mayo de 2027, un máster en Emprendimiento, y estudio
+			ciberseguridad en <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard</a> (matrícula cruzada, presencial). Antes de Brown
+			fui el primer ingeniero contratado de <DaeroLogo href="/es-ES/work/zeropunch/" preview="zeropunch" />, una startup de software para
+			la construcción en Boston respaldada por <span class="nowrap"><NfxLogo preview="org-nfx" />.</span> Pasé diez meses liderando el desarrollo
+			de su app de iOS, y también ayudé en el trabajo de web, infraestructura y backend.
+		</p>
+		<p>
+			Estudié Ingeniería de Computación en el <a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a>. En mi
+			<a href="/es-ES/work/pinpag-capstone/" data-preview="pinpag-capstone">proyecto final</a> trabajé en monitorización de seguridad
+			multinube para <PinPagLogo href="/es-ES/work/pinpag-capstone/" preview="pinpag-capstone" />, una empresa brasileña de pagos. Parte de él fue una herramienta en Python que mapeaba
+			cómo se conectaban sus recursos de AWS y señalaba cualquier cosa abierta a internet que no debía estarlo.
+			También estuve dos años en Insper Dynamics, un equipo de estudiantes que construye robots de rescate. Ganamos
+			un premio Best in Class en sensores en la <RoboCupLogo href="/es-ES/work/robocup/" preview="robocup" /> de
+			<span class="nowrap">2022 <Flag country="th" label="Bangkok, Tailandia" /></span>,
+			y otro en exploración, la prueba de mapeo autónomo, en la de
+			<span class="nowrap">2023 <Flag country="fr" label="Burdeos, Francia" /></span>.
+			A principios de 2023 pasé a presidir el club de robótica de la universidad.
+		</p>
+		<p class="contact">
+			El correo es la forma más fácil de contactarme:
+			<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>
+		</p>
+	</Fragment>
+</HomePage>

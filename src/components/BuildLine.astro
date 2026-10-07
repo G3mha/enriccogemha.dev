@@ -2,9 +2,9 @@
 /**
  * The homepage headline, "I build ___.", typing through what I've built.
  *
- * The HTML is plain "I build things.", which is what search engines, reader
- * modes, and visitors without JavaScript or with reduced motion get. The
- * inline script upgrades it before the first paint:
+ * The HTML is plain "I build things." (or its Portuguese), which is what
+ * search engines, reader modes, and visitors without JavaScript or with
+ * reduced motion get. The inline script upgrades it before the first paint:
  *
  * - An invisible copy of the line for every phrase goes in the same grid
  *   cell, so the heading reserves the height of the longest one and nothing
@@ -22,32 +22,27 @@
  * shift: the period is typed with each phrase, the text node is replaced on
  * every keystroke, and the caret is a background painted at the span's end.
  */
-const phrases = [
-	'things',
-	'iOS apps',
-	'Android apps',
-	'websites',
-	'cybersecurity systems',
-	'cloud infrastructure',
-	'observability dashboards',
-	'ML models',
-	'robots',
-	'business plans',
-	'revenue models',
-	'whatever you have in mind',
-];
+import { localeOf } from '../i18n';
+import { ui } from '../i18n/ui';
+
+// The phrases in the page's language, and the English ones as keys: the Moons
+// script counts each ending once it's been typed, and the key is the same
+// whichever language it was typed in. The lists are in src/i18n/ui.ts.
+const t = ui[localeOf(Astro.url.pathname)].headline;
+const phrases = t.phrases;
+const keys = ui.en.headline.phrases;
 ---
 
-<div class="build-line" data-phrases={JSON.stringify(phrases)}>
-	<h1><span class="frame"><span class="words">I build <span class="slot"><span class="typed">{phrases[0]}.</span></span></span></span></h1>
+<div class="build-line" data-phrases={JSON.stringify(phrases)} data-keys={JSON.stringify(keys)} data-lead={t.lead} data-and={t.and} data-before-and={t.beforeAnd}>
+	<h1><span class="frame"><span class="words">{t.lead}<span class="slot"><span class="typed">{phrases[0]}.</span></span></span></span></h1>
 	<button type="button" class="toggle" hidden>
 		<span class="when-running">
 			<svg viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="0.5" width="2.8" height="9" /><rect x="6.2" y="0.5" width="2.8" height="9" /></svg>
-			<span>Pause<span class="sr-only"> the headline</span></span>
+			<span>{t.pause}<span class="sr-only">{t.theHeadline}</span></span>
 		</span>
 		<span class="when-paused">
 			<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 0.5 9.5 5 1.5 9.5Z" /></svg>
-			<span>Play<span class="sr-only"> the headline</span></span>
+			<span>{t.play}<span class="sr-only">{t.theHeadline}</span></span>
 		</span>
 	</button>
 </div>
@@ -75,7 +70,8 @@ const phrases = [
 		}
 		const spoken = document.createElement('span');
 		spoken.className = 'sr-only';
-		spoken.textContent = `I build ${phrases.slice(0, -1).join(', ')}, and ${phrases.at(-1)}.`;
+		const { lead, and, beforeAnd } = line.dataset;
+		spoken.textContent = `${lead}${phrases.slice(0, -1).join(', ')}${beforeAnd}${and} ${phrases.at(-1)}.`;
 		h1.prepend(spoken);
 		frame.setAttribute('aria-hidden', 'true');
 		toggle.hidden = false;

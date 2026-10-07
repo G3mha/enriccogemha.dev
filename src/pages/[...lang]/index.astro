@@ -1,0 +1,17 @@
+---
+/**
+ * The homepage, once per language: / in English and under each language's
+ * prefix otherwise. The page itself is in src/copy/<language>/home.astro.
+ */
+import { localeFromParams, localePaths } from '../../i18n';
+import En from '../../copy/en/home.astro';
+import PtBR from '../../copy/pt-BR/home.astro';
+import EsES from '../../copy/es-ES/home.astro';
+import Sv from '../../copy/sv/home.astro';
+
+export const getStaticPaths = localePaths;
+
+const Page = { en: En, 'pt-BR': PtBR, 'es-ES': EsES, sv: Sv }[localeFromParams(Astro.params)];
+---
+
+<Page />

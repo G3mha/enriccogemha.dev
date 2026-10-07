@@ -1,0 +1,101 @@
+---
+/** Texten på sidan Om mig, på svenska. Layouten och rubrikerna är AboutPage. */
+import AboutPage from '../../components/pages/AboutPage.astro';
+import Flag from '../../components/Flag.astro';
+import DaeroLogo from '../../components/DaeroLogo.astro';
+---
+
+<AboutPage>
+	<Fragment slot="lede">
+		Jag är en <span class="nowrap">brasiliansk <Flag country="br" decorative /></span> mjukvaruingenjör som bor i USA.
+		Så här kom jag hit, och det här arbetar jag med nu.
+	</Fragment>
+
+	<Fragment slot="how">
+		<p>
+			Min första kod skrev jag för min familjs redovisningsbyrå för läkarmottagningar, där jag
+			arbetade under gymnasiet. Det mesta av jobbet var pappersarbete för hand, så jag lärde
+			mig Python på egen hand för att automatisera en del av det. Sedan började jag på
+			<a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a> i São Paulo för att läsa
+			en kandidatexamen i datateknik.
+		</p>
+		<p>
+			Utanför lektionerna var jag med i Insper Dynamics, studentlaget som byggde två
+			generationer av en <a href="/sv/work/robocup/" data-preview="robocup">sök- och räddningsrobot</a>. Våra robotar vann
+			Best in Class för sensorer på RoboCup 2022 i <span class="nowrap">Bangkok <Flag country="th" label="Thailand" /></span>. I början av
+			2023 blev jag ordförande för högskolans robotik- och AI-klubb, och i juli det året vann vi
+			Best in Class för utforskning, det autonoma kartläggningstestet, på RoboCup 2023 i
+			<span class="nowrap">Bordeaux <Flag country="fr" label="Frankrike" /></span>. I mitt examensarbete arbetade jag med säkerhet över flera moln för
+			<a href="/sv/work/pinpag-capstone/" data-preview="pinpag-capstone">PinPag</a>, ett brasilianskt betalningsföretag, på deras plattform i drift.
+		</p>
+		<p>
+			Jag studerade också borta från Insper två gånger. Sommaren 2024 var jag gäststudent på
+			<a href="https://www.stanford.edu/" rel="noopener" data-preview="school-stanford">Stanford</a>, där jag läste kurser i högprestandaberäkning
+			och entreprenörskap och intervjuade
+			<a href="https://hennessy.stanford.edu/biography" rel="noopener">John L. Hennessy</a> i 30 minuter. Han var Stanfords
+			rektor från 2000 till 2016 och delade Turingpriset 2017 med David Patterson. Sedan, våren 2025,
+			gjorde jag ett utbyte på
+			<a href="https://www.olin.edu/" rel="noopener" data-preview="school-olin">Olin</a> och <a href="https://www.babson.edu/" rel="noopener" data-preview="school-babson">Babson</a>, utanför Boston. Under
+			den terminen startade jag <a href="/sv/work/opengiving/" data-preview="opengiving">OpenGiving</a> med två amerikanska
+			vänner. Det är en marknadsplats där en del av varje försäljning går till en insamlingskampanj.
+			Jag skrev all dess kod, och jag är tjänstledig från den sedan jag började på Brown.
+		</p>
+		<p>
+			I september 2025 började jag på <DaeroLogo href="/sv/work/zeropunch/" preview="zeropunch" />, en startup i Boston som
+			gör programvara för byggarbetslag, som dess första ingenjör. Den första versionen av deras
+			iOS-app, deras huvudprodukt, fanns redan. Jag arbetade på den i tio månader, och i februari 2026
+			började jag skriva om den från grunden, vilket lärde mig mycket om UX i mobilappar. Jag hjälpte också
+			till med webb, backend och moln. Jag slutade i juli 2026.
+		</p>
+	</Fragment>
+
+	<Fragment slot="now">
+		<p>
+			Jag läser en master i innovationsledning och entreprenörskap på
+			<a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a>, och
+			jag är klar i maj 2027.
+		</p>
+		<p>
+			Men jag bygger fortfarande på mina tekniska färdigheter. Den här terminen läser jag Systems Security
+			på <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard University</a> (Brown erbjuder korsregistrering), och jag
+			pluggar till certifieringen CompTIA Security+.
+		</p>
+	</Fragment>
+
+	<Fragment slot="tools">
+		<p>
+			<strong>Språk.</strong> Swift, Python, TypeScript, Go, Kotlin, C och C++.
+		</p>
+		<p>
+			<strong>Att bygga med.</strong> SwiftUI och WidgetKit, FastAPI, Next.js och Astro,
+			Jetpack Compose, PostgreSQL med Prisma, GraphQL, Stripe Connect och PayPal.
+		</p>
+		<p>
+			<strong>Att köra det med.</strong> AWS, Railway, Vercel, GitHub Actions,
+			OpenTelemetry och Grafana.
+		</p>
+		<p>
+			<strong>Säkerhet.</strong> Semgrep i CI, Wazuh, ModSecurity och
+			hemlighetsskanning som ett obligatoriskt steg.
+		</p>
+	</Fragment>
+
+	<Fragment slot="elsewhere">
+		<p>
+			Jag talar portugisiska och engelska som modersmål, spanska bra nog att arbeta på, och
+			lite svenska. Utanför Brasilien och USA har jag bott i
+			<span class="nowrap">Stockholm <Flag country="se" label="Sverige" /></span> och <span class="nowrap">Madrid <Flag country="es" label="Spanien" /></span>, två
+			månader på varje ställe.
+		</p>
+		<p>
+			På fritiden spelar jag fotboll så fort jag hittar en match, eller så ser du mig
+			spela <a href="https://magic.wizards.com/en" rel="noopener" data-preview="game-magic">Magic: The Gathering</a> eller retrospel (ja, jag älskar min
+			<a href="https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Game-Boy-Advance/Game-Boy-Advance-627139.html" rel="noopener" data-preview="game-gba">GBA</a>!).
+		</p>
+		<p>
+			Skriv till mig på <a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>,
+			eller hitta mig på <a href="https://github.com/G3mha" rel="me noopener">GitHub</a>
+			och <a href="https://www.linkedin.com/in/enriccogemha" rel="me noopener">LinkedIn</a>.
+		</p>
+	</Fragment>
+</AboutPage>

@@ -1,0 +1,401 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"redirects": [
+		{
+			"source": "/pt-BR",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/:path",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/:path",
+			"permanent": false
+		},
+		{
+			"source": "/sv",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/",
+			"permanent": false
+		},
+		{
+			"source": "/sv/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/",
+			"permanent": false
+		},
+		{
+			"source": "/sv/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(en|EN|En|en_us|EN_US|En_us|en-us|EN-US|En-us)"
+				}
+			],
+			"destination": "/:path",
+			"permanent": false
+		},
+		{
+			"source": "/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/",
+			"permanent": false
+		},
+		{
+			"source": "/:path((?!(?:pt-BR|es-ES|sv)(?:/|$)).+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/:path",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/:path",
+			"permanent": false
+		},
+		{
+			"source": "/sv",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/",
+			"permanent": false
+		},
+		{
+			"source": "/sv/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/",
+			"permanent": false
+		},
+		{
+			"source": "/sv/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(pt|PT|Pt|pt_br|PT_BR|Pt_br|pt-br|PT-BR|Pt-br)"
+				}
+			],
+			"destination": "/pt-BR/:path",
+			"permanent": false
+		},
+		{
+			"source": "/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/",
+			"permanent": false
+		},
+		{
+			"source": "/:path((?!(?:pt-BR|es-ES|sv)(?:/|$)).+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/:path",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/:path",
+			"permanent": false
+		},
+		{
+			"source": "/sv",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/",
+			"permanent": false
+		},
+		{
+			"source": "/sv/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/",
+			"permanent": false
+		},
+		{
+			"source": "/sv/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(es|ES|Es|es_es|ES_ES|Es_es|es-es|ES-ES|Es-es)"
+				}
+			],
+			"destination": "/es-ES/:path",
+			"permanent": false
+		},
+		{
+			"source": "/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/",
+			"permanent": false
+		},
+		{
+			"source": "/:path((?!(?:pt-BR|es-ES|sv)(?:/|$)).+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/:path",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/",
+			"permanent": false
+		},
+		{
+			"source": "/pt-BR/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/:path",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES/",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/",
+			"permanent": false
+		},
+		{
+			"source": "/es-ES/:path(.+)",
+			"has": [
+				{
+					"type": "query",
+					"key": "lang",
+					"value": "(sv|SV|Sv|sv_se|SV_SE|Sv_se|sv-se|SV-SE|Sv-se)"
+				}
+			],
+			"destination": "/sv/:path",
+			"permanent": false
+		}
+	]
+}

@@ -1,26 +1,32 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import LanguageMenu from './LanguageMenu.astro';
 import NameWordmark from './NameWordmark.astro';
+import { localeOf, localePath, stripLocale } from '../i18n';
+import { ui } from '../i18n/ui';
 
-const path = Astro.url.pathname;
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale];
+// The page's path without its language prefix, so /pt-BR/about/ is About too.
+const path = stripLocale(Astro.url.pathname);
 const links = [
-	{ href: '/', label: 'Work' },
-	{ href: '/about/', label: 'About' },
+	{ page: '/', label: t.nav.work },
+	{ page: '/about/', label: t.nav.about },
 ];
 
-const isCurrent = (href: string) =>
-	href === '/' ? path === '/' : path.startsWith(href);
+const isCurrent = (page: string) =>
+	page === '/' ? path === '/' : path.startsWith(page);
 ---
 
 <header>
 	<nav class="wrapper" aria-label="Main">
-		<a class="wordmark" href="/"><NameWordmark /></a>
+		<a class="wordmark" href={localePath(locale, '/')}><NameWordmark /></a>
 
 		<ul class="links">
 			{
-				links.map(({ href, label }) => (
+				links.map(({ page, label }) => (
 					<li>
-						<a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
+						<a href={localePath(locale, page)} aria-current={isCurrent(page) ? 'page' : undefined}>
 							{label}
 						</a>
 					</li>
@@ -34,7 +40,10 @@ const isCurrent = (href: string) =>
 			</li>
 		</ul>
 
-		<ThemeToggle />
+		<div class="controls">
+			<LanguageMenu />
+			<ThemeToggle />
+		</div>
 	</nav>
 </header>
 
@@ -69,6 +78,14 @@ const isCurrent = (href: string) =>
 
 	.wordmark:hover {
 		color: var(--accent);
+	}
+
+	/* The language menu and the theme toggle, one row at the end of the nav. */
+	.controls {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	.links {
@@ -153,17 +170,17 @@ const isCurrent = (href: string) =>
 		border-bottom-color: var(--accent);
 	}
 
-	/* Below 39em the name, four links and the toggle no longer fit on one
-	   line, and letting the links wrap split them unevenly (3 + 1 on a 402px
-	   iPhone). So the nav becomes two rows on purpose: the name and the toggle
-	   on top, and the links on a full-width row under them. */
+	/* Below 39em the name, four links and the two controls no longer fit on
+	   one line, and letting the links wrap split them unevenly (3 + 1 on a
+	   402px iPhone). So the nav becomes two rows on purpose: the name and the
+	   controls on top, and the links on a full-width row under them. */
 	@media (max-width: 39em) {
 		nav {
 			flex-wrap: wrap;
 			row-gap: 0.5rem;
 		}
 
-		nav > :global(#theme-toggle) {
+		.controls {
 			margin-left: auto;
 		}
 
@@ -177,7 +194,9 @@ const isCurrent = (href: string) =>
 	/* On the narrowest phones even that row is too long with labels, so
 	   GitHub and LinkedIn show only their marks. The link keeps its name
 	   through aria-label, and the padding keeps each tap target at least
-	   24px square. */
+	   24px square. In the other languages the two labels are longer than
+	   "Work" and "About" ("Projetos", "Proyectos", "Projekt", "Om mig"), so
+	   the same happens up to a 390px phone. */
 	@media (max-width: 23em) {
 		.external .label {
 			position: absolute;
@@ -194,6 +213,26 @@ const isCurrent = (href: string) =>
 
 		.brand-icon.github,
 		.brand-icon.linkedin {
+			height: 1.15em;
+		}
+	}
+
+	@media (max-width: 26em) {
+		:global(html:not([lang='en'])) .external .label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+		}
+
+		:global(html:not([lang='en'])) .external {
+			padding: 0.25rem;
+		}
+
+		:global(html:not([lang='en'])) .brand-icon.github,
+		:global(html:not([lang='en'])) .brand-icon.linkedin {
 			height: 1.15em;
 		}
 	}

@@ -1,0 +1,101 @@
+---
+/** O texto da página Sobre, em português. O layout e os títulos são AboutPage. */
+import AboutPage from '../../components/pages/AboutPage.astro';
+import Flag from '../../components/Flag.astro';
+import DaeroLogo from '../../components/DaeroLogo.astro';
+---
+
+<AboutPage>
+	<Fragment slot="lede">
+		Sou um engenheiro de software <span class="nowrap">brasileiro <Flag country="br" decorative /></span> morando nos Estados Unidos.
+		Aqui conto como cheguei até aqui e no que estou trabalhando agora.
+	</Fragment>
+
+	<Fragment slot="how">
+		<p>
+			Meu primeiro código foi para o escritório de contabilidade médica da minha família,
+			onde trabalhei no ensino médio. A maior parte do trabalho era papelada feita à mão,
+			então aprendi Python sozinho para automatizar parte dela. Depois fui para o
+			<a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a>, em São Paulo, cursar
+			Engenharia de Computação.
+		</p>
+		<p>
+			Fora da sala de aula, fiz parte do Insper Dynamics, a equipe de alunos que construiu duas
+			gerações de um <a href="/pt-BR/work/robocup/" data-preview="robocup">robô de busca e resgate</a>. Nossos robôs ganharam
+			Best in Class em Sensoriamento na RoboCup 2022, em <span class="nowrap">Bangkok <Flag country="th" label="Tailândia" /></span>. No começo
+			de 2023, virei presidente do clube de robótica e IA da faculdade, e em julho daquele ano ganhamos
+			Best in Class em Exploração, a prova de mapeamento autônomo, na RoboCup 2023 em
+			<span class="nowrap">Bordeaux <Flag country="fr" label="França" /></span>. No meu projeto final, fiz segurança multinuvem para a
+			<a href="/pt-BR/work/pinpag-capstone/" data-preview="pinpag-capstone">PinPag</a>, uma empresa brasileira de pagamentos, na plataforma em produção.
+		</p>
+		<p>
+			Também estudei fora do Insper duas vezes. Em meados de 2024, fui aluno visitante em
+			<a href="https://www.stanford.edu/" rel="noopener" data-preview="school-stanford">Stanford</a>, onde cursei Computação de Alto
+			Desempenho e Empreendedorismo e entrevistei
+			<a href="https://hennessy.stanford.edu/biography" rel="noopener">John L. Hennessy</a> por 30 minutos. Ele foi presidente
+			de Stanford de 2000 a 2016 e dividiu o Prêmio Turing de 2017 com David Patterson. Depois, no
+			primeiro semestre de 2025, fiz intercâmbio no
+			<a href="https://www.olin.edu/" rel="noopener" data-preview="school-olin">Olin</a> e no <a href="https://www.babson.edu/" rel="noopener" data-preview="school-babson">Babson</a>, perto de Boston. Durante
+			esse semestre, comecei a <a href="/pt-BR/work/opengiving/" data-preview="opengiving">OpenGiving</a> com dois amigos
+			americanos. É um marketplace em que parte de cada venda vai para uma campanha de arrecadação.
+			Escrevi todo o código dela, e estou afastado desde que comecei na Brown.
+		</p>
+		<p>
+			Em setembro de 2025, entrei na <DaeroLogo href="/pt-BR/work/zeropunch/" preview="zeropunch" />, uma startup de Boston que
+			faz software para equipes de obra, como seu primeiro engenheiro contratado. A primeira versão do
+			app iOS deles, o produto principal, já existia. Trabalhei nele por dez meses e, em fevereiro de 2026,
+			comecei a reescrevê-lo do zero, o que me ensinou muito sobre UX em apps móveis. Também ajudei no
+			trabalho de web, backend e nuvem. Saí em julho de 2026.
+		</p>
+	</Fragment>
+
+	<Fragment slot="now">
+		<p>
+			Estou fazendo mestrado em Gestão da Inovação e Empreendedorismo na
+			<a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a>, e
+			termino em maio de 2027.
+		</p>
+		<p>
+			Mas continuo construindo minhas habilidades técnicas. Neste semestre, estou cursando Systems Security
+			na <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard University</a> (a Brown oferece matrícula cruzada), e estou
+			estudando para a certificação CompTIA Security+.
+		</p>
+	</Fragment>
+
+	<Fragment slot="tools">
+		<p>
+			<strong>Linguagens.</strong> Swift, Python, TypeScript, Go, Kotlin, C e C++.
+		</p>
+		<p>
+			<strong>Para construir.</strong> SwiftUI e WidgetKit, FastAPI, Next.js e Astro,
+			Jetpack Compose, PostgreSQL com Prisma, GraphQL, Stripe Connect e PayPal.
+		</p>
+		<p>
+			<strong>Para rodar.</strong> AWS, Railway, Vercel, GitHub Actions,
+			OpenTelemetry e Grafana.
+		</p>
+		<p>
+			<strong>Segurança.</strong> Semgrep na CI, Wazuh, ModSecurity e varredura de
+			segredos como verificação obrigatória.
+		</p>
+	</Fragment>
+
+	<Fragment slot="elsewhere">
+		<p>
+			Falo português e inglês nativamente, espanhol bem o bastante para trabalhar, e um
+			pouco de sueco. Fora o Brasil e os Estados Unidos, morei em
+			<span class="nowrap">Estocolmo <Flag country="se" label="Suécia" /></span> e em <span class="nowrap">Madri <Flag country="es" label="Espanha" /></span>, dois
+			meses em cada.
+		</p>
+		<p>
+			No tempo livre, jogo futebol sempre que acho uma pelada, ou você vai me ver
+			jogando <a href="https://magic.wizards.com/en" rel="noopener" data-preview="game-magic">Magic: The Gathering</a> ou jogos retrô (sim, eu amo meu
+			<a href="https://www.nintendo.com/en-gb/Hardware/Nintendo-History/Game-Boy-Advance/Game-Boy-Advance-627139.html" rel="noopener" data-preview="game-gba">GBA</a>!).
+		</p>
+		<p>
+			Escreva para <a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>,
+			ou me encontre no <a href="https://github.com/G3mha" rel="me noopener">GitHub</a>
+			e no <a href="https://www.linkedin.com/in/enriccogemha" rel="me noopener">LinkedIn</a>.
+		</p>
+	</Fragment>
+</AboutPage>

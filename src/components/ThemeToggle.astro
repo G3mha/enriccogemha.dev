@@ -1,5 +1,14 @@
-<button id="theme-toggle" type="button" aria-live="polite">
-	<span class="sr-only" data-label>Switch to dark theme</span>
+---
+import { localeOf } from '../i18n';
+import { ui } from '../i18n/ui';
+
+// The label names the theme the button switches TO, so the script needs both
+// wordings in the page's language.
+const t = ui[localeOf(Astro.url.pathname)].theme;
+---
+
+<button id="theme-toggle" type="button" aria-live="polite" data-to-dark={t.toDark} data-to-light={t.toLight}>
+	<span class="sr-only" data-label>{t.toDark}</span>
 	<svg class="sun" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
 		<circle cx="12" cy="12" r="4.5"></circle>
 		<path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" stroke-linecap="round"></path>
@@ -69,7 +78,7 @@
 		};
 
 		const describe = () => {
-			if (label) label.textContent = current() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+			if (label) label.textContent = current() === 'dark' ? button.dataset.toLight : button.dataset.toDark;
 		};
 
 		describe();

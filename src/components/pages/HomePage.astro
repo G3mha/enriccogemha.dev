@@ -1,25 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectEntry from '../components/ProjectEntry.astro';
-import Status from '../components/Status.astro';
-import NfxLogo from '../components/NfxLogo.astro';
-import DaeroLogo from '../components/DaeroLogo.astro';
-import OpenGivingLogo from '../components/OpenGivingLogo.astro';
-import RoboCupLogo from '../components/RoboCupLogo.astro';
-import Flag from '../components/Flag.astro';
-import BuildLine from '../components/BuildLine.astro';
-import PinPagLogo from '../components/PinPagLogo.astro';
-import LuaLogo from '../components/LuaLogo.astro';
-import SwiftLogo from '../components/SwiftLogo.astro';
-import DeepRacerLogo from '../components/DeepRacerLogo.astro';
-import Certifications from '../components/Certifications.astro';
-import ProjectPreviews from '../components/ProjectPreviews.astro';
-import LogoCards from '../components/LogoCards.astro';
+/**
+ * The homepage, in whichever language the URL says. The layout, the lists and
+ * their headings are here once; the intro paragraphs come from src/copy/, one
+ * file per language, through the `intro` slot.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectEntry from '../ProjectEntry.astro';
+import Status from '../Status.astro';
+import DaeroLogo from '../DaeroLogo.astro';
+import RoboCupLogo from '../RoboCupLogo.astro';
+import BuildLine from '../BuildLine.astro';
+import PinPagLogo from '../PinPagLogo.astro';
+import LuaLogo from '../LuaLogo.astro';
+import SwiftLogo from '../SwiftLogo.astro';
+import DeepRacerLogo from '../DeepRacerLogo.astro';
+import Certifications from '../Certifications.astro';
+import ProjectPreviews from '../ProjectPreviews.astro';
+import LogoCards from '../LogoCards.astro';
+import { getWork } from '../../data/work';
+import { localeOf, localePath } from '../../i18n';
+import { ui } from '../../i18n/ui';
 
-const projects = (await getCollection('work')).sort(
-	(a, b) => a.data.order - b.data.order,
-);
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale];
+const projects = await getWork(locale);
 const featured = projects.filter((p) => p.data.featured);
 
 // Logos drawn before a name in the Earlier list. Each sits inside the row's
@@ -35,7 +39,6 @@ const apps = [
 		name: 'OpenGiving',
 		id: 'opengiving',
 		icon: '/assets/app-icon-opengiving.jpg',
-		about: 'Buy and sell goods and services. It all helps someone in need.',
 		stores: [
 			{ label: 'App Store', href: 'https://apps.apple.com/us/app/opengiving-donate-shop/id6756851957' },
 			{ label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=me.opengiving.android' },
@@ -45,25 +48,24 @@ const apps = [
 		name: 'Trophy Rooms',
 		id: 'trophy-rooms',
 		icon: '/assets/app-icon-trophy-rooms.jpg',
-		about: 'Tracks your achievements and game collection.',
 		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/trophy-rooms/id6799829599' }],
 	},
 	{
 		name: 'PacBag',
 		id: 'pacbag',
 		icon: '/assets/app-icon-pacbag.jpg',
-		about: 'Tracks what’s in each bag and weighs it against the airline limit.',
 		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/pacbag-digital-luggage/id6749021887' }],
 	},
 	{
 		name: 'ZeroPunch',
 		id: 'zeropunch',
 		icon: '/assets/app-icon-zeropunch.jpg',
-		about: 'A field app for construction crews, built at',
 		mark: 'daero',
 		stores: [{ label: 'App Store', href: 'https://apps.apple.com/us/app/id6753096907' }],
 	},
-];
+] as const;
+
+const work = (id: string) => localePath(locale, `/work/${id}/`);
 ---
 
 <BaseLayout>
@@ -71,39 +73,11 @@ const apps = [
 		<header class="intro">
 			<div class="intro-text">
 				<BuildLine />
-				<p class="lede">
-					The biggest thing I’ve built is <OpenGivingLogo href="/work/opengiving/" preview="opengiving" />, a
-					marketplace where part of every sale goes to a fundraising campaign. I wrote all
-					the code for it: web, iOS and Android apps, and the backend API they share.
-				</p>
-				<p>
-					I grew up in <span class="nowrap">São Paulo <Flag country="br" label="Brazil" /></span>. Currently, I am studying at
-					<span class="nowrap"><a href="https://www.brown.edu/" rel="noopener" data-preview="school-brown">Brown</a> <Flag country="us" label="United States" /></span> until May 2027, pursuing an MS in Entrepreneurship, and studying
-					cybersecurity at <a href="https://www.harvard.edu/" rel="noopener" data-preview="school-harvard">Harvard</a> (cross-registered in person). Before Brown I
-					was the first engineering hire at <DaeroLogo href="/work/zeropunch/" preview="zeropunch" />, a construction software startup
-					in Boston backed by <NfxLogo preview="org-nfx" />. I spent ten months leading their iOS app dev,
-					while also supporting the web, infra and backend work.
-				</p>
-				<p>
-					I got my B.Sc. in Computer Engineering at <a href="https://www.insper.edu.br/" rel="noopener" data-preview="school-insper">Insper</a>. For my
-					<a href="/work/pinpag-capstone/" data-preview="pinpag-capstone">capstone</a>, I worked on multi-cloud security
-					monitoring for <PinPagLogo href="/work/pinpag-capstone/" preview="pinpag-capstone" />, a Brazilian payments company. Part of it was a Python tool that mapped how their AWS
-					resources connected and flagged anything open to the internet that shouldn’t be.
-					I was also on Insper Dynamics, a student team building rescue robots, for 2 years. We won
-					a Best in Class award for sensing at <RoboCupLogo href="/work/robocup/" preview="robocup" /> in
-					<span class="nowrap">2022 <Flag country="th" label="Bangkok, Thailand" /></span>,
-					and one for exploration, the autonomous mapping test, in
-					<span class="nowrap">2023 <Flag country="fr" label="Bordeaux, France" /></span>.
-					In early 2023 I became president of the university’s robotics club.
-				</p>
-				<p class="contact">
-					Email’s the easiest way to reach me:
-					<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>
-				</p>
+				<slot name="intro" />
 			</div>
 			<img
 				src="/assets/demoing-opengiving.jpg"
-				alt="Enricco Gemha, in an OpenGiving T-shirt and a Behring Founders lanyard, demoing OpenGiving on his phone."
+				alt={t.home.photoAlt}
 				width="630"
 				height="1110"
 				decoding="async"
@@ -114,15 +88,15 @@ const apps = [
 		<LogoCards ids={['school-brown', 'school-harvard', 'school-insper', 'org-nfx']} />
 
 		<section class="stack gap-4" aria-labelledby="shipped-heading">
-			<h2 class="section-label" id="shipped-heading">Things you can install</h2>
+			<h2 class="section-label" id="shipped-heading">{t.home.install}</h2>
 			<ul class="apps">
 				{
 					apps.map((app) => (
 						<li>
 							<img class="app-icon" src={app.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />
 							<div class="app-text">
-								<a class="app-name" href={`/work/${app.id}/`} data-preview={`${app.id}-opening`}>{app.name}</a>
-								<span class="app-about">{app.about}{app.mark === 'daero' && <> <DaeroLogo />.</>}</span>
+								<a class="app-name" href={work(app.id)} data-preview={`${app.id}-opening`}>{app.name}</a>
+								<span class="app-about">{t.home.apps[app.id]}{'mark' in app && app.mark === 'daero' && <> <DaeroLogo />.</>}</span>
 							</div>
 							<ul class="stores">
 								{app.stores.map((store) => (
@@ -138,22 +112,22 @@ const apps = [
 		</section>
 
 		<section class="stack gap-4" aria-labelledby="certifications-heading">
-			<h2 class="section-label" id="certifications-heading">Certifications</h2>
+			<h2 class="section-label" id="certifications-heading">{t.home.certifications}</h2>
 			<Certifications />
 		</section>
 
 		<section class="stack" aria-labelledby="work-heading">
-			<h2 class="section-label" id="work-heading">Work</h2>
+			<h2 class="section-label" id="work-heading">{t.home.work}</h2>
 			{featured.map((project) => <ProjectEntry project={project} />)}
 		</section>
 
 		<section class="stack gap-4" aria-labelledby="more-heading">
-			<h2 class="section-label" id="more-heading">Earlier</h2>
+			<h2 class="section-label" id="more-heading">{t.home.earlier}</h2>
 			<ul class="compact">
 				{
 					rest.map((project) => (
 						<li>
-							<a href={`/work/${project.id}/`} data-preview={`${project.id}-opening`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.logoOnly ? <span class="sr-only">{project.data.title}</span> : <span class="compact-name">{project.data.title}</span>}</a>
+							<a href={work(project.id)} data-preview={`${project.id}-opening`}>{project.data.icon && <><img class="compact-icon" src={project.data.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />{' '}</>}{project.data.logos.map((l) => listLogos[l as keyof typeof listLogos]).filter(Boolean).map((Logo) => <><Logo linked={false} decorative />{' '}</>)}{project.data.logoOnly ? <span class="sr-only">{project.data.title}</span> : <span class="compact-name">{project.data.title}</span>}</a>
 							<span class="compact-summary">{project.data.summary}</span>
 							<span class="compact-meta">
 								<span>{project.data.period}</span>
@@ -184,7 +158,8 @@ const apps = [
 		margin-bottom: 0.4rem;
 	}
 
-	.contact {
+	/* The paragraphs come through the slot, so their classes are global here. */
+	.intro-text :global(.contact) {
 		font-size: var(--text-base);
 		margin-top: 0.4rem;
 	}

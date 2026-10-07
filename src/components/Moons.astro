@@ -24,6 +24,10 @@
  */
 import { getCollection } from 'astro:content';
 import { cards } from '../data/cards';
+import { localeOf } from '../i18n';
+import { ui } from '../i18n/ui';
+
+const t = ui[localeOf(Astro.url.pathname)].moons;
 
 const work = await getCollection('work');
 const projects = work.map((p) => p.id).sort();
@@ -34,14 +38,29 @@ const games = Object.keys(cards).filter((k) => k.startsWith('game-')).map((k) =>
 if (games.length !== 2) throw new Error('Moons: the Game Night hint says "both games"; update it for a different count');
 
 const moons = [
-	{ id: 'night-owl', name: 'Night Owl', hint: 'Switch between light and dark in the header.' },
-	{ id: 'every-phrase', name: 'Every Phrase', hint: 'Watch the homepage headline type every ending.', calm: 'Spend half a minute with the homepage headline.' },
-	{ id: 'scholar', name: 'Scholar', hint: `Look up all ${schools.length} schools on the About page.` },
-	{ id: 'game-night', name: 'Game Night', hint: 'Look up both games on the About page.' },
-	{ id: 'redacted', name: 'Redacted', hint: 'Read the capstone report.' },
-	{ id: 'lost-kingdom', name: 'Lost Kingdom', hint: 'Wander somewhere that doesn’t exist.' },
-	{ id: 'grand-tour', name: 'Grand Tour', hint: `Visit all ${projects.length} project pages.` },
+	{ id: 'night-owl', name: t.names['night-owl'], hint: t.hints.nightOwl },
+	{ id: 'every-phrase', name: t.names['every-phrase'], hint: t.hints.everyPhrase, calm: t.hints.everyPhraseCalm },
+	{ id: 'scholar', name: t.names.scholar, hint: t.hints.scholar(schools.length) },
+	{ id: 'game-night', name: t.names['game-night'], hint: t.hints.gameNight },
+	{ id: 'redacted', name: t.names.redacted, hint: t.hints.redacted },
+	{ id: 'lost-kingdom', name: t.names['lost-kingdom'], hint: t.hints.lostKingdom },
+	{ id: 'grand-tour', name: t.names['grand-tour'], hint: t.hints.grandTour(projects.length) },
 ];
+
+// What the script says as things happen. {n}, {total} and {name} are filled in.
+const strings = {
+	gotMoon: t.gotMoon,
+	found: t.found,
+	notFound: t.notFound,
+	count: t.count,
+	progress: t.progress,
+	complete: t.complete,
+	soundOff: t.soundOff,
+	soundOn: t.soundOn,
+	forgotten: t.forgotten,
+	forgotLead: t.forgotLead,
+	forgotRest: t.forgotRest,
+};
 
 const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 ---
@@ -53,6 +72,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 	data-schools={JSON.stringify(schools)}
 	data-games={JSON.stringify(games)}
 	data-pdf={pdf}
+	data-strings={JSON.stringify(strings)}
 >
 	<button type="button" class="moon-count" popovertarget="moons-panel" aria-haspopup="dialog" hidden>
 		<img class="moon-icon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
@@ -61,7 +81,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 </span>
 
 <div id="moons-panel" class="moons-panel" popover role="dialog" aria-labelledby="moons-title" tabindex="-1" autofocus>
-	<p id="moons-title" class="panel-title">Moons</p>
+	<p id="moons-title" class="panel-title">{t.title}</p>
 	<ul class="moon-list">
 		{
 			moons.map((moon) => (
@@ -76,16 +96,16 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		}
 	</ul>
 	<div class="panel-actions">
-		<button type="button" class="panel-button" data-forget>Forget my Moons</button>
-		<button type="button" class="panel-button" data-sound>Turn sound off</button>
-		<button type="button" class="panel-button" popovertarget="moons-panel" popovertargetaction="hide">Close</button>
+		<button type="button" class="panel-button" data-forget>{t.forget}</button>
+		<button type="button" class="panel-button" data-sound>{t.soundOff}</button>
+		<button type="button" class="panel-button" popovertarget="moons-panel" popovertargetaction="hide">{t.close}</button>
 	</div>
 </div>
 
 <p class="sr-only" role="status" data-announce></p>
 <div class="moon-get" popover="manual" aria-hidden="true">
 	<img class="get-moon" src={moonArt.src} width={moonArt.width} height={moonArt.height} alt="" decoding="async" />
-	<p class="get-title">You got a Moon!</p>
+	<p class="get-title">{t.gotMoon}</p>
 	<p class="get-name" data-get-name></p>
 </div>
 <div class="moon-toast" popover="manual" aria-hidden="true"></div>
@@ -102,6 +122,9 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			phrases: [],
 		};
 		const pdf = root.dataset.pdf;
+		const words: Record<string, string> = JSON.parse(root.dataset.strings!);
+		const fill = (text: string, values: Record<string, string | number>) =>
+			text.replace(/\{(\w+)\}/g, (_, key) => String(values[key]));
 		const counter = root.querySelector<HTMLButtonElement>('.moon-count')!;
 		const count = root.querySelector<HTMLElement>('[data-count]')!;
 		const panel = document.getElementById('moons-panel')!;
@@ -281,7 +304,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		};
 		const celebrate = (rest: string) =>
 			settled(() => {
-				announce(`You got a Moon! ${rest}`);
+				announce(`${words.gotMoon} ${rest}`);
 				momentName.textContent = rest;
 				clearTimeout(momentTimer);
 				moment.classList.remove('leaving');
@@ -306,10 +329,10 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 				if (supported) {
 					render();
 					if (panel.matches(':popover-open')) panel.hidePopover();
-					if (fromPanel) document.querySelector<HTMLElement>('footer a[href="/privacy/"]')?.focus();
-					note('Your Moons are forgotten.', 'Progress starts again from zero.');
+					if (fromPanel) document.querySelector<HTMLElement>('footer a[data-privacy]')?.focus();
+					note(words.forgotLead!, words.forgotRest!);
 				} else {
-					button.textContent = 'Forgotten';
+					button.textContent = words.forgotten!;
 				}
 			});
 		}
@@ -321,17 +344,17 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		const render = () => {
 			const n = state.found.length;
 			counter.hidden = n === 0;
-			count.textContent = `${n} of ${moons.length} Moons`;
+			count.textContent = fill(words.count!, { n, total: moons.length });
 			for (const li of panel.querySelectorAll<HTMLElement>('[data-moon]')) {
 				const found = state.found.includes(li.dataset.moon!);
 				li.classList.toggle('found', found);
 				const label = li.querySelector<HTMLElement>('[data-state]')!;
-				label.textContent = found ? 'Found' : 'Not found yet';
+				label.textContent = found ? words.found! : words.notFound!;
 				label.classList.toggle('sr-only', !found);
 				const hint = li.querySelector<HTMLElement>('[data-hint]')!;
 				hint.textContent = calm.matches && hint.dataset.calm ? hint.dataset.calm : hint.dataset.hint!;
 			}
-			soundButton.textContent = state.muted ? 'Turn sound on' : 'Turn sound off';
+			soundButton.textContent = state.muted ? words.soundOn! : words.soundOff!;
 		};
 
 		soundButton.addEventListener('click', () => {
@@ -358,7 +381,7 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			stops[id]?.();
 			const n = state.found.length;
 			const name = moons.find((m) => m.id === id)!.name;
-			celebrate(n === moons.length ? `${name}. That’s all ${n}.` : `${name}. ${n} of ${moons.length}.`);
+			celebrate(fill(n === moons.length ? words.complete! : words.progress!, { name, n, total: moons.length }));
 		};
 
 		// Collect items towards a Moon that needs all of them, across visits.
@@ -462,7 +485,11 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 		// screen counts instead, and the clock only runs while the tab is showing.
 		const line = document.querySelector<HTMLElement>('.build-line');
 		if (line && !has('every-phrase')) {
-			lists.phrases = JSON.parse(line.dataset.phrases!);
+			// The phrases in the page's language, and the English ones as keys, so
+			// an ending typed in either language counts as the same ending, and
+			// progress saved when there was only English still counts.
+			const shown: string[] = JSON.parse(line.dataset.phrases!);
+			lists.phrases = JSON.parse(line.dataset.keys!);
 			// The headline also holds hidden copies of every phrase for measuring,
 			// so read the one inside .words, the line people actually see.
 			const typed = line.querySelector('.words .typed');
@@ -487,7 +514,8 @@ const moonArt = { src: '/assets/power-moon.svg', width: 170, height: 168 };
 			else if (typed) {
 				const check = () => {
 					const text = typed.textContent ?? '';
-					if (text.endsWith('.') && lists.phrases.includes(text.slice(0, -1))) collect('phrases', text.slice(0, -1), 'every-phrase');
+					const at = text.endsWith('.') ? shown.indexOf(text.slice(0, -1)) : -1;
+					if (at >= 0) collect('phrases', lists.phrases[at]!, 'every-phrase');
 				};
 				check();
 				typing = new MutationObserver(check);

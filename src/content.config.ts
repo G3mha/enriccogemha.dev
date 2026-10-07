@@ -3,7 +3,9 @@ import { defineCollection, z } from 'astro:content';
 
 export const collections = {
 	work: defineCollection({
-		loader: glob({ base: './src/content/work', pattern: '**/*.{md,mdx}' }),
+		// Only the files in this folder: the Portuguese write-ups live in pt-BR/
+		// under it, as their own collection below.
+		loader: glob({ base: './src/content/work', pattern: '*.{md,mdx}' }),
 		schema: z.object({
 			title: z.string(),
 			/** One plain sentence. No adjectives that a reader cannot check. */
@@ -34,4 +36,30 @@ export const collections = {
 			img_alt: z.string().optional(),
 		}),
 	}),
+	/**
+	 * The write-ups in the other languages, one collection per language and
+	 * one file per project, named like the English file. Only the words are
+	 * here; the status, stack, links' addresses, logos and order come from the
+	 * English entry, so they can't drift apart. src/data/work.ts pairs them,
+	 * and the build fails on a project missing a translation.
+	 */
+	workPtBR: translations('pt-BR'),
+	workEsES: translations('es-ES'),
+	workSv: translations('sv'),
 };
+
+function translations(folder: string) {
+	return defineCollection({
+		loader: glob({ base: `./src/content/work/${folder}`, pattern: '*.{md,mdx}' }),
+		schema: z.object({
+			title: z.string(),
+			summary: z.string(),
+			/** Left out when it's the same as the English, like "2024". */
+			period: z.string().optional(),
+			role: z.string().optional(),
+			/** The labels of the English entry's links, in the same order. */
+			links: z.array(z.string()).optional(),
+			img_alt: z.string().optional(),
+		}),
+	});
+}

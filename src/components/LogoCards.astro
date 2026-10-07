@@ -7,6 +7,9 @@
  */
 import PreviewCard from './PreviewCard.astro';
 import { cards } from '../data/cards';
+import { localeOf } from '../i18n';
+
+const locale = localeOf(Astro.url.pathname);
 
 interface Props {
 	ids: string[];
@@ -26,10 +29,10 @@ const items = ids.map((key) => {
 			<span class:list={['card-logo', item.logo.chip]}><img src={item.logo.src} alt="" width={item.logo.width} height={item.logo.height} decoding="async" /></span>
 			<p class="card-title">{item.name}</p>
 			<p class="card-meta">
-				<span>{item.place}</span>
-				<span>{item.year}</span>
+				<span>{item.place[locale]}</span>
+				<span>{item.year[locale]}</span>
 			</p>
-			<p class="card-about">{item.about}</p>
+			<p class="card-about">{item.about[locale]}</p>
 		</PreviewCard>
 	))
 }

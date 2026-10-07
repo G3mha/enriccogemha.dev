@@ -1,10 +1,13 @@
 ---
+import { localeOf } from '../i18n';
+import { ui } from '../i18n/ui';
+
 interface Props {
 	items: string[];
 	label?: string;
 }
 
-const { items, label = 'Built with' } = Astro.props;
+const { items, label = ui[localeOf(Astro.url.pathname)].builtWith } = Astro.props;
 ---
 
 <ul class="tags" aria-label={label}>

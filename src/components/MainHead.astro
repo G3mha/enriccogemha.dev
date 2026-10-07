@@ -10,38 +10,50 @@ import '../styles/global.css';
 // text is set in its real fonts before the first paint and nothing swaps.
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
-import ogCard from '../assets/og-card.jpg';
+import ogCardEn from '../assets/og-card.jpg';
+import ogCardPtBR from '../assets/og-card.pt-BR.jpg';
+import ogCardEsES from '../assets/og-card.es-ES.jpg';
+import ogCardSv from '../assets/og-card.sv.jpg';
+import { langAliases, locales, localeOf, localePath, ogLocale, stripLocale, type Locale } from '../i18n';
+import { ui } from '../i18n/ui';
 
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
 }
 
-const { title = 'Enricco Gemha' } = Astro.props;
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale];
+const { title = t.siteName } = Astro.props;
 
 // Pages without their own description, like the homepage, get two. Search
 // results show the long one. Chat previews get their own, which leaves out
 // what I build because the card above it already says that. WhatsApp's docs
 // say 80 characters is enough there, and phones cut off longer lines, so this
 // one stays close to that.
-const description =
-	Astro.props.description ??
-	'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.';
-const previewDescription =
-	Astro.props.description ?? 'MSc Entrepreneurship at Brown. BSc Computer Engineering at Insper.';
+const description = Astro.props.description ?? t.description.search;
+const previewDescription = Astro.props.description ?? t.description.preview;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
+const origin = Astro.site ?? 'https://enriccogemha.dev';
+const canonical = new URL(Astro.url.pathname, origin);
+// The same page in each language, for search engines. The English one is
+// also the default, for readers whose language the site doesn't have.
+const page = stripLocale(Astro.url.pathname);
+const alternates = locales.map((l) => ({ lang: l, href: new URL(localePath(l, page), origin) }));
 
-// The card chat apps show when a link to any page is shared. scripts/og-card.mjs
-// draws it. Facebook caches the image by its URL, so it's imported rather than
-// kept in public/: the build names the file after a hash of its contents, and
-// a redrawn card gets a new URL. Stating its size lets Facebook's crawler show
-// it on the first share instead of after it has downloaded and processed it.
+// The card chat apps show when a link to any page is shared, in the page's
+// language. scripts/og-card.mjs draws them all. Facebook caches the image by
+// its URL, so they're imported rather than kept in public/: the build names
+// each file after a hash of its contents, and a redrawn card gets a new URL.
+// Stating the size lets Facebook's crawler show it on the first share instead
+// of after it has downloaded and processed it.
+const ogCards: Record<Locale, ImageMetadata> = { en: ogCardEn, 'pt-BR': ogCardPtBR, 'es-ES': ogCardEsES, sv: ogCardSv };
+const ogCard = ogCards[locale];
 const card = {
 	src: new URL(ogCard.src, canonical),
 	width: ogCard.width,
 	height: ogCard.height,
-	alt: 'The name Enricco Gemha and the headline “I build things.” beside a photo of Enricco smiling in a navy suit.',
+	alt: t.description.cardAlt,
 };
 ---
 
@@ -50,6 +62,8 @@ const card = {
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{alternates.map(({ lang, href }) => <link rel="alternate" hreflang={lang} href={href} />)}
+<link rel="alternate" hreflang="x-default" href={alternates[0]!.href} />
 
 <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={publicSansLatin} as="font" type="font/woff2" crossorigin />
@@ -61,7 +75,9 @@ const card = {
 <meta name="theme-color" content="#14120f" media="(prefers-color-scheme: dark)" />
 
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Enricco Gemha" />
+<meta property="og:site_name" content={t.siteName} />
+<meta property="og:locale" content={ogLocale[locale]} />
+{locales.filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={previewDescription} />
 <meta property="og:url" content={canonical} />
@@ -72,6 +88,29 @@ const card = {
 <meta property="og:image:alt" content={card.alt} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image:alt" content={card.alt} />
+
+{/* ?lang=pt_BR (or es, sv, en) on any address goes to that language's copy
+    of the page. On Vercel the redirects in vercel.json do this before the
+    page is sent; this is for astro dev and any host without them, and runs
+    before anything is painted. The aliases and prefixes are the ones in
+    src/i18n/index.ts. */}
+<script is:inline define:vars={{ aliases: langAliases }}>
+	(() => {
+		const params = new URLSearchParams(location.search);
+		const asked = params.get('lang')?.toLowerCase();
+		if (!asked) return;
+		const want = Object.keys(aliases).find((l) => aliases[l].includes(asked));
+		if (!want) return;
+		const path = location.pathname;
+		const current = Object.keys(aliases).find((l) => l !== 'en' && (path === `/${l}` || path.startsWith(`/${l}/`)));
+		const page = current ? path.slice(`/${current}`.length) || '/' : path;
+		const target = (want === 'en' ? '' : `/${want}`) + page;
+		if (target === path) return;
+		params.delete('lang');
+		const query = params.toString();
+		location.replace(target + (query ? `?${query}` : '') + location.hash);
+	})();
+</script>
 
 {/* Set the theme before first paint so the page never flashes the wrong one. */}
 <script is:inline>

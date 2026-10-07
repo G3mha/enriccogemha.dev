@@ -1,0 +1,60 @@
+---
+/** Integritetssidan, på svenska. Ramen är PrivacyPage. */
+import PrivacyPage from '../../components/pages/PrivacyPage.astro';
+---
+
+<PrivacyPage>
+	<p>
+		Det här är en personlig webbplats. Den har inga konton, inga formulär, inga
+		kommentarer och ingen analys. Jag samlar inte in ditt namn, din e-postadress eller
+		något du gör här, och det finns ingen databas bakom den här sidan som något av det
+		skulle kunna hamna i.
+	</p>
+
+	<h2>Vad som når andra</h2>
+	<p>
+		Allt på de här sidorna, typsnitten inräknade, kommer från den här webbplatsen, så din
+		webbläsare kontaktar ingen annan för att visa dem.
+	</p>
+	<p>
+		<strong>Drift.</strong> Webbplatsen körs på Vercel, vars servrar sparar vanliga
+		förfrågningsloggar, som innehåller IP-adresser. Jag läser dem inte och bygger
+		ingenting av dem.
+	</p>
+
+	<h2>Länkar bort härifrån</h2>
+	<p>
+		Länkar till App Store, Google Play, GitHub och projekten själva går till tjänster med
+		egna integritetspolicyer, och den här slutar vid den här webbplatsens kant.
+	</p>
+
+	<h2>Lagring på din enhet</h2>
+	<p>
+		Om du använder knappen för ljust och mörkt tema sparas ditt val i
+		<code>localStorage</code> under nyckeln <code>theme</code>. Det lämnar aldrig din
+		webbläsare och jag kan inte läsa det. Att rensa webbplatsdata tar bort det.
+	</p>
+	<p>
+		Webbplatsen gömmer också sju Månar. För att hålla reda på dem sparar den vilka du har
+		hittat och hur långt du har kommit med resten: projektsidorna du har besökt, skol- och
+		spelkorten du har öppnat och rubrikens slut du har sett. Den sparar också om ljudet som
+		spelas när du hittar en är på eller av. Allt det börjar vid ditt första besök, stannar
+		i din webbläsare under nyckeln <code>moons</code> och når aldrig mig. Att rensa
+		webbplatsdata tar bort det, och det gör den här knappen också:
+		<button type="button" class="forget-moons" data-forget>Glöm mina Månar</button>
+	</p>
+	<p>
+		Ljudet skapas i din webbläsare, så ingen ljudfil laddas för det.
+	</p>
+	<p>
+		Ditt språk sparas ingenstans. Webbplatsen finns på engelska på sina vanliga adresser,
+		på portugisiska under <code>/pt-BR/</code>, på spanska under <code>/es-ES/</code> och på
+		svenska under <code>/sv/</code>, och menyn i sidhuvudet är en vanlig länk mellan dem.
+	</p>
+
+	<h2>Frågor</h2>
+	<p>
+		Om något här är oklart, skriv till
+		<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>.
+	</p>
+</PrivacyPage>

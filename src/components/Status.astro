@@ -1,16 +1,13 @@
 ---
+import { localeOf } from '../i18n';
+import { ui } from '../i18n/ui';
+
 interface Props {
 	status: 'live' | 'paused' | 'unreleased' | 'archived';
 }
 
 const { status } = Astro.props;
-
-const wording: Record<Props['status'], string> = {
-	live: 'Live',
-	paused: 'Paused',
-	unreleased: 'Built, not released',
-	archived: 'Archived',
-};
+const wording = ui[localeOf(Astro.url.pathname)].status;
 ---
 
 <span class:list={['status', status]}>

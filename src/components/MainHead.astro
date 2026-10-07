@@ -11,26 +11,32 @@ import '../styles/global.css';
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
 import ogCard from '../assets/og-card.jpg';
+import { locales, localeOf, localePath, ogLocale, stripLocale } from '../i18n';
+import { ui } from '../i18n/ui';
 
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
 }
 
-const { title = 'Enricco Gemha' } = Astro.props;
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale];
+const { title = t.siteName } = Astro.props;
 
 // Pages without their own description, like the homepage, get two. Search
 // results show the long one. Chat previews get their own, which leaves out
 // what I build because the card above it already says that. WhatsApp's docs
 // say 80 characters is enough there, and phones cut off longer lines, so this
 // one stays close to that.
-const description =
-	Astro.props.description ??
-	'I build iOS apps. I’m a master’s student at Brown, and before that I was the first engineering hire at DAERO, a construction software startup in Boston.';
-const previewDescription =
-	Astro.props.description ?? 'MSc Entrepreneurship at Brown. BSc Computer Engineering at Insper.';
+const description = Astro.props.description ?? t.description.search;
+const previewDescription = Astro.props.description ?? t.description.preview;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://enriccogemha.dev');
+const origin = Astro.site ?? 'https://enriccogemha.dev';
+const canonical = new URL(Astro.url.pathname, origin);
+// The same page in each language, for search engines. The English one is
+// also the default, for readers whose language the site doesn't have.
+const page = stripLocale(Astro.url.pathname);
+const alternates = locales.map((l) => ({ lang: l, href: new URL(localePath(l, page), origin) }));
 
 // The card chat apps show when a link to any page is shared. scripts/og-card.mjs
 // draws it. Facebook caches the image by its URL, so it's imported rather than
@@ -41,7 +47,7 @@ const card = {
 	src: new URL(ogCard.src, canonical),
 	width: ogCard.width,
 	height: ogCard.height,
-	alt: 'The name Enricco Gemha and the headline “I build things.” beside a photo of Enricco smiling in a navy suit.',
+	alt: t.description.cardAlt,
 };
 ---
 
@@ -50,6 +56,8 @@ const card = {
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{alternates.map(({ lang, href }) => <link rel="alternate" hreflang={lang} href={href} />)}
+<link rel="alternate" hreflang="x-default" href={alternates[0]!.href} />
 
 <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={publicSansLatin} as="font" type="font/woff2" crossorigin />
@@ -61,7 +69,9 @@ const card = {
 <meta name="theme-color" content="#14120f" media="(prefers-color-scheme: dark)" />
 
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Enricco Gemha" />
+<meta property="og:site_name" content={t.siteName} />
+<meta property="og:locale" content={ogLocale[locale]} />
+{locales.filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={previewDescription} />
 <meta property="og:url" content={canonical} />

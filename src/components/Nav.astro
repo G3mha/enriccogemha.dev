@@ -1,26 +1,31 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import NameWordmark from './NameWordmark.astro';
+import { localeOf, localePath, stripLocale } from '../i18n';
+import { ui } from '../i18n/ui';
 
-const path = Astro.url.pathname;
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale];
+// The page's path without its language prefix, so /pt-BR/about/ is About too.
+const path = stripLocale(Astro.url.pathname);
 const links = [
-	{ href: '/', label: 'Work' },
-	{ href: '/about/', label: 'About' },
+	{ page: '/', label: t.nav.work },
+	{ page: '/about/', label: t.nav.about },
 ];
 
-const isCurrent = (href: string) =>
-	href === '/' ? path === '/' : path.startsWith(href);
+const isCurrent = (page: string) =>
+	page === '/' ? path === '/' : path.startsWith(page);
 ---
 
 <header>
 	<nav class="wrapper" aria-label="Main">
-		<a class="wordmark" href="/"><NameWordmark /></a>
+		<a class="wordmark" href={localePath(locale, '/')}><NameWordmark /></a>
 
 		<ul class="links">
 			{
-				links.map(({ href, label }) => (
+				links.map(({ page, label }) => (
 					<li>
-						<a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
+						<a href={localePath(locale, page)} aria-current={isCurrent(page) ? 'page' : undefined}>
 							{label}
 						</a>
 					</li>

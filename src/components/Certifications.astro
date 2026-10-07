@@ -10,58 +10,97 @@
  * points at it with aria-describedby.
  */
 import PreviewCard from './PreviewCard.astro';
+import { localeOf } from '../i18n';
+import { ui } from '../i18n/ui';
+
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale].certs;
 
 // Each links to the issuer's own verification page. Dates are as shown there.
 // exam, level and covers come from the issuer's exam guide for the version
 // that was live on the date earned. source names that guide, around the exam
-// code: whose it is, then what it's called.
+// code: whose it is, then what it's called. The names, exam codes and
+// verifiers stay in English; the rest is written in both languages.
 const certifications = [
 	{
 		name: 'AWS Certified Cloud Practitioner',
 		badge: '/assets/badge-aws-cloud-practitioner.png',
 		width: 340,
 		height: 340,
-		dates: 'Earned Aug 2025, valid until Aug 2028',
 		verify: 'https://www.credly.com/badges/93f53b4d-ed60-47e9-abdd-bc266ec1bf42/public_url',
 		verifier: 'Credly',
 		id: 'aws-cloud-practitioner',
 		exam: 'CLF-C02',
-		level: 'Foundational',
 		// docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html.
 		// CLF-C02 replaced CLF-C01 on Sep 19, 2023, with these weights since.
-		covers: [
-			['Cloud Concepts', '24%'],
-			['Security and Compliance', '30%'],
-			['Cloud Technology and Services', '34%'],
-			['Billing, Pricing, and Support', '12%'],
-		],
-		source: ['AWS’s', 'exam guide'],
+		text: {
+			en: {
+				dates: 'Earned Aug 2025, valid until Aug 2028',
+				level: 'Foundational',
+				covers: [
+					['Cloud Concepts', '24%'],
+					['Security and Compliance', '30%'],
+					['Cloud Technology and Services', '34%'],
+					['Billing, Pricing, and Support', '12%'],
+				],
+				source: ['AWS’s', 'exam guide'],
+			},
+			'pt-BR': {
+				dates: 'Obtida em ago. 2025, válida até ago. 2028',
+				level: 'Fundamental',
+				covers: [
+					['Conceitos de nuvem', '24%'],
+					['Segurança e conformidade', '30%'],
+					['Tecnologia e serviços de nuvem', '34%'],
+					['Cobrança, preços e suporte', '12%'],
+				],
+				source: ['da AWS', 'do guia do exame'],
+			},
+		},
 	},
 	{
 		name: 'GitHub Foundations',
 		badge: '/assets/badge-github-foundations.svg',
 		width: 348,
 		height: 349,
-		dates: 'Earned Aug 2026, valid until Sep 2028',
 		verify: 'https://learn.microsoft.com/en-us/users/enriccogemha-8257/credentials/141fe52eb223f209',
 		verifier: 'Microsoft Learn',
 		id: 'github-foundations',
 		exam: 'GH-900',
-		level: 'Beginner',
 		// learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/gh-900,
 		// "skills at a glance as of January 2026".
-		covers: [
-			['Understand Git and GitHub basics', '25–30%'],
-			['Work with GitHub repositories', '10–15%'],
-			['Collaborate using GitHub', '10–15%'],
-			['Apply modern development practices', '10–15%'],
-			['Manage projects with GitHub', '5–10%'],
-			['Understand privacy, security, and administration', '10–15%'],
-			['Explore the GitHub community', '5–10%'],
-		],
-		source: ['Microsoft Learn’s', 'study guide'],
+		text: {
+			en: {
+				dates: 'Earned Aug 2026, valid until Sep 2028',
+				level: 'Beginner',
+				covers: [
+					['Understand Git and GitHub basics', '25–30%'],
+					['Work with GitHub repositories', '10–15%'],
+					['Collaborate using GitHub', '10–15%'],
+					['Apply modern development practices', '10–15%'],
+					['Manage projects with GitHub', '5–10%'],
+					['Understand privacy, security, and administration', '10–15%'],
+					['Explore the GitHub community', '5–10%'],
+				],
+				source: ['Microsoft Learn’s', 'study guide'],
+			},
+			'pt-BR': {
+				dates: 'Obtida em ago. 2026, válida até set. 2028',
+				level: 'Iniciante',
+				covers: [
+					['Entender o básico de Git e GitHub', '25–30%'],
+					['Trabalhar com repositórios no GitHub', '10–15%'],
+					['Colaborar usando o GitHub', '10–15%'],
+					['Aplicar práticas modernas de desenvolvimento', '10–15%'],
+					['Gerenciar projetos com o GitHub', '5–10%'],
+					['Entender privacidade, segurança e administração', '10–15%'],
+					['Explorar a comunidade do GitHub', '5–10%'],
+				],
+				source: ['do Microsoft Learn', 'do guia de estudo'],
+			},
+		},
 	},
-];
+].map((cert) => ({ ...cert, ...cert.text[locale] }));
 ---
 
 <ul class="certs">
@@ -76,7 +115,7 @@ const certifications = [
 				<div class="cert-text">
 					<span class="cert-name">{cert.name}</span>
 					<span class="cert-dates">{cert.dates}</span>
-					<a href={cert.verify} rel="noopener" data-preview={`cert-${cert.id}`} aria-describedby={`preview-cert-${cert.id}`}>Verify on {cert.verifier}</a>
+					<a href={cert.verify} rel="noopener" data-preview={`cert-${cert.id}`} aria-describedby={`preview-cert-${cert.id}`}>{t.verifyOn} {cert.verifier}</a>
 				</div>
 			</li>
 		))
@@ -99,7 +138,7 @@ const certifications = [
 					</li>
 				))}
 			</ul>
-			<p class="card-source">Exam domains from {cert.source[0]} <span class="nowrap">{cert.exam}</span> {cert.source[1]}.</p>
+			<p class="card-source">{t.domainsFrom(cert.source[0]!, cert.exam, cert.source[1]!)}</p>
 		</PreviewCard>
 	))
 }

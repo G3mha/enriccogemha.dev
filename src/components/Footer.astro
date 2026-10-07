@@ -1,7 +1,11 @@
 ---
 import Moons from './Moons.astro';
+import { localeOf, localePath } from '../i18n';
+import { ui } from '../i18n/ui';
 
 const year = new Date().getFullYear();
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale];
 ---
 
 <footer>
@@ -14,7 +18,7 @@ const year = new Date().getFullYear();
 			<li><a href="https://github.com/G3mha" rel="me noopener">GitHub</a></li>
 			<li><a href="https://www.linkedin.com/in/enriccogemha" rel="me noopener">LinkedIn</a></li>
 			<li><a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a></li>
-			<li><a href="/privacy/">Privacy</a></li>
+			<li><a href={localePath(locale, '/privacy/')} data-privacy>{t.footer.privacy}</a></li>
 		</ul>
 	</div>
 </footer>

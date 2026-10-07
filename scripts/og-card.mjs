@@ -1,9 +1,9 @@
 /**
  * Draws the link preview cards, the image WhatsApp, iMessage, Slack, LinkedIn
  * and others show when someone shares a link to the site, and saves them as
- * src/assets/og-card.jpg (English) and src/assets/og-card.pt-BR.jpg
- * (Portuguese). Run it with `npm run og-card` after changing anything the
- * cards show: the headline, the portrait, the name or the fonts.
+ * src/assets/og-card.jpg (English) and og-card.<language>.jpg for each other
+ * language. Run it with `npm run og-card` after changing anything the cards
+ * show: the headline, the portrait, the name or the fonts.
  *
  * Each card is a 1200 x 630 page laid out like the homepage's first screen:
  * the name, "I build things." in that language with the homepage headline's
@@ -30,11 +30,13 @@ const HEIGHT = 630;
 
 // One card per language. The headline is the first phrase of the homepage
 // headline in that language (src/i18n/ui.ts), broken before the typed word.
-// "Eu construo" is wider than "I build", so its card sets the headline a
-// little smaller to keep the same margins.
+// The other leads are wider than "I build", so their cards set the headline
+// a little smaller to keep the same margins.
 const cards = [
 	{ lang: 'en', file: 'og-card.jpg', lead: 'I build', typed: 'things.', size: 124 },
 	{ lang: 'pt-BR', file: 'og-card.pt-BR.jpg', lead: 'Eu construo', typed: 'coisas.', size: 104 },
+	{ lang: 'es-ES', file: 'og-card.es-ES.jpg', lead: 'Construyo', typed: 'cosas.', size: 116 },
+	{ lang: 'sv', file: 'og-card.sv.jpg', lead: 'Jag bygger', typed: 'saker.', size: 108 },
 ];
 
 const dataUrl = (file, type) => `data:${type};base64,${readFileSync(file).toString('base64')}`;

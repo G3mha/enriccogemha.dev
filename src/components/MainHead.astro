@@ -83,6 +83,28 @@ const card = {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image:alt" content={card.alt} />
 
+{/* ?lang=pt_BR (or en) on any address goes to that language's copy of the
+    page. On Vercel the redirects in vercel.json do this before the page is
+    sent; this is for astro dev and any host without them, and runs before
+    anything is painted. */}
+<script is:inline>
+	(() => {
+		const params = new URLSearchParams(location.search);
+		const asked = params.get('lang');
+		if (!asked) return;
+		const want = /^pt([_-]br)?$/i.test(asked) ? 'pt-BR' : /^en([_-]us)?$/i.test(asked) ? 'en' : null;
+		if (!want) return;
+		const path = location.pathname;
+		const inPt = path === '/pt-BR' || path.startsWith('/pt-BR/');
+		const page = inPt ? path.slice('/pt-BR'.length) || '/' : path;
+		const target = (want === 'pt-BR' ? '/pt-BR' : '') + page;
+		if (target === path) return;
+		params.delete('lang');
+		const query = params.toString();
+		location.replace(target + (query ? `?${query}` : '') + location.hash);
+	})();
+</script>
+
 {/* Set the theme before first paint so the page never flashes the wrong one. */}
 <script is:inline>
 	(() => {

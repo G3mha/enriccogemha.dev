@@ -1,0 +1,23 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"redirects": [
+		{
+			"source": "/pt-BR/:path*",
+			"has": [{ "type": "query", "key": "lang", "value": "(en|EN|en_US|en-US|en_us|en-us)" }],
+			"destination": "/:path*",
+			"permanent": false
+		},
+		{
+			"source": "/",
+			"has": [{ "type": "query", "key": "lang", "value": "(pt|PT|pt_BR|pt-BR|pt_br|pt-br|PT_BR|PT-BR)" }],
+			"destination": "/pt-BR/",
+			"permanent": false
+		},
+		{
+			"source": "/:path((?!pt-BR(?:/|$)).+)",
+			"has": [{ "type": "query", "key": "lang", "value": "(pt|PT|pt_BR|pt-BR|pt_br|pt-br|PT_BR|PT-BR)" }],
+			"destination": "/pt-BR/:path",
+			"permanent": false
+		}
+	]
+}

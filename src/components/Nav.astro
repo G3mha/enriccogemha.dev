@@ -194,9 +194,9 @@ const isCurrent = (page: string) =>
 	/* On the narrowest phones even that row is too long with labels, so
 	   GitHub and LinkedIn show only their marks. The link keeps its name
 	   through aria-label, and the padding keeps each tap target at least
-	   24px square. In Portuguese and Spanish, "Projetos"/"Proyectos" and
-	   "Sobre"/"Sobre mí" are longer than "Work" and "About", so the same
-	   happens up to a 390px phone. Swedish, "Projekt" and "Om mig", fits. */
+	   24px square. In the other languages the two labels are longer than
+	   "Work" and "About" ("Projetos", "Proyectos", "Projekt", "Om mig"), so
+	   the same happens up to a 390px phone. */
 	@media (max-width: 23em) {
 		.external .label {
 			position: absolute;
@@ -218,7 +218,7 @@ const isCurrent = (page: string) =>
 	}
 
 	@media (max-width: 26em) {
-		:global(html:is([lang='pt-BR'], [lang='es-ES'])) .external .label {
+		:global(html:not([lang='en'])) .external .label {
 			position: absolute;
 			width: 1px;
 			height: 1px;
@@ -227,12 +227,12 @@ const isCurrent = (page: string) =>
 			white-space: nowrap;
 		}
 
-		:global(html:is([lang='pt-BR'], [lang='es-ES'])) .external {
+		:global(html:not([lang='en'])) .external {
 			padding: 0.25rem;
 		}
 
-		:global(html:is([lang='pt-BR'], [lang='es-ES'])) .brand-icon.github,
-		:global(html:is([lang='pt-BR'], [lang='es-ES'])) .brand-icon.linkedin {
+		:global(html:not([lang='en'])) .brand-icon.github,
+		:global(html:not([lang='en'])) .brand-icon.linkedin {
 			height: 1.15em;
 		}
 	}

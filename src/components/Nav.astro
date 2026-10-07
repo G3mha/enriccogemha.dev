@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import LanguageMenu from './LanguageMenu.astro';
 import NameWordmark from './NameWordmark.astro';
 import { localeOf, localePath, stripLocale } from '../i18n';
 import { ui } from '../i18n/ui';
@@ -39,7 +40,10 @@ const isCurrent = (page: string) =>
 			</li>
 		</ul>
 
-		<ThemeToggle />
+		<div class="controls">
+			<LanguageMenu />
+			<ThemeToggle />
+		</div>
 	</nav>
 </header>
 
@@ -74,6 +78,14 @@ const isCurrent = (page: string) =>
 
 	.wordmark:hover {
 		color: var(--accent);
+	}
+
+	/* The language menu and the theme toggle, one row at the end of the nav. */
+	.controls {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	.links {
@@ -158,17 +170,17 @@ const isCurrent = (page: string) =>
 		border-bottom-color: var(--accent);
 	}
 
-	/* Below 39em the name, four links and the toggle no longer fit on one
-	   line, and letting the links wrap split them unevenly (3 + 1 on a 402px
-	   iPhone). So the nav becomes two rows on purpose: the name and the toggle
-	   on top, and the links on a full-width row under them. */
+	/* Below 39em the name, four links and the two controls no longer fit on
+	   one line, and letting the links wrap split them unevenly (3 + 1 on a
+	   402px iPhone). So the nav becomes two rows on purpose: the name and the
+	   controls on top, and the links on a full-width row under them. */
 	@media (max-width: 39em) {
 		nav {
 			flex-wrap: wrap;
 			row-gap: 0.5rem;
 		}
 
-		nav > :global(#theme-toggle) {
+		.controls {
 			margin-left: auto;
 		}
 

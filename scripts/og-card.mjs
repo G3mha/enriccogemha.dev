@@ -1,15 +1,16 @@
 /**
- * Draws the link preview card, the image WhatsApp, iMessage, Slack, LinkedIn
- * and others show when someone shares a link to the site, and saves it as
- * src/assets/og-card.jpg. Run it with `npm run og-card` after changing
- * anything the card shows: the headline, the portrait, the name or the fonts.
+ * Draws the link preview cards, the image WhatsApp, iMessage, Slack, LinkedIn
+ * and others show when someone shares a link to the site, and saves them as
+ * src/assets/og-card.jpg (English) and src/assets/og-card.pt-BR.jpg
+ * (Portuguese). Run it with `npm run og-card` after changing anything the
+ * cards show: the headline, the portrait, the name or the fonts.
  *
- * The card is a 1200 x 630 page laid out like the homepage's first screen:
- * the name, "I build things." with the homepage headline's caret, and the
- * portrait. It uses the site's own fonts, colours and wordmark, so it looks
- * like the site. Headless Chrome screenshots it, and sips (built into macOS)
- * saves it as a JPEG, which keeps it far below WhatsApp's 600 KB limit for
- * previews.
+ * Each card is a 1200 x 630 page laid out like the homepage's first screen:
+ * the name, "I build things." in that language with the homepage headline's
+ * caret, and the portrait. It uses the site's own fonts, colours and
+ * wordmark, so it looks like the site. Headless Chrome screenshots it, and
+ * sips (built into macOS) saves it as a JPEG, which keeps it far below
+ * WhatsApp's 600 KB limit for previews.
  *
  * Chrome is looked for at its usual macOS path. Set CHROME_PATH to use another.
  */
@@ -23,10 +24,18 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const require = createRequire(import.meta.url);
 const chrome = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const output = join(root, 'src/assets/og-card.jpg');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
+
+// One card per language. The headline is the first phrase of the homepage
+// headline in that language (src/i18n/ui.ts), broken before the typed word.
+// "Eu construo" is wider than "I build", so its card sets the headline a
+// little smaller to keep the same margins.
+const cards = [
+	{ lang: 'en', file: 'og-card.jpg', lead: 'I build', typed: 'things.', size: 124 },
+	{ lang: 'pt-BR', file: 'og-card.pt-BR.jpg', lead: 'Eu construo', typed: 'coisas.', size: 104 },
+];
 
 const dataUrl = (file, type) => `data:${type};base64,${readFileSync(file).toString('base64')}`;
 const font = (pkg, file) => dataUrl(require.resolve(`${pkg}/files/${file}`), 'font/woff2');
@@ -36,8 +45,10 @@ const wordmark = readFileSync(join(root, 'src/components/NameWordmark.astro'), '
 	.match(/<svg[\s\S]*<\/svg>/)[0]
 	.replace(/ class="[^"]*"/, ' class="name"');
 
-const html = `<!doctype html>
-<html lang="en">
+const portrait = dataUrl(join(root, 'public/assets/portrait.jpg'), 'image/jpeg');
+
+const html = ({ lang, lead, typed, size }) => `<!doctype html>
+<html lang="${lang}">
 <meta charset="utf-8" />
 <style>
 	@font-face {
@@ -101,7 +112,7 @@ const html = `<!doctype html>
 		font-family: 'Fraunces Variable', serif;
 		font-weight: 600;
 		font-variation-settings: 'opsz' 40;
-		font-size: 124px;
+		font-size: ${size}px;
 		line-height: 1;
 		letter-spacing: -0.015em;
 		color: var(--ink);
@@ -137,11 +148,11 @@ const html = `<!doctype html>
 <body>
 	<div class="text">
 		${wordmark}
-		<h1>I build<br /><span class="typed">things.</span></h1>
+		<h1>${lead}<br /><span class="typed">${typed}</span></h1>
 		<p class="domain">enriccogemha.dev</p>
 	</div>
 	<div class="photo">
-		<img src="${dataUrl(join(root, 'public/assets/portrait.jpg'), 'image/jpeg')}" alt="" />
+		<img src="${portrait}" alt="" />
 	</div>
 </body>
 </html>
@@ -149,24 +160,27 @@ const html = `<!doctype html>
 
 const work = mkdtempSync(join(tmpdir(), 'og-card-'));
 try {
-	const page = join(work, 'card.html');
-	const png = join(work, 'card.png');
-	writeFileSync(page, html);
-	execFileSync(chrome, [
-		'--headless',
-		'--disable-gpu',
-		'--hide-scrollbars',
-		'--force-device-scale-factor=1',
-		`--window-size=${WIDTH},${HEIGHT}`,
-		'--virtual-time-budget=2000',
-		`--screenshot=${png}`,
-		pathToFileURL(page).href,
-	], { stdio: 'ignore' });
-	execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '88', png, '--out', output], { stdio: 'ignore' });
-	const size = execFileSync('sips', ['-g', 'pixelWidth', '-g', 'pixelHeight', output], { encoding: 'utf8' });
-	const [w, h] = size.match(/\d+(?=\s*$)/gm).map(Number);
-	if (w !== WIDTH || h !== HEIGHT) throw new Error(`Expected ${WIDTH}x${HEIGHT}, got ${w}x${h}`);
-	console.log(`Saved src/assets/og-card.jpg (${w}x${h}, ${Math.round(statSync(output).size / 1024)} KB)`);
+	for (const card of cards) {
+		const output = join(root, 'src/assets', card.file);
+		const page = join(work, `${card.lang}.html`);
+		const png = join(work, `${card.lang}.png`);
+		writeFileSync(page, html(card));
+		execFileSync(chrome, [
+			'--headless',
+			'--disable-gpu',
+			'--hide-scrollbars',
+			'--force-device-scale-factor=1',
+			`--window-size=${WIDTH},${HEIGHT}`,
+			'--virtual-time-budget=2000',
+			`--screenshot=${png}`,
+			pathToFileURL(page).href,
+		], { stdio: 'ignore' });
+		execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '88', png, '--out', output], { stdio: 'ignore' });
+		const size = execFileSync('sips', ['-g', 'pixelWidth', '-g', 'pixelHeight', output], { encoding: 'utf8' });
+		const [w, h] = size.match(/\d+(?=\s*$)/gm).map(Number);
+		if (w !== WIDTH || h !== HEIGHT) throw new Error(`Expected ${WIDTH}x${HEIGHT}, got ${w}x${h}`);
+		console.log(`Saved src/assets/${card.file} (${w}x${h}, ${Math.round(statSync(output).size / 1024)} KB)`);
+	}
 } finally {
 	rmSync(work, { recursive: true, force: true });
 }

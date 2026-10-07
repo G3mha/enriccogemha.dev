@@ -10,7 +10,8 @@ import '../styles/global.css';
 // text is set in its real fonts before the first paint and nothing swaps.
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import publicSansLatin from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
-import ogCard from '../assets/og-card.jpg';
+import ogCardEn from '../assets/og-card.jpg';
+import ogCardPtBR from '../assets/og-card.pt-BR.jpg';
 import { locales, localeOf, localePath, ogLocale, stripLocale } from '../i18n';
 import { ui } from '../i18n/ui';
 
@@ -38,11 +39,13 @@ const canonical = new URL(Astro.url.pathname, origin);
 const page = stripLocale(Astro.url.pathname);
 const alternates = locales.map((l) => ({ lang: l, href: new URL(localePath(l, page), origin) }));
 
-// The card chat apps show when a link to any page is shared. scripts/og-card.mjs
-// draws it. Facebook caches the image by its URL, so it's imported rather than
-// kept in public/: the build names the file after a hash of its contents, and
-// a redrawn card gets a new URL. Stating its size lets Facebook's crawler show
-// it on the first share instead of after it has downloaded and processed it.
+// The card chat apps show when a link to any page is shared, in the page's
+// language. scripts/og-card.mjs draws both. Facebook caches the image by its
+// URL, so they're imported rather than kept in public/: the build names each
+// file after a hash of its contents, and a redrawn card gets a new URL.
+// Stating the size lets Facebook's crawler show it on the first share instead
+// of after it has downloaded and processed it.
+const ogCard = locale === 'pt-BR' ? ogCardPtBR : ogCardEn;
 const card = {
 	src: new URL(ogCard.src, canonical),
 	width: ogCard.width,

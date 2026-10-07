@@ -1,26 +1,34 @@
 ---
-import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Status from '../../components/Status.astro';
-import Tags from '../../components/Tags.astro';
-import RoboCupLogo from '../../components/RoboCupLogo.astro';
-import PinPagLogo from '../../components/PinPagLogo.astro';
-import LuaLogo from '../../components/LuaLogo.astro';
-import SwiftLogo from '../../components/SwiftLogo.astro';
-import DeepRacerLogo from '../../components/DeepRacerLogo.astro';
-import MarkedText from '../../components/MarkedText.astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Status from '../../../components/Status.astro';
+import Tags from '../../../components/Tags.astro';
+import RoboCupLogo from '../../../components/RoboCupLogo.astro';
+import PinPagLogo from '../../../components/PinPagLogo.astro';
+import LuaLogo from '../../../components/LuaLogo.astro';
+import SwiftLogo from '../../../components/SwiftLogo.astro';
+import DeepRacerLogo from '../../../components/DeepRacerLogo.astro';
+import MarkedText from '../../../components/MarkedText.astro';
+import { getWork, type Work } from '../../../data/work';
+import { langParams, localeFromParams, localeOf, localePath } from '../../../i18n';
+import { ui } from '../../../i18n/ui';
 
+// Every project in every language: /work/<id>/ and /pt-BR/work/<id>/.
 export async function getStaticPaths() {
-	const projects = await getCollection('work');
-	return projects.map((project) => ({
-		params: { slug: project.id },
-		props: { project },
-	}));
+	const paths = [];
+	for (const { lang } of langParams) {
+		for (const project of await getWork(localeFromParams({ lang }))) {
+			paths.push({ params: { lang, slug: project.id }, props: { project } });
+		}
+	}
+	return paths;
 }
 
-const { project } = Astro.props;
-const { Content } = await render(project);
+const { project } = Astro.props as { project: Work };
+const { Content } = await render(project.entry);
 const { data } = project;
+const locale = localeOf(Astro.url.pathname);
+const t = ui[locale].project;
 
 // Logos shown large above the title. DAERO's isn't, because ZeroPunch's page
 // names the company in its summary instead.
@@ -28,9 +36,9 @@ const largeLogos = { robocup: RoboCupLogo, pinpag: PinPagLogo, lua: LuaLogo, swi
 const pageLogos = data.logos.flatMap((l) => (l in largeLogos ? [largeLogos[l as keyof typeof largeLogos]] : []));
 ---
 
-<BaseLayout title={`${data.title} | Enricco Gemha`} description={data.summary}>
+<BaseLayout title={`${data.title}${t.titleSuffix}`} description={data.summary}>
 	<div class="wrapper wrapper-narrow stack gap-10" data-project={project.id}>
-		<p class="back"><a href="/">Back to work</a></p>
+		<p class="back"><a href={localePath(locale, '/')}>{t.back}</a></p>
 
 		<header class="stack gap-4">
 			{pageLogos.length > 0 && <div class="project-logos">{pageLogos.map((Logo) => <Logo size="large" />)}</div>}
@@ -42,13 +50,13 @@ const pageLogos = data.logos.flatMap((l) => (l in largeLogos ? [largeLogos[l as 
 			<p class="summary"><MarkedText text={data.summary} logos={data.logos} /></p>
 			<dl class="meta">
 				<div>
-					<dt>When</dt>
+					<dt>{t.when}</dt>
 					<dd>{data.period}</dd>
 				</div>
 				{
 					data.role && (
 						<div>
-							<dt>My part</dt>
+							<dt>{t.myPart}</dt>
 							<dd>{data.role}</dd>
 						</div>
 					)

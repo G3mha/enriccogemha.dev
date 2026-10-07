@@ -1,0 +1,61 @@
+---
+/** A página de privacidade, em português. A moldura é PrivacyPage. */
+import PrivacyPage from '../../components/pages/PrivacyPage.astro';
+---
+
+<PrivacyPage>
+	<p>
+		Este é um site pessoal. Não tem contas, formulários, comentários nem analytics.
+		Não coleto seu nome, seu e-mail nem nada do que você faz aqui, e não há banco de
+		dados por trás desta página para onde isso pudesse ir.
+	</p>
+
+	<h2>O que chega a outras pessoas</h2>
+	<p>
+		Tudo nestas páginas, fontes incluídas, vem deste site, então seu navegador não
+		contata mais ninguém para mostrá-las.
+	</p>
+	<p>
+		<strong>Hospedagem.</strong> O site roda na Vercel, cujos servidores guardam logs
+		comuns de requisição, que incluem endereços IP. Eu não os leio e não construo
+		nada a partir deles.
+	</p>
+
+	<h2>Links para fora daqui</h2>
+	<p>
+		Links para a App Store, o Google Play, o GitHub e os próprios projetos levam a
+		serviços com suas próprias políticas de privacidade, e esta termina na borda
+		deste site.
+	</p>
+
+	<h2>Armazenamento no seu dispositivo</h2>
+	<p>
+		Se você usar o botão de tema claro e escuro, sua escolha é salva no
+		<code>localStorage</code> sob a chave <code>theme</code>. Ela nunca sai do seu
+		navegador e eu não consigo lê-la. Limpar os dados do site a remove.
+	</p>
+	<p>
+		O site também esconde sete Luas. Para acompanhá-las, ele salva quais você já
+		encontrou e até onde chegou nas outras: as páginas de projeto que visitou, os
+		cartões de escolas e jogos que abriu e os finais da manchete que já viu. Também
+		salva se o toque que soa quando você encontra uma está ligado ou desligado. Tudo
+		isso começa na sua primeira visita, fica no seu navegador sob a chave
+		<code>moons</code> e nunca chega até mim. Limpar os dados do site remove tudo, e
+		este botão também:
+		<button type="button" class="forget-moons" data-forget>Esquecer minhas Luas</button>
+	</p>
+	<p>
+		O toque é gerado no seu navegador, então nenhum arquivo de som é carregado para ele.
+	</p>
+	<p>
+		Seu idioma não é salvo em lugar nenhum. O site está em inglês nos endereços de
+		sempre e em português sob <code>/pt-BR/</code>, e o botão no cabeçalho é um link
+		comum entre os dois.
+	</p>
+
+	<h2>Dúvidas</h2>
+	<p>
+		Se algo aqui não ficou claro, escreva para
+		<a href="mailto:me@enriccogemha.dev">me@enriccogemha.dev</a>.
+	</p>
+</PrivacyPage>

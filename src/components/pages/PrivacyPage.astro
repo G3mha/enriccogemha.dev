@@ -1,0 +1,39 @@
+---
+/**
+ * The privacy page's frame. The text, headings included, comes from
+ * src/copy/, one file per language, through the default slot.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { localeOf } from '../../i18n';
+import { ui } from '../../i18n/ui';
+
+const t = ui[localeOf(Astro.url.pathname)].privacy;
+---
+
+<BaseLayout title={t.title} description={t.description}>
+	<div class="wrapper wrapper-narrow stack gap-8">
+		<h1>{t.heading}</h1>
+
+		<div class="prose">
+			<slot />
+		</div>
+	</div>
+</BaseLayout>
+
+<style>
+	/* The Forget button sits in a sentence of the slotted text, so it looks
+	   like the site's links. */
+	.prose :global(.forget-moons) {
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-weight: 600;
+		color: var(--accent);
+		cursor: pointer;
+	}
+
+	.prose :global(.forget-moons:hover) {
+		color: var(--accent-strong);
+	}
+</style>

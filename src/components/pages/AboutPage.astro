@@ -1,0 +1,89 @@
+---
+/**
+ * The About page's layout and headings, in the URL's language. The prose
+ * comes from src/copy/, one file per language, through the named slots.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Certifications from '../Certifications.astro';
+import ProjectPreviews from '../ProjectPreviews.astro';
+import LogoCards from '../LogoCards.astro';
+import { localeOf } from '../../i18n';
+import { ui } from '../../i18n/ui';
+
+const t = ui[localeOf(Astro.url.pathname)].about;
+---
+
+<BaseLayout title={t.title} description={t.description}>
+	<div class="wrapper wrapper-narrow stack gap-12">
+		<header class="intro">
+			<div class="stack gap-4">
+				<h1>{t.heading}</h1>
+				<p class="lede"><slot name="lede" /></p>
+			</div>
+			<img src="/assets/portrait.jpg" alt={t.portraitAlt} width="867" height="1200" decoding="async" />
+		</header>
+
+		<section class="stack gap-3" aria-labelledby="how">
+			<h2 class="section-label" id="how">{t.how}</h2>
+			<div class="prose"><slot name="how" /></div>
+		</section>
+
+		<section class="stack gap-3" aria-labelledby="now">
+			<h2 class="section-label" id="now">{t.now}</h2>
+			<div class="prose"><slot name="now" /></div>
+		</section>
+
+		<section class="stack gap-3" aria-labelledby="tools">
+			<h2 class="section-label" id="tools">{t.tools}</h2>
+			<div class="prose"><slot name="tools" /></div>
+		</section>
+
+		<section class="stack gap-3" aria-labelledby="certifications">
+			<h2 class="section-label" id="certifications">{t.certifications}</h2>
+			<Certifications />
+		</section>
+
+		<section class="stack gap-3" aria-labelledby="elsewhere">
+			<h2 class="section-label" id="elsewhere">{t.elsewhere}</h2>
+			<div class="prose"><slot name="elsewhere" /></div>
+		</section>
+	</div>
+	<ProjectPreviews ids={['robocup', 'pinpag-capstone', 'opengiving', 'zeropunch']} />
+	<LogoCards ids={['school-insper', 'school-stanford', 'school-olin', 'school-babson', 'school-brown', 'school-harvard', 'game-magic', 'game-gba']} />
+</BaseLayout>
+
+<style>
+	.intro {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.lede {
+		font-size: var(--text-lg);
+		color: var(--ink);
+		max-width: var(--measure);
+	}
+
+	.intro img {
+		width: 100%;
+		max-width: 15rem;
+		border: 1px solid var(--rule);
+	}
+
+	@media (min-width: 42em) {
+		.intro {
+			flex-direction: row;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 3rem;
+		}
+
+		/* The portrait stays deliberately small. It is here so a recruiter can put a
+		   face to the name, not so it competes with the first paragraph. */
+		.intro img {
+			flex: none;
+			width: 13rem;
+		}
+	}
+</style>

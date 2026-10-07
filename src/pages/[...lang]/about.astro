@@ -1,0 +1,11 @@
+---
+import { localeFromParams, localePaths } from '../../i18n';
+import En from '../../copy/en/about.astro';
+import PtBR from '../../copy/pt-BR/about.astro';
+
+export const getStaticPaths = localePaths;
+
+const Page = { en: En, 'pt-BR': PtBR }[localeFromParams(Astro.params)];
+---
+
+<Page />

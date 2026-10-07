@@ -1,10 +1,32 @@
 ---
+/**
+ * One 404 page serves every address, in both languages: Vercel has a single
+ * 404.html, so an unknown /pt-BR/ address lands here too. The English comes
+ * first; a line of script puts the Portuguese first and marks the page as
+ * Portuguese when the address starts with /pt-BR/.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { ui } from '../i18n/ui';
 ---
 
-<BaseLayout title="Not found | Enricco Gemha" description="That page doesn’t exist.">
-	<div class="wrapper wrapper-narrow stack gap-4" data-moon-lost>
-		<h1>Not found</h1>
-		<p>There’s nothing at this address. The <a href="/">work</a> is on the front page.</p>
+<BaseLayout title={ui.en.notFound.title} description={ui.en.notFound.description}>
+	<div class="wrapper wrapper-narrow stack gap-10" data-moon-lost>
+		<section class="stack gap-4" lang="en" data-lang="en">
+			<h1>{ui.en.notFound.heading}</h1>
+			<p>There’s nothing at this address. The <a href="/">work</a> is on the front page.</p>
+		</section>
+		<section class="stack gap-4" lang="pt-BR" data-lang="pt-BR">
+			<h1>{ui['pt-BR'].notFound.heading}</h1>
+			<p>Não há nada neste endereço. Os <a href="/pt-BR/">projetos</a> estão na página inicial.</p>
+		</section>
 	</div>
 </BaseLayout>
+
+<script is:inline>
+	if (location.pathname === '/pt-BR' || location.pathname.startsWith('/pt-BR/')) {
+		document.documentElement.lang = 'pt-BR';
+		document.title = 'Página não encontrada | Enricco Gemha';
+		const pt = document.querySelector('[data-lang="pt-BR"]');
+		pt?.parentElement?.prepend(pt);
+	}
+</script>

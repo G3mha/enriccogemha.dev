@@ -37,14 +37,20 @@ export const collections = {
 		}),
 	}),
 	/**
-	 * The Brazilian Portuguese write-ups, one per project, named like the
-	 * English file. Only the words are here; the status, dates' layout, stack,
-	 * links' addresses, logos and order come from the English entry, so they
-	 * can't drift apart. src/data/work.ts pairs the two, and the build fails
-	 * on a project missing its translation.
+	 * The write-ups in the other languages, one collection per language and
+	 * one file per project, named like the English file. Only the words are
+	 * here; the status, stack, links' addresses, logos and order come from the
+	 * English entry, so they can't drift apart. src/data/work.ts pairs them,
+	 * and the build fails on a project missing a translation.
 	 */
-	workPtBR: defineCollection({
-		loader: glob({ base: './src/content/work/pt-BR', pattern: '*.{md,mdx}' }),
+	workPtBR: translations('pt-BR'),
+	workEsES: translations('es-ES'),
+	workSv: translations('sv'),
+};
+
+function translations(folder: string) {
+	return defineCollection({
+		loader: glob({ base: `./src/content/work/${folder}`, pattern: '*.{md,mdx}' }),
 		schema: z.object({
 			title: z.string(),
 			summary: z.string(),
@@ -55,5 +61,5 @@ export const collections = {
 			links: z.array(z.string()).optional(),
 			img_alt: z.string().optional(),
 		}),
-	}),
-};
+	});
+}

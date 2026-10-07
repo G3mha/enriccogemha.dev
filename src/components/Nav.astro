@@ -194,7 +194,8 @@ const isCurrent = (page: string) =>
 	/* On the narrowest phones even that row is too long with labels, so
 	   GitHub and LinkedIn show only their marks. The link keeps its name
 	   through aria-label, and the padding keeps each tap target at least
-	   24px square. */
+	   24px square. In Portuguese, "Projetos" and "Sobre" are longer than
+	   "Work" and "About", so the same happens up to a 390px phone. */
 	@media (max-width: 23em) {
 		.external .label {
 			position: absolute;
@@ -211,6 +212,26 @@ const isCurrent = (page: string) =>
 
 		.brand-icon.github,
 		.brand-icon.linkedin {
+			height: 1.15em;
+		}
+	}
+
+	@media (max-width: 26em) {
+		:global(html[lang='pt-BR']) .external .label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+		}
+
+		:global(html[lang='pt-BR']) .external {
+			padding: 0.25rem;
+		}
+
+		:global(html[lang='pt-BR']) .brand-icon.github,
+		:global(html[lang='pt-BR']) .brand-icon.linkedin {
 			height: 1.15em;
 		}
 	}
